@@ -4,9 +4,9 @@
   <artifactId>jocular</artifactId>
   <version>0.0.2-SNAPSHOT</version>
   <scm>
-    <connection>scm:git:https://github.com/jherico/OculusSDK.git</connection>
-    <developerConnection>scm:git:git@github.com:jherico/OculusSDK.git</developerConnection>
-    <url>https://github.com/jherico/OculusSDK</url>
+    <connection>scm:git:https://github.com/jherico/jocular.git</connection>
+    <developerConnection>scm:git:git@github.com:jherico/jocular.git</developerConnection>
+    <url>https://github.com/jherico/jocular</url>
   </scm>
 
   <repositories>
