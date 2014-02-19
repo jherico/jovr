@@ -6,14 +6,14 @@
     <version>1.0.3</version>
   </parent>
   <artifactId>jocular</artifactId>
-  <version>0.0.2</version>
+  <version>0.0.3-SNAPSHOT</version>
   <name>Oculus Rift head tracker library</name>
 
   <scm>
     <connection>scm:git:https://github.com/jherico/jocular.git</connection>
     <developerConnection>scm:git:git@github.com:jherico/jocular.git</developerConnection>
     <url>https://github.com/jherico/jocular</url>
-    <tag>jocular-0.0.2</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <repositories>
