@@ -29,14 +29,15 @@ public abstract class RiftApp extends LwjglApp {
   private static final Logger LOG = LoggerFactory.getLogger(RiftApp.class);
   protected static final OvrLibrary OVR = OvrLibrary.INSTANCE;
   protected float ipd = OvrLibrary.OVR_DEFAULT_IPD;
-  private EyeRenderDesc eyeRenderDescs[] = (EyeRenderDesc[]) new EyeRenderDesc().toArray(2);
+  protected EyeRenderDesc eyeRenderDescs[] = (EyeRenderDesc[]) new EyeRenderDesc().toArray(2);
   private Texture eyeTextures[] = (Texture[]) new Texture().toArray(2);
   protected final ovrHmd hmd;
   protected final HmdDesc hmdDesc;
+  private int currentEye;
 
   private int frameCount = -1;
   private FrameBuffer frameBuffers[] = new FrameBuffer[2];
-  private Matrix4f projections[] = new Matrix4f[2];
+  protected Matrix4f projections[] = new Matrix4f[2];
 
   public RiftApp() {
     OVR.ovr_Initialize();
@@ -59,8 +60,8 @@ public abstract class RiftApp extends LwjglApp {
 
     EyeDesc eyeDescs[] = (EyeDesc[]) new EyeDesc().toArray(2);
     for (int eye = 0; eye < 2; ++eye) {
+      currentEye = eye;
       EyeDesc eyeDesc = eyeDescs[eye];
-
       eyeDesc.Eye = eye;
       {
         FovPort.ByValue fovPort = new FovPort.ByValue();
@@ -68,7 +69,7 @@ public abstract class RiftApp extends LwjglApp {
         fovPort.UpTan = hmdDesc.DefaultEyeFov[eye].UpTan;
         fovPort.LeftTan = hmdDesc.DefaultEyeFov[eye].LeftTan;
         fovPort.RightTan = hmdDesc.DefaultEyeFov[eye].RightTan;
-        projections[eye] = new Matrix4f(OVR.ovrMatrix4f_Projection(fovPort, 0.01f, 100000f, (byte) 1).M).transpose();
+        projections[eye] = new Matrix4f(OVR.ovrMatrix4f_Projection(fovPort, 0.1f, 1000000f, (byte) 1).M).transpose();
         eyeDesc.Fov = fovPort;
         eyeDesc.TextureSize = hmd.getFovTextureSize(eye, fovPort, 1.0f);
       }
@@ -92,7 +93,7 @@ public abstract class RiftApp extends LwjglApp {
         // Read it back into the other type
         eyeTextures[eye].read();
       }
-    };
+    }
 
     GLConfig rc = new GLConfig();
     rc.Config = new RenderAPIConfig();
@@ -100,7 +101,7 @@ public abstract class RiftApp extends LwjglApp {
     rc.Config.Header.Multisample = 1;
     rc.Config.Header.RTSize = hmdDesc.Resolution;
     int distortionCaps = OvrLibrary.ovrDistortionCaps.ovrDistortion_Chromatic
-        | OvrLibrary.ovrDistortionCaps.ovrDistortion_TimeWarp;
+        | OvrLibrary.ovrDistortionCaps.ovrDistortion_TimeWarp | OvrLibrary.ovrDistortionCaps.ovrDistortion_Vignette;
     int renderCaps = 0;
     if (0 == hmd.configureRendering(rc.Config, distortionCaps, renderCaps, eyeDescs, eyeRenderDescs)) {
       throw new IllegalStateException("Unable to configure rendering");
@@ -116,7 +117,8 @@ public abstract class RiftApp extends LwjglApp {
       MatrixStack.PROJECTION.set(projections[eye]);
       Posef.ByValue pose = hmd.beginEyeRender(eye);
       MatrixStack m = MatrixStack.MODELVIEW;
-      m.push(); {
+      m.push();
+      {
         m.preTranslate(pose.Position.toVector3f().mult(-1));
         m.preRotate(pose.Orientation.toQuaternion().inverse());
         float eyeOffset = (eye == 0 ? 1.0f : -1.0f) * (ipd / 2.0f);
@@ -125,10 +127,12 @@ public abstract class RiftApp extends LwjglApp {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         renderScene();
         frameBuffers[eye].deactivate();
-      };
+      }
+      ;
       m.pop();
       hmd.endEyeRender(eye, pose, eyeTextures[eye]);
-    };
+    }
+    ;
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
     hmd.endFrame();
@@ -142,12 +146,14 @@ public abstract class RiftApp extends LwjglApp {
   @Override
   protected final void setupDisplay() {
     System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
-    Rectangle targetRect = new Rectangle(
-        hmdDesc.WindowsPos.x, hmdDesc.WindowsPos.y, 
-        hmdDesc.Resolution.w, hmdDesc.Resolution.h
-    );
+    Rectangle targetRect = new Rectangle(hmdDesc.WindowsPos.x, hmdDesc.WindowsPos.y, hmdDesc.Resolution.w,
+        hmdDesc.Resolution.h);
     setupDisplay(targetRect);
   }
 
   protected abstract void renderScene();
+
+  public int getCurrentEye() {
+    return currentEye;
+  }
 }
