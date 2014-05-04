@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.saintandreas</groupId>
@@ -13,7 +14,6 @@
     <connection>scm:git:https://github.com/jherico/jocular.git</connection>
     <developerConnection>scm:git:git@github.com:jherico/jocular.git</developerConnection>
     <url>https://github.com/jherico/jocular</url>
-    <tag>HEAD</tag>
   </scm>
 
   <repositories>
@@ -29,13 +29,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>net.java.dev.jna</groupId>
-      <artifactId>jna</artifactId>
-      <version>3.5.2</version>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
+      <groupId>org.saintandreas</groupId>
+      <artifactId>jocular-platform</artifactId>
+      <version>0.3.1.2</version>
     </dependency>
     <dependency>
       <groupId>org.saintandreas</groupId>
@@ -43,36 +39,9 @@
       <version>1.0.2</version>
     </dependency>
     <dependency>
-      <groupId>org.saintandreas</groupId>
-      <artifactId>jocular-platform</artifactId>
-      <version>0.3.1.1</version>
-    </dependency>
-    <dependency>
-      <groupId>org.saintandreas</groupId>
-      <artifactId>glamour-lwjgl</artifactId>
-      <version>1.0.2</version>
-    </dependency>
-    <!-- Test dependencies -->
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <scope>test</scope>
+      <groupId>net.java.dev.jna</groupId>
+      <artifactId>jna</artifactId>
+      <version>3.5.2</version>
     </dependency>
   </dependencies>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>com.googlecode.mavennatives</groupId>
-        <artifactId>maven-nativedependencies-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>unpacknatives</id>
-            <goals>
-              <goal>copy</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
 </project>
