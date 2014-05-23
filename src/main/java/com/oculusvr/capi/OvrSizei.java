@@ -9,31 +9,27 @@ import java.util.List;
  * a tool written by <a href="http://ochafik.com/">Olivier Chafik</a> that <a href="http://code.google.com/p/jnaerator/wiki/CreditsAndLicense">uses a few opensource projects.</a>.<br>
  * For help, please visit <a href="http://nativelibs4java.googlecode.com/">NativeLibs4Java</a> , <a href="http://rococoa.dev.java.net/">Rococoa</a>, or <a href="http://jna.dev.java.net/">JNA</a>.
  */
-public class FovPort extends Structure {
-	public float UpTan;
-	public float DownTan;
-	public float LeftTan;
-	public float RightTan;
-	public FovPort() {
+public class OvrSizei extends Structure {
+	public int w;
+	public int h;
+	public OvrSizei() {
 		super();
 	}
 	protected List<? > getFieldOrder() {
-		return Arrays.asList("UpTan", "DownTan", "LeftTan", "RightTan");
+		return Arrays.asList("w", "h");
 	}
-	public FovPort(float UpTan, float DownTan, float LeftTan, float RightTan) {
+	public OvrSizei(int w, int h) {
 		super();
-		this.UpTan = UpTan;
-		this.DownTan = DownTan;
-		this.LeftTan = LeftTan;
-		this.RightTan = RightTan;
+		this.w = w;
+		this.h = h;
 	}
-	public FovPort(Pointer peer) {
+	public OvrSizei(Pointer peer) {
 		super(peer);
 	}
-	public static class ByReference extends FovPort implements Structure.ByReference {
+	public static class ByReference extends OvrSizei implements Structure.ByReference {
 		
 	};
-	public static class ByValue extends FovPort implements Structure.ByValue {
+	public static class ByValue extends OvrSizei implements Structure.ByValue {
 		
 	};
 }

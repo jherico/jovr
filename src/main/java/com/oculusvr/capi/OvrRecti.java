@@ -9,39 +9,33 @@ import java.util.List;
  * a tool written by <a href="http://ochafik.com/">Olivier Chafik</a> that <a href="http://code.google.com/p/jnaerator/wiki/CreditsAndLicense">uses a few opensource projects.</a>.<br>
  * For help, please visit <a href="http://nativelibs4java.googlecode.com/">NativeLibs4Java</a> , <a href="http://rococoa.dev.java.net/">Rococoa</a>, or <a href="http://jna.dev.java.net/">JNA</a>.
  */
-public class RenderAPIConfigHeader extends Structure {
-	/**
-	 * @see ovrRenderAPIType<br>
-	 * C type : ovrRenderAPIType
-	 */
-	public int API;
+public class OvrRecti extends Structure {
+	/** C type : ovrVector2i */
+	public OvrVector2i Pos;
 	/** C type : ovrSizei */
-	public OvrSizei RTSize;
-	public int Multisample;
-	public RenderAPIConfigHeader() {
+	public OvrSizei Size;
+	public OvrRecti() {
 		super();
 	}
 	protected List<? > getFieldOrder() {
-		return Arrays.asList("API", "RTSize", "Multisample");
+		return Arrays.asList("Pos", "Size");
 	}
 	/**
-	 * @param API @see ovrRenderAPIType<br>
-	 * C type : ovrRenderAPIType<br>
-	 * @param RTSize C type : ovrSizei
+	 * @param Pos C type : ovrVector2i<br>
+	 * @param Size C type : ovrSizei
 	 */
-	public RenderAPIConfigHeader(int API, OvrSizei RTSize, int Multisample) {
+	public OvrRecti(OvrVector2i Pos, OvrSizei Size) {
 		super();
-		this.API = API;
-		this.RTSize = RTSize;
-		this.Multisample = Multisample;
+		this.Pos = Pos;
+		this.Size = Size;
 	}
-	public RenderAPIConfigHeader(Pointer peer) {
+	public OvrRecti(Pointer peer) {
 		super(peer);
 	}
-	public static class ByReference extends RenderAPIConfigHeader implements Structure.ByReference {
+	public static class ByReference extends OvrRecti implements Structure.ByReference {
 		
 	};
-	public static class ByValue extends RenderAPIConfigHeader implements Structure.ByValue {
+	public static class ByValue extends OvrRecti implements Structure.ByValue {
 		
 	};
 }

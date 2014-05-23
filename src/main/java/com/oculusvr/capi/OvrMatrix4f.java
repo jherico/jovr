@@ -1,7 +1,6 @@
 package com.oculusvr.capi;
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
-import com.sun.jna.ptr.IntByReference;
 import java.util.Arrays;
 import java.util.List;
 /**
@@ -10,35 +9,29 @@ import java.util.List;
  * a tool written by <a href="http://ochafik.com/">Olivier Chafik</a> that <a href="http://code.google.com/p/jnaerator/wiki/CreditsAndLicense">uses a few opensource projects.</a>.<br>
  * For help, please visit <a href="http://nativelibs4java.googlecode.com/">NativeLibs4Java</a> , <a href="http://rococoa.dev.java.net/">Rococoa</a>, or <a href="http://jna.dev.java.net/">JNA</a>.
  */
-public class Texture extends Structure {
-	/** C type : ovrTextureHeader */
-	public TextureHeader Header;
-	/** C type : uintptr_t[8] */
-	public IntByReference[] PlatformData = new IntByReference[8];
-	public Texture() {
+public class OvrMatrix4f extends Structure {
+	/** C type : float[4][4] */
+	public float[] M = new float[((4) * (4))];
+	public OvrMatrix4f() {
 		super();
 	}
 	protected List<? > getFieldOrder() {
-		return Arrays.asList("Header", "PlatformData");
+		return Arrays.asList("M");
 	}
-	/**
-	 * @param Header C type : ovrTextureHeader<br>
-	 * @param PlatformData C type : uintptr_t[8]
-	 */
-	public Texture(TextureHeader Header, IntByReference PlatformData[]) {
+	/** @param M C type : float[4][4] */
+	public OvrMatrix4f(float M[]) {
 		super();
-		this.Header = Header;
-		if ((PlatformData.length != this.PlatformData.length)) 
+		if ((M.length != this.M.length)) 
 			throw new IllegalArgumentException("Wrong array size !");
-		this.PlatformData = PlatformData;
+		this.M = M;
 	}
-	public Texture(Pointer peer) {
+	public OvrMatrix4f(Pointer peer) {
 		super(peer);
 	}
-	public static class ByReference extends Texture implements Structure.ByReference {
+	public static class ByReference extends OvrMatrix4f implements Structure.ByReference {
 		
 	};
-	public static class ByValue extends Texture implements Structure.ByValue {
+	public static class ByValue extends OvrMatrix4f implements Structure.ByValue {
 		
 	};
 }

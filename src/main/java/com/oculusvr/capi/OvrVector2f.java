@@ -9,31 +9,27 @@ import java.util.List;
  * a tool written by <a href="http://ochafik.com/">Olivier Chafik</a> that <a href="http://code.google.com/p/jnaerator/wiki/CreditsAndLicense">uses a few opensource projects.</a>.<br>
  * For help, please visit <a href="http://nativelibs4java.googlecode.com/">NativeLibs4Java</a> , <a href="http://rococoa.dev.java.net/">Rococoa</a>, or <a href="http://jna.dev.java.net/">JNA</a>.
  */
-public class FovPort extends Structure {
-	public float UpTan;
-	public float DownTan;
-	public float LeftTan;
-	public float RightTan;
-	public FovPort() {
+public class OvrVector2f extends Structure {
+	public float x;
+	public float y;
+	public OvrVector2f() {
 		super();
 	}
 	protected List<? > getFieldOrder() {
-		return Arrays.asList("UpTan", "DownTan", "LeftTan", "RightTan");
+		return Arrays.asList("x", "y");
 	}
-	public FovPort(float UpTan, float DownTan, float LeftTan, float RightTan) {
+	public OvrVector2f(float x, float y) {
 		super();
-		this.UpTan = UpTan;
-		this.DownTan = DownTan;
-		this.LeftTan = LeftTan;
-		this.RightTan = RightTan;
+		this.x = x;
+		this.y = y;
 	}
-	public FovPort(Pointer peer) {
+	public OvrVector2f(Pointer peer) {
 		super(peer);
 	}
-	public static class ByReference extends FovPort implements Structure.ByReference {
+	public static class ByReference extends OvrVector2f implements Structure.ByReference {
 		
 	};
-	public static class ByValue extends FovPort implements Structure.ByValue {
+	public static class ByValue extends OvrVector2f implements Structure.ByValue {
 		
 	};
 }
