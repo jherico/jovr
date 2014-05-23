@@ -30,12 +30,7 @@
     <dependency>
       <groupId>org.saintandreas</groupId>
       <artifactId>jocular-platform</artifactId>
-      <version>[0.3.1.3, )</version>
-    </dependency>
-    <dependency>
-      <groupId>org.saintandreas</groupId>
-      <artifactId>math</artifactId>
-      <version>[1, 2)</version>
+      <version>0.3.1.3</version>
     </dependency>
     <dependency>
       <groupId>net.java.dev.jna</groupId>

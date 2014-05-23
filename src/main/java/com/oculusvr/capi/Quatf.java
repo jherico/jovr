@@ -3,8 +3,6 @@ package com.oculusvr.capi;
 import java.util.Arrays;
 import java.util.List;
 
-import org.saintandreas.math.Quaternion;
-
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 
@@ -43,7 +41,4 @@ public class Quatf extends Structure {
 
   };
 
-  public Quaternion toQuaternion() {
-    return new Quaternion(x, y, z, w);
-  }
 }

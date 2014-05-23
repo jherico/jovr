@@ -39,7 +39,4 @@ public class Vector3f extends Structure {
 
   };
 
-  public org.saintandreas.math.Vector3f toVector3f() {
-    return new org.saintandreas.math.Vector3f(x, y, z);
-  }
 }

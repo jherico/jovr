@@ -3,8 +3,6 @@ package com.oculusvr.capi;
 import java.util.Arrays;
 import java.util.List;
 
-import org.saintandreas.math.Quaternion;
-
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 
@@ -38,10 +36,4 @@ public class Posef extends Structure {
   public static class ByValue extends Posef implements Structure.ByValue {
 
   };
-
-  public org.saintandreas.math.Matrix4f toMatrix4f() {
-    org.saintandreas.math.Vector3f p = Position.toVector3f();
-    Quaternion o = Orientation.toQuaternion();
-    return new org.saintandreas.math.Matrix4f().rotate(o).mult(new org.saintandreas.math.Matrix4f().translate(p));
-  }
 }

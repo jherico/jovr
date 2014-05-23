@@ -1,0 +1,7 @@
+2.0.2 
+* Initial release on public repository
+
+2.0.3
+* Fixing the platform dependency on a single version
+* Removing the math library dependency
+ 

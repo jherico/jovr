@@ -36,8 +36,4 @@ public class Matrix4f extends Structure {
   public static class ByValue extends Matrix4f implements Structure.ByValue {
 
   };
-
-  public org.saintandreas.math.Matrix4f toMatrix4f() {
-    return new org.saintandreas.math.Matrix4f(M).transpose();
-  }
 }
