@@ -125,6 +125,10 @@ public interface OvrLibrary extends Library {
      */
     public static final int ovrDistortionCap_TimeWarp = 0x02;
     /**
+     * Disables SDK side swapbuffers / present
+     */
+    public static final int ovrDistortionCap_NoSwapBuffers = 0x04;
+    /**
      * Supports vignetting around the edges of the view.<br>
      * <i>native declaration : OVR_CAPI.h:456</i>
      */
