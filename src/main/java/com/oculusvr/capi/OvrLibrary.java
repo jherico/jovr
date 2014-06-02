@@ -238,34 +238,34 @@ public interface OvrLibrary extends Library {
    * Original signature : <code>ovrHmd ovrHmd_Create(int)</code><br>
    * <i>native declaration : OVR_CAPI.h:715</i>
    */
-  OvrLibrary.ovrHmd ovrHmd_Create(int index);
+  OvrLibrary.Hmd ovrHmd_Create(int index);
 
   /**
    * Original signature : <code>void ovrHmd_Destroy(ovrHmd)</code><br>
    * <i>native declaration : OVR_CAPI.h:716</i>
    */
-  void ovrHmd_Destroy(OvrLibrary.ovrHmd hmd);
+  void ovrHmd_Destroy(OvrLibrary.Hmd hmd);
 
   /**
    * but may be used to debug some of the related rendering.<br>
    * Original signature : <code>ovrHmd ovrHmd_CreateDebug(ovrHmdType)</code><br>
    * <i>native declaration : OVR_CAPI.h:720</i>
    */
-  OvrLibrary.ovrHmd ovrHmd_CreateDebug(int type);
+  OvrLibrary.Hmd ovrHmd_CreateDebug(int type);
 
   /**
    * Pass null hmd to get global error (for create, etc).<br>
    * Original signature : <code>char* ovrHmd_GetLastError(ovrHmd)</code><br>
    * <i>native declaration : OVR_CAPI.h:726</i>
    */
-  Pointer ovrHmd_GetLastError(OvrLibrary.ovrHmd hmd);
+  Pointer ovrHmd_GetLastError(OvrLibrary.Hmd hmd);
 
   /**
    * capabilities are available.<br>
    * Original signature : <code>int ovrHmd_GetEnabledCaps(ovrHmd)</code><br>
    * <i>native declaration : OVR_CAPI.h:734</i>
    */
-  int ovrHmd_GetEnabledCaps(OvrLibrary.ovrHmd hmd);
+  int ovrHmd_GetEnabledCaps(OvrLibrary.Hmd hmd);
 
   /**
    * such as ovrHmd_LowPersistance.<br>
@@ -273,7 +273,7 @@ public interface OvrLibrary extends Library {
    * <code>void ovrHmd_SetEnabledCaps(ovrHmd, unsigned int)</code><br>
    * <i>native declaration : OVR_CAPI.h:738</i>
    */
-  void ovrHmd_SetEnabledCaps(OvrLibrary.ovrHmd hmd, int hmdCaps);
+  void ovrHmd_SetEnabledCaps(OvrLibrary.Hmd hmd, int hmdCaps);
 
   /**
    * supportedSensorCaps.<br>
@@ -281,21 +281,21 @@ public interface OvrLibrary extends Library {
    * <code>ovrBool ovrHmd_StartSensor(ovrHmd, unsigned int, unsigned int)</code><br>
    * <i>native declaration : OVR_CAPI.h:754</i>
    */
-  byte ovrHmd_StartSensor(OvrLibrary.ovrHmd hmd, int supportedSensorCaps, int requiredSensorCaps);
+  byte ovrHmd_StartSensor(OvrLibrary.Hmd hmd, int supportedSensorCaps, int requiredSensorCaps);
 
   /**
    * Stops sensor sampling, shutting down internal resources.<br>
    * Original signature : <code>void ovrHmd_StopSensor(ovrHmd)</code><br>
    * <i>native declaration : OVR_CAPI.h:757</i>
    */
-  void ovrHmd_StopSensor(OvrLibrary.ovrHmd hmd);
+  void ovrHmd_StopSensor(OvrLibrary.Hmd hmd);
 
   /**
    * Resets sensor orientation.<br>
    * Original signature : <code>void ovrHmd_ResetSensor(ovrHmd)</code><br>
    * <i>native declaration : OVR_CAPI.h:759</i>
    */
-  void ovrHmd_ResetSensor(OvrLibrary.ovrHmd hmd);
+  void ovrHmd_ResetSensor(OvrLibrary.Hmd hmd);
 
   /**
    * This may also be used for more refined timing of FrontBuffer rendering
@@ -304,7 +304,7 @@ public interface OvrLibrary extends Library {
    * <code>ovrSensorState ovrHmd_GetSensorState(ovrHmd, double)</code><br>
    * <i>native declaration : OVR_CAPI.h:766</i>
    */
-  com.oculusvr.capi.SensorState.ByValue ovrHmd_GetSensorState(OvrLibrary.ovrHmd hmd, double absTime);
+  com.oculusvr.capi.SensorState.ByValue ovrHmd_GetSensorState(OvrLibrary.Hmd hmd, double absTime);
 
   /**
    * Only valid after StartSensor.<br>
@@ -312,7 +312,7 @@ public interface OvrLibrary extends Library {
    * <code>ovrBool ovrHmd_GetSensorDesc(ovrHmd, ovrSensorDesc*)</code><br>
    * <i>native declaration : OVR_CAPI.h:770</i>
    */
-  byte ovrHmd_GetSensorDesc(OvrLibrary.ovrHmd hmd, SensorDesc descOut);
+  byte ovrHmd_GetSensorDesc(OvrLibrary.Hmd hmd, SensorDesc descOut);
 
   /**
    * Fills in description about HMD; this is the same as filled in by
@@ -320,7 +320,7 @@ public interface OvrLibrary extends Library {
    * Original signature : <code>void ovrHmd_GetDesc(ovrHmd, ovrHmdDesc*)</code><br>
    * <i>native declaration : OVR_CAPI.h:777</i>
    */
-  void ovrHmd_GetDesc(OvrLibrary.ovrHmd hmd, HmdDesc desc);
+  void ovrHmd_GetDesc(OvrLibrary.Hmd hmd, HmdDesc desc);
 
   /**
    * can improve performance.<br>
@@ -329,7 +329,7 @@ public interface OvrLibrary extends Library {
    * <br>
    * <i>native declaration : OVR_CAPI.h:784</i>
    */
-  com.oculusvr.capi.OvrSizei.ByValue ovrHmd_GetFovTextureSize(OvrLibrary.ovrHmd hmd, int eye, FovPort.ByValue fov,
+  com.oculusvr.capi.OvrSizei.ByValue ovrHmd_GetFovTextureSize(OvrLibrary.Hmd hmd, int eye, FovPort.ByValue fov,
       float pixelsPerDisplayPixel);
 
   /**
@@ -338,7 +338,7 @@ public interface OvrLibrary extends Library {
    * <br>
    * <i>native declaration : OVR_CAPI.h:826</i>
    */
-  byte ovrHmd_ConfigureRendering(OvrLibrary.ovrHmd hmd, RenderAPIConfig apiConfig, int distortionCaps,
+  byte ovrHmd_ConfigureRendering(OvrLibrary.Hmd hmd, RenderAPIConfig apiConfig, int distortionCaps,
       FovPort eyeFovIn[], EyeRenderDesc eyeRenderDescOut[]);
 
   /**
@@ -356,7 +356,7 @@ public interface OvrLibrary extends Library {
    * <code>ovrFrameTiming ovrHmd_BeginFrame(ovrHmd, unsigned int)</code><br>
    * <i>native declaration : OVR_CAPI.h:837</i>
    */
-  com.oculusvr.capi.FrameTiming.ByValue ovrHmd_BeginFrame(OvrLibrary.ovrHmd hmd, int frameIndex);
+  com.oculusvr.capi.FrameTiming.ByValue ovrHmd_BeginFrame(OvrLibrary.Hmd hmd, int frameIndex);
 
   /**
    * *** This Function will to Present/SwapBuffers and potentially wait for GPU
@@ -364,7 +364,7 @@ public interface OvrLibrary extends Library {
    * Original signature : <code>void ovrHmd_EndFrame(ovrHmd)</code><br>
    * <i>native declaration : OVR_CAPI.h:843</i>
    */
-  void ovrHmd_EndFrame(OvrLibrary.ovrHmd hmd);
+  void ovrHmd_EndFrame(OvrLibrary.Hmd hmd);
 
   /**
    * HmdDesc.EyeRenderOrder[0] first.<br>
@@ -372,7 +372,7 @@ public interface OvrLibrary extends Library {
    * <code>ovrPosef ovrHmd_BeginEyeRender(ovrHmd, ovrEyeType)</code><br>
    * <i>native declaration : OVR_CAPI.h:853</i>
    */
-  com.oculusvr.capi.Posef.ByValue ovrHmd_BeginEyeRender(OvrLibrary.ovrHmd hmd, int eye);
+  com.oculusvr.capi.Posef.ByValue ovrHmd_BeginEyeRender(OvrLibrary.Hmd hmd, int eye);
 
   /**
    * be different if a different pose was used for rendering.<br>
@@ -381,7 +381,7 @@ public interface OvrLibrary extends Library {
    * <br>
    * <i>native declaration : OVR_CAPI.h:861</i>
    */
-  void ovrHmd_EndEyeRender(OvrLibrary.ovrHmd hmd, int eye, com.oculusvr.capi.Posef.ByValue renderPose,
+  void ovrHmd_EndEyeRender(OvrLibrary.Hmd hmd, int eye, com.oculusvr.capi.Posef.ByValue renderPose,
       Texture eyeTexture);
 
   /**
@@ -391,7 +391,7 @@ public interface OvrLibrary extends Library {
    * <br>
    * <i>native declaration : OVR_CAPI.h:888</i>
    */
-  EyeRenderDesc.ByValue ovrHmd_GetRenderDesc(OvrLibrary.ovrHmd hmd, int eyeType, FovPort.ByValue fov);
+  EyeRenderDesc.ByValue ovrHmd_GetRenderDesc(OvrLibrary.Hmd hmd, int eyeType, FovPort.ByValue fov);
 
   /**
    * ovrDistortionMesh values will be set to null.<br>
@@ -400,7 +400,7 @@ public interface OvrLibrary extends Library {
    * <br>
    * <i>native declaration : OVR_CAPI.h:924</i>
    */
-  byte ovrHmd_CreateDistortionMesh(OvrLibrary.ovrHmd hmd, int eyeType, FovPort.ByValue fov, int distortionCaps,
+  byte ovrHmd_CreateDistortionMesh(OvrLibrary.Hmd hmd, int eyeType, FovPort.ByValue fov, int distortionCaps,
       DistortionMesh meshData);
 
   /**
@@ -428,7 +428,7 @@ public interface OvrLibrary extends Library {
    * <code>ovrFrameTiming ovrHmd_GetFrameTiming(ovrHmd, unsigned int)</code><br>
    * <i>native declaration : OVR_CAPI.h:942</i>
    */
-  com.oculusvr.capi.FrameTiming.ByValue ovrHmd_GetFrameTiming(OvrLibrary.ovrHmd hmd, int frameIndex);
+  com.oculusvr.capi.FrameTiming.ByValue ovrHmd_GetFrameTiming(OvrLibrary.Hmd hmd, int frameIndex);
 
   /**
    * pass the same frame index as was used for GetFrameTiming on the main
@@ -437,14 +437,14 @@ public interface OvrLibrary extends Library {
    * <code>ovrFrameTiming ovrHmd_BeginFrameTiming(ovrHmd, unsigned int)</code><br>
    * <i>native declaration : OVR_CAPI.h:947</i>
    */
-  com.oculusvr.capi.FrameTiming.ByValue ovrHmd_BeginFrameTiming(OvrLibrary.ovrHmd hmd, int frameIndex);
+  com.oculusvr.capi.FrameTiming.ByValue ovrHmd_BeginFrameTiming(OvrLibrary.Hmd hmd, int frameIndex);
 
   /**
    * before this call to reduce latency and ensure proper timing.<br>
    * Original signature : <code>void ovrHmd_EndFrameTiming(ovrHmd)</code><br>
    * <i>native declaration : OVR_CAPI.h:952</i>
    */
-  void ovrHmd_EndFrameTiming(OvrLibrary.ovrHmd hmd);
+  void ovrHmd_EndFrameTiming(OvrLibrary.Hmd hmd);
 
   /**
    * isn't called. Resets internal frame index to the specified number.<br>
@@ -452,7 +452,7 @@ public interface OvrLibrary extends Library {
    * <code>void ovrHmd_ResetFrameTiming(ovrHmd, unsigned int)</code><br>
    * <i>native declaration : OVR_CAPI.h:957</i>
    */
-  void ovrHmd_ResetFrameTiming(OvrLibrary.ovrHmd hmd, int frameIndex);
+  void ovrHmd_ResetFrameTiming(OvrLibrary.Hmd hmd, int frameIndex);
 
   /**
    * Must be called between ovrHmd_BeginFrameTiming & ovrHmd_EndFrameTiming.<br>
@@ -460,7 +460,7 @@ public interface OvrLibrary extends Library {
    * <code>ovrPosef ovrHmd_GetEyePose(ovrHmd, ovrEyeType)</code><br>
    * <i>native declaration : OVR_CAPI.h:962</i>
    */
-  com.oculusvr.capi.Posef.ByValue ovrHmd_GetEyePose(OvrLibrary.ovrHmd hmd, int eye);
+  com.oculusvr.capi.Posef.ByValue ovrHmd_GetEyePose(OvrLibrary.Hmd hmd, int eye);
 
   /**
    * Must be called on the same thread as ovrHmd_BeginFrameTiming.<br>
@@ -469,7 +469,7 @@ public interface OvrLibrary extends Library {
    * <br>
    * <i>native declaration : OVR_CAPI.h:969</i>
    */
-  void ovrHmd_GetEyeTimewarpMatrices(OvrLibrary.ovrHmd hmd, int eye, com.oculusvr.capi.Posef.ByValue renderPose,
+  void ovrHmd_GetEyeTimewarpMatrices(OvrLibrary.Hmd hmd, int eye, com.oculusvr.capi.Posef.ByValue renderPose,
       OvrMatrix4f twmOut[]);
 
   /**
@@ -521,14 +521,14 @@ public interface OvrLibrary extends Library {
    * <code>ovrBool ovrHmd_ProcessLatencyTest(ovrHmd, unsigned char[3])</code><br>
    * <i>native declaration : OVR_CAPI.h:1001</i>
    */
-  byte ovrHmd_ProcessLatencyTest(OvrLibrary.ovrHmd hmd, ByteBuffer rgbColorOut);
+  byte ovrHmd_ProcessLatencyTest(OvrLibrary.Hmd hmd, ByteBuffer rgbColorOut);
 
   /**
    * Buffer is valid until next call.<br>
    * Original signature : <code>char* ovrHmd_GetLatencyTestResult(ovrHmd)</code><br>
    * <i>native declaration : OVR_CAPI.h:1005</i>
    */
-  Pointer ovrHmd_GetLatencyTestResult(OvrLibrary.ovrHmd hmd);
+  Pointer ovrHmd_GetLatencyTestResult(OvrLibrary.Hmd hmd);
 
   /**
    * pixel-read back method (-1 for invalid or N/A)<br>
@@ -536,7 +536,7 @@ public interface OvrLibrary extends Library {
    * <code>double ovrHmd_GetMeasuredLatencyTest2(ovrHmd)</code><br>
    * <i>native declaration : OVR_CAPI.h:1009</i>
    */
-  double ovrHmd_GetMeasuredLatencyTest2(OvrLibrary.ovrHmd hmd);
+  double ovrHmd_GetMeasuredLatencyTest2(OvrLibrary.Hmd hmd);
 
   /**
    * Returns defaultValue if property doesn't exist.<br>
@@ -544,7 +544,7 @@ public interface OvrLibrary extends Library {
    * <code>float ovrHmd_GetFloat(ovrHmd, const char*, float)</code><br>
    * <i>native declaration : OVR_CAPI.h:1045</i>
    */
-  float ovrHmd_GetFloat(OvrLibrary.ovrHmd hmd, String propertyName, float defaultVal);
+  float ovrHmd_GetFloat(OvrLibrary.Hmd hmd, String propertyName, float defaultVal);
 
   /**
    * Modify float property; false if property doesn't exist or is readonly.<br>
@@ -552,7 +552,7 @@ public interface OvrLibrary extends Library {
    * <code>ovrBool ovrHmd_SetFloat(ovrHmd, const char*, float)</code><br>
    * <i>native declaration : OVR_CAPI.h:1048</i>
    */
-  byte ovrHmd_SetFloat(OvrLibrary.ovrHmd hmd, String propertyName, float value);
+  byte ovrHmd_SetFloat(OvrLibrary.Hmd hmd, String propertyName, float value);
 
   /**
    * Maximum of arraySize elements will be written.<br>
@@ -561,7 +561,7 @@ public interface OvrLibrary extends Library {
    * <br>
    * <i>native declaration : OVR_CAPI.h:1053</i>
    */
-  int ovrHmd_GetFloatArray(OvrLibrary.ovrHmd hmd, String propertyName, FloatBuffer values, int arraySize);
+  int ovrHmd_GetFloatArray(OvrLibrary.Hmd hmd, String propertyName, FloatBuffer values, int arraySize);
 
   /**
    * Modify float[] property; false if property doesn't exist or is readonly.<br>
@@ -570,7 +570,7 @@ public interface OvrLibrary extends Library {
    * <br>
    * <i>native declaration : OVR_CAPI.h:1057</i>
    */
-  byte ovrHmd_SetFloatArray(OvrLibrary.ovrHmd hmd, String propertyName, FloatBuffer values, int arraySize);
+  byte ovrHmd_SetFloatArray(OvrLibrary.Hmd hmd, String propertyName, FloatBuffer values, int arraySize);
 
   /**
    * String memory is guaranteed to exist until next call to GetString or
@@ -579,7 +579,7 @@ public interface OvrLibrary extends Library {
    * <code>char* ovrHmd_GetString(ovrHmd, const char*, const char*)</code><br>
    * <i>native declaration : OVR_CAPI.h:1063</i>
    */
-  Pointer ovrHmd_GetString(OvrLibrary.ovrHmd hmd, String propertyName, String defaultVal);
+  Pointer ovrHmd_GetString(OvrLibrary.Hmd hmd, String propertyName, String defaultVal);
 
   /**
    * Can be used to check existence of a property.<br>
@@ -587,22 +587,22 @@ public interface OvrLibrary extends Library {
    * <code>int ovrHmd_GetArraySize(ovrHmd, const char*)</code><br>
    * <i>native declaration : OVR_CAPI.h:1068</i>
    */
-  int ovrHmd_GetArraySize(OvrLibrary.ovrHmd hmd, String propertyName);
+  int ovrHmd_GetArraySize(OvrLibrary.Hmd hmd, String propertyName);
 
-  public static class ovrHmd extends PointerType {
-    public ovrHmd(Pointer address) {
+  public static class Hmd extends PointerType {
+    public Hmd(Pointer address) {
       super(address);
     }
 
-    public ovrHmd() {
+    public Hmd() {
       super();
     }
 
-    public static OvrLibrary.ovrHmd create(int index) {
+    public static OvrLibrary.Hmd create(int index) {
       return INSTANCE.ovrHmd_Create(index);
     }
 
-    public static OvrLibrary.ovrHmd createDebug(int type) {
+    public static OvrLibrary.Hmd createDebug(int type) {
       return INSTANCE.ovrHmd_CreateDebug(type);
     }
 
@@ -741,6 +741,10 @@ public interface OvrLibrary extends Library {
     public int getArraySize(String propertyName) {
       return INSTANCE.ovrHmd_GetArraySize(this, propertyName);
     }
-
   };
+  
+  @Deprecated
+  public static class ovrHmd extends Hmd {
+    
+  }
 }

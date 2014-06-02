@@ -3,7 +3,7 @@ package com.oculusvr.capi;
 import java.util.Arrays;
 import java.util.List;
 
-import com.oculusvr.capi.OvrLibrary.ovrHmd;
+import com.oculusvr.capi.OvrLibrary.Hmd;
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 
@@ -24,7 +24,7 @@ public class HmdDesc extends Structure {
    * Handle of this HMD.<br>
    * C type : ovrHmd
    */
-  public ovrHmd Handle;
+  public Hmd Handle;
   /**
    * @see ovrHmdType<br>
    *      C type : ovrHmdType

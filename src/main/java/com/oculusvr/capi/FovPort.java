@@ -50,6 +50,8 @@ public class FovPort extends Structure {
   };
 
   public static class ByValue extends FovPort implements Structure.ByValue {
-
+    public ByValue(FovPort fovPort) {
+      super(fovPort.UpTan, fovPort.DownTan, fovPort.LeftTan, fovPort.RightTan);
+    }
   };
 }
