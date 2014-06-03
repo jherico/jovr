@@ -51,6 +51,12 @@ public class OvrMatrix4f extends Structure {
   };
 
   public static class ByValue extends OvrMatrix4f implements Structure.ByValue {
+    public ByValue() {
+    }
+
+    public ByValue(OvrMatrix4f m) {
+      super(m.M);
+    }
 
   };
 }

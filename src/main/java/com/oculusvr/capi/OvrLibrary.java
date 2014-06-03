@@ -304,7 +304,7 @@ public interface OvrLibrary extends Library {
    * <code>ovrSensorState ovrHmd_GetSensorState(ovrHmd, double)</code><br>
    * <i>native declaration : OVR_CAPI.h:766</i>
    */
-  com.oculusvr.capi.SensorState.ByValue ovrHmd_GetSensorState(OvrLibrary.Hmd hmd, double absTime);
+  SensorState.ByValue ovrHmd_GetSensorState(OvrLibrary.Hmd hmd, double absTime);
 
   /**
    * Only valid after StartSensor.<br>
@@ -329,7 +329,7 @@ public interface OvrLibrary extends Library {
    * <br>
    * <i>native declaration : OVR_CAPI.h:784</i>
    */
-  com.oculusvr.capi.OvrSizei.ByValue ovrHmd_GetFovTextureSize(OvrLibrary.Hmd hmd, int eye, FovPort.ByValue fov,
+  OvrSizei.ByValue ovrHmd_GetFovTextureSize(OvrLibrary.Hmd hmd, int eye, FovPort.ByValue fov,
       float pixelsPerDisplayPixel);
 
   /**
@@ -338,8 +338,8 @@ public interface OvrLibrary extends Library {
    * <br>
    * <i>native declaration : OVR_CAPI.h:826</i>
    */
-  byte ovrHmd_ConfigureRendering(OvrLibrary.Hmd hmd, RenderAPIConfig apiConfig, int distortionCaps,
-      FovPort eyeFovIn[], EyeRenderDesc eyeRenderDescOut[]);
+  byte ovrHmd_ConfigureRendering(OvrLibrary.Hmd hmd, RenderAPIConfig apiConfig, int distortionCaps, FovPort eyeFovIn[],
+      EyeRenderDesc eyeRenderDescOut[]);
 
   /**
    * Original signature :
@@ -356,7 +356,7 @@ public interface OvrLibrary extends Library {
    * <code>ovrFrameTiming ovrHmd_BeginFrame(ovrHmd, unsigned int)</code><br>
    * <i>native declaration : OVR_CAPI.h:837</i>
    */
-  com.oculusvr.capi.FrameTiming.ByValue ovrHmd_BeginFrame(OvrLibrary.Hmd hmd, int frameIndex);
+  FrameTiming.ByValue ovrHmd_BeginFrame(OvrLibrary.Hmd hmd, int frameIndex);
 
   /**
    * *** This Function will to Present/SwapBuffers and potentially wait for GPU
@@ -372,7 +372,7 @@ public interface OvrLibrary extends Library {
    * <code>ovrPosef ovrHmd_BeginEyeRender(ovrHmd, ovrEyeType)</code><br>
    * <i>native declaration : OVR_CAPI.h:853</i>
    */
-  com.oculusvr.capi.Posef.ByValue ovrHmd_BeginEyeRender(OvrLibrary.Hmd hmd, int eye);
+  Posef.ByValue ovrHmd_BeginEyeRender(OvrLibrary.Hmd hmd, int eye);
 
   /**
    * be different if a different pose was used for rendering.<br>
@@ -381,8 +381,7 @@ public interface OvrLibrary extends Library {
    * <br>
    * <i>native declaration : OVR_CAPI.h:861</i>
    */
-  void ovrHmd_EndEyeRender(OvrLibrary.Hmd hmd, int eye, com.oculusvr.capi.Posef.ByValue renderPose,
-      Texture eyeTexture);
+  void ovrHmd_EndEyeRender(OvrLibrary.Hmd hmd, int eye, Posef.ByValue renderPose, Texture eyeTexture);
 
   /**
    * the game side.<br>
@@ -419,8 +418,8 @@ public interface OvrLibrary extends Library {
    * <br>
    * <i>native declaration : OVR_CAPI.h:935</i>
    */
-  void ovrHmd_GetRenderScaleAndOffset(FovPort.ByValue fov, com.oculusvr.capi.OvrSizei.ByValue textureSize,
-      com.oculusvr.capi.OvrRecti.ByValue renderViewport, OvrVector2f uvScaleOffsetOut[]);
+  void ovrHmd_GetRenderScaleAndOffset(FovPort.ByValue fov, OvrSizei.ByValue textureSize,
+      OvrRecti.ByValue renderViewport, OvrVector2f uvScaleOffsetOut[]);
 
   /**
    * with every frame and pass the index to RenderThread for processing.<br>
@@ -428,7 +427,7 @@ public interface OvrLibrary extends Library {
    * <code>ovrFrameTiming ovrHmd_GetFrameTiming(ovrHmd, unsigned int)</code><br>
    * <i>native declaration : OVR_CAPI.h:942</i>
    */
-  com.oculusvr.capi.FrameTiming.ByValue ovrHmd_GetFrameTiming(OvrLibrary.Hmd hmd, int frameIndex);
+  FrameTiming.ByValue ovrHmd_GetFrameTiming(OvrLibrary.Hmd hmd, int frameIndex);
 
   /**
    * pass the same frame index as was used for GetFrameTiming on the main
@@ -437,7 +436,7 @@ public interface OvrLibrary extends Library {
    * <code>ovrFrameTiming ovrHmd_BeginFrameTiming(ovrHmd, unsigned int)</code><br>
    * <i>native declaration : OVR_CAPI.h:947</i>
    */
-  com.oculusvr.capi.FrameTiming.ByValue ovrHmd_BeginFrameTiming(OvrLibrary.Hmd hmd, int frameIndex);
+  FrameTiming.ByValue ovrHmd_BeginFrameTiming(OvrLibrary.Hmd hmd, int frameIndex);
 
   /**
    * before this call to reduce latency and ensure proper timing.<br>
@@ -460,7 +459,7 @@ public interface OvrLibrary extends Library {
    * <code>ovrPosef ovrHmd_GetEyePose(ovrHmd, ovrEyeType)</code><br>
    * <i>native declaration : OVR_CAPI.h:962</i>
    */
-  com.oculusvr.capi.Posef.ByValue ovrHmd_GetEyePose(OvrLibrary.Hmd hmd, int eye);
+  Posef.ByValue ovrHmd_GetEyePose(OvrLibrary.Hmd hmd, int eye);
 
   /**
    * Must be called on the same thread as ovrHmd_BeginFrameTiming.<br>
@@ -469,7 +468,7 @@ public interface OvrLibrary extends Library {
    * <br>
    * <i>native declaration : OVR_CAPI.h:969</i>
    */
-  void ovrHmd_GetEyeTimewarpMatrices(OvrLibrary.Hmd hmd, int eye, com.oculusvr.capi.Posef.ByValue renderPose,
+  void ovrHmd_GetEyeTimewarpMatrices(OvrLibrary.Hmd hmd, int eye, Posef.ByValue renderPose,
       OvrMatrix4f twmOut[]);
 
   /**
@@ -479,7 +478,7 @@ public interface OvrLibrary extends Library {
    * <br>
    * <i>native declaration : OVR_CAPI.h:969</i>
    */
-  void ovrHmd_GetEyeTimewarpMatrices(Pointer hmd, int eye, com.oculusvr.capi.Posef.ByValue renderPose,
+  void ovrHmd_GetEyeTimewarpMatrices(Pointer hmd, int eye, Posef.ByValue renderPose,
       OvrMatrix4f twmOut[]);
 
   /**
@@ -590,6 +589,37 @@ public interface OvrLibrary extends Library {
   int ovrHmd_GetArraySize(OvrLibrary.Hmd hmd, String propertyName);
 
   public static class Hmd extends PointerType {
+    boolean inFrame = false;
+    int currentEye = -1;
+
+    static public FovPort.ByValue fromFovPort(FovPort fov) {
+      if (fov instanceof FovPort.ByValue) {
+        return (FovPort.ByValue) fov;
+      }
+      return new FovPort.ByValue(fov);
+    }
+
+    static public Posef.ByValue fromPose(Posef pose) {
+      if (pose instanceof Posef.ByValue) {
+        return (Posef.ByValue) pose;
+      }
+      return new Posef.ByValue(pose);
+    }
+
+    static public OvrMatrix4f.ByValue fromMatrix(OvrMatrix4f m) {
+      if (m instanceof OvrMatrix4f.ByValue) {
+        return (OvrMatrix4f.ByValue) m;
+      }
+      return new OvrMatrix4f.ByValue(m);
+    }
+
+    static public OvrVector2f.ByValue fromVector(OvrVector2f v) {
+      if (v instanceof OvrVector2f.ByValue) {
+        return (OvrVector2f.ByValue) v;
+      }
+      return new OvrVector2f.ByValue(v);
+    }
+
     public Hmd(Pointer address) {
       super(address);
     }
@@ -634,12 +664,16 @@ public interface OvrLibrary extends Library {
       INSTANCE.ovrHmd_ResetSensor(this);
     }
 
-    public com.oculusvr.capi.SensorState.ByValue getSensorState(double absTime) {
+    public SensorState getSensorState(double absTime) {
       return INSTANCE.ovrHmd_GetSensorState(this, absTime);
     }
 
-    public byte getSensorDesc(SensorDesc descOut) {
-      return INSTANCE.ovrHmd_GetSensorDesc(this, descOut);
+    public SensorDesc getSensorDesc() {
+      SensorDesc descOut = new SensorDesc();
+      if (0 == INSTANCE.ovrHmd_GetSensorDesc(this, descOut)) {
+        throw new IllegalStateException("Unable to fetch sensor description");
+      }
+      return descOut;
     }
 
     public HmdDesc getDesc() {
@@ -648,17 +682,27 @@ public interface OvrLibrary extends Library {
       return desc;
     }
 
-    public com.oculusvr.capi.OvrSizei.ByValue getFovTextureSize(int eye, FovPort.ByValue fov,
-        float pixelsPerDisplayPixel) {
-      return INSTANCE.ovrHmd_GetFovTextureSize(this, eye, fov, pixelsPerDisplayPixel);
+    public OvrSizei getFovTextureSize(int eye, FovPort fov, float pixelsPerDisplayPixel) {
+      return INSTANCE.ovrHmd_GetFovTextureSize(this, eye, fromFovPort(fov), pixelsPerDisplayPixel);
     }
 
-    public byte configureRendering(RenderAPIConfig apiConfig, int distortionCaps, FovPort eyeFovIn[],
-        EyeRenderDesc eyeRenderDescOut[]) {
-      return INSTANCE.ovrHmd_ConfigureRendering(this, apiConfig, distortionCaps, eyeFovIn, eyeRenderDescOut);
+    public EyeRenderDesc[] configureRendering(RenderAPIConfig apiConfig, int distortionCaps, FovPort eyeFovIn[]) {
+      Pointer first = eyeFovIn[0].getPointer();
+      int size = eyeFovIn[0].size();
+      Pointer secondCalc = first.getPointer(size);
+      Pointer secondActual = eyeFovIn[1].getPointer().getPointer(0);
+      if (!secondCalc.equals(secondActual)) {
+        throw new IllegalStateException(
+            "eyeFovIn must be a contiguous array in memory.  Use new FovPort().toArray(2) to create it");
+      }
+      EyeRenderDesc eyeRenderDescs[] = (EyeRenderDesc[]) new EyeRenderDesc().toArray(2);
+      if (0 == INSTANCE.ovrHmd_ConfigureRendering(this, apiConfig, distortionCaps, eyeFovIn, eyeRenderDescs)) {
+        throw new IllegalStateException("Unable to configure rendering");
+      }
+      return eyeRenderDescs;
     }
 
-    public com.oculusvr.capi.FrameTiming.ByValue beginFrame(int frameIndex) {
+    public FrameTiming beginFrame(int frameIndex) {
       return INSTANCE.ovrHmd_BeginFrame(this, frameIndex);
     }
 
@@ -666,27 +710,31 @@ public interface OvrLibrary extends Library {
       INSTANCE.ovrHmd_EndFrame(this);
     }
 
-    public com.oculusvr.capi.Posef.ByValue beginEyeRender(int eye) {
+    public Posef beginEyeRender(int eye) {
       return INSTANCE.ovrHmd_BeginEyeRender(this, eye);
     }
 
-    public void endEyeRender(int eye, com.oculusvr.capi.Posef.ByValue renderPose, Texture eyeTexture) {
-      INSTANCE.ovrHmd_EndEyeRender(this, eye, renderPose, eyeTexture);
+    public void endEyeRender(int eye, Posef renderPose, Texture eyeTexture) {
+      INSTANCE.ovrHmd_EndEyeRender(this, eye, fromPose(renderPose), eyeTexture);
     }
 
-    public EyeRenderDesc.ByValue getRenderDesc(int eyeType, FovPort.ByValue fov) {
-      return INSTANCE.ovrHmd_GetRenderDesc(this, eyeType, fov);
+    public EyeRenderDesc getRenderDesc(int eyeType, FovPort fov) {
+      return INSTANCE.ovrHmd_GetRenderDesc(this, eyeType, fromFovPort(fov));
     }
 
-    public byte createDistortionMesh(int eyeType, FovPort.ByValue fov, int distortionCaps, DistortionMesh meshData) {
-      return INSTANCE.ovrHmd_CreateDistortionMesh(this, eyeType, fov, distortionCaps, meshData);
+    public DistortionMesh createDistortionMesh(int eyeType, FovPort fov, int distortionCaps) {
+      DistortionMesh meshData = new DistortionMesh();
+      if (0 == INSTANCE.ovrHmd_CreateDistortionMesh(this, eyeType, fromFovPort(fov), distortionCaps, meshData)) {
+        throw new IllegalStateException("Unable to create distortion mesh");
+      }
+      return meshData;
     }
 
-    public com.oculusvr.capi.FrameTiming.ByValue getFrameTiming(int frameIndex) {
+    public FrameTiming getFrameTiming(int frameIndex) {
       return INSTANCE.ovrHmd_GetFrameTiming(this, frameIndex);
     }
 
-    public com.oculusvr.capi.FrameTiming.ByValue beginFrameTiming(int frameIndex) {
+    public FrameTiming beginFrameTiming(int frameIndex) {
       return INSTANCE.ovrHmd_BeginFrameTiming(this, frameIndex);
     }
 
@@ -698,12 +746,12 @@ public interface OvrLibrary extends Library {
       INSTANCE.ovrHmd_ResetFrameTiming(this, frameIndex);
     }
 
-    public com.oculusvr.capi.Posef.ByValue getEyePose(int eye) {
+    public Posef getEyePose(int eye) {
       return INSTANCE.ovrHmd_GetEyePose(this, eye);
     }
 
-    public void getEyeTimewarpMatrices(int eye, com.oculusvr.capi.Posef.ByValue renderPose, OvrMatrix4f twmOut[]) {
-      INSTANCE.ovrHmd_GetEyeTimewarpMatrices(this, eye, renderPose, twmOut);
+    public void getEyeTimewarpMatrices(int eye, Posef renderPose, OvrMatrix4f twmOut[]) {
+      INSTANCE.ovrHmd_GetEyeTimewarpMatrices(this, eye, fromPose(renderPose), twmOut);
     }
 
     public byte processLatencyTest(ByteBuffer rgbColorOut) {
@@ -726,6 +774,27 @@ public interface OvrLibrary extends Library {
       return INSTANCE.ovrHmd_SetFloat(this, propertyName, value);
     }
 
+    public float[] getFloatArray(String propertyName) {
+      int arraySize = getArraySize(propertyName);
+      if (0 == arraySize) {
+        return null;
+      }
+      return getFloatArray(propertyName, arraySize);
+    }
+
+    public float[] getFloatArray(String propertyName, int arraySize) {
+      FloatBuffer buffer = FloatBuffer.allocate(arraySize);
+      int result = INSTANCE.ovrHmd_GetFloatArray(this, propertyName, buffer, arraySize);
+      if (0 == result) {
+        return null;
+      }
+      return buffer.array();
+    }
+
+    public byte setFloatArray(String propertyName, float[] values) {
+      return setFloatArray(propertyName, FloatBuffer.wrap(values), values.length);
+    }
+
     public int getFloatArray(String propertyName, FloatBuffer values, int arraySize) {
       return INSTANCE.ovrHmd_GetFloatArray(this, propertyName, values, arraySize);
     }
@@ -741,10 +810,24 @@ public interface OvrLibrary extends Library {
     public int getArraySize(String propertyName) {
       return INSTANCE.ovrHmd_GetArraySize(this, propertyName);
     }
+
+    public static OvrMatrix4f getPerspectiveProjection(FovPort fov, float znear, float zfar, boolean rightHanded) {
+      return INSTANCE.ovrMatrix4f_Projection(fromFovPort(fov), znear, zfar, (byte) (rightHanded ? 1 : 0));
+    }
+
+    public static OvrMatrix4f getOrthographicProjection(OvrMatrix4f projection, OvrVector2f orthoScale,
+        float orthoDistance, float eyeViewAdjustX) {
+      return INSTANCE.ovrMatrix4f_OrthoSubProjection(fromMatrix(projection), fromVector(orthoScale), orthoDistance,
+          eyeViewAdjustX);
+    }
+
+    public static double getTimeInSeconds() {
+      return INSTANCE.ovr_GetTimeInSeconds();
+    }
+
+    public static void waitTillTime(double absTime) {
+      INSTANCE.ovr_WaitTillTime(absTime);
+    }
   };
-  
-  @Deprecated
-  public static class ovrHmd extends Hmd {
-    
-  }
+
 }
