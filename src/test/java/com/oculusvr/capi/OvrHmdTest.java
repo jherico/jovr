@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import com.oculusvr.capi.OvrLibrary.ovrEyeType;
 
-public class OvrHmdTests extends OvrBaseHmdTest {
+public class OvrHmdTest extends OvrBaseHmdTest {
 
   @Test
   public void testGetDesc() {
@@ -15,10 +15,15 @@ public class OvrHmdTests extends OvrBaseHmdTest {
   }
 
   @Test
-  public void testGet() {
+  public void testDistortionMesh() {
     HmdDesc desc = hmd.getDesc();
     DistortionMesh mesh = hmd.createDistortionMesh(ovrEyeType.ovrEye_Left, desc.DefaultEyeFov[ovrEyeType.ovrEye_Left], 0);
     assertNotNull(mesh);
   }
 
+//  @SuppressWarnings("unused")
+//  @Test
+//  public void testGet() {
+//    hmd.beginFrame(0);
+//  }
 }

@@ -23,7 +23,7 @@ public class TextureHeader extends Structure {
    * @see ovrRenderAPIType<br>
    *      C type : ovrRenderAPIType
    */
-  public int API;
+  public int API = OvrLibrary.ovrRenderAPIType.ovrRenderAPI_OpenGL;;
   /** C type : ovrSizei */
   public OvrSizei TextureSize;
   /**
@@ -51,9 +51,8 @@ public class TextureHeader extends Structure {
    *          Pixel viewport in texture that holds eye image.<br>
    *          C type : ovrRecti
    */
-  public TextureHeader(int API, OvrSizei TextureSize, OvrRecti RenderViewport) {
+  public TextureHeader(OvrSizei TextureSize, OvrRecti RenderViewport) {
     super();
-    this.API = API;
     this.TextureSize = TextureSize;
     this.RenderViewport = RenderViewport;
   }

@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.oculusvr.capi.OvrLibrary.Hmd;
 import com.oculusvr.capi.OvrLibrary.ovrHmdType;
 
 public class OvrLibraryTest extends OvrBaseTest {

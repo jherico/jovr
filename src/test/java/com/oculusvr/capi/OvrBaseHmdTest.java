@@ -3,9 +3,6 @@ package com.oculusvr.capi;
 import org.junit.After;
 import org.junit.Before;
 
-import com.oculusvr.capi.OvrLibrary.Hmd;
-import com.oculusvr.capi.OvrLibrary.ovrHmdType;
-
 public abstract class OvrBaseHmdTest extends OvrBaseTest {
 
   protected Hmd hmd;
@@ -14,7 +11,8 @@ public abstract class OvrBaseHmdTest extends OvrBaseTest {
   @Override
   public void setup() {
     super.setup();
-    hmd = Hmd.createDebug(ovrHmdType.ovrHmd_DK2);
+    hmd = Hmd.create(0); 
+//    hmd = Hmd.createDebug(ovrHmdType.ovrHmd_DK2);
     assert(null != hmd);
   }
 

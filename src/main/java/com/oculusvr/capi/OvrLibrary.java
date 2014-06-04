@@ -7,7 +7,6 @@ import com.sun.jna.Library;
 import com.sun.jna.Native;
 import com.sun.jna.NativeLibrary;
 import com.sun.jna.Pointer;
-import com.sun.jna.PointerType;
 
 /**
  * JNA Wrapper for library <b>com.oculusvr.capi</b><br>
@@ -238,34 +237,34 @@ public interface OvrLibrary extends Library {
    * Original signature : <code>ovrHmd ovrHmd_Create(int)</code><br>
    * <i>native declaration : OVR_CAPI.h:715</i>
    */
-  OvrLibrary.Hmd ovrHmd_Create(int index);
+  Hmd ovrHmd_Create(int index);
 
   /**
    * Original signature : <code>void ovrHmd_Destroy(ovrHmd)</code><br>
    * <i>native declaration : OVR_CAPI.h:716</i>
    */
-  void ovrHmd_Destroy(OvrLibrary.Hmd hmd);
+  void ovrHmd_Destroy(Hmd hmd);
 
   /**
    * but may be used to debug some of the related rendering.<br>
    * Original signature : <code>ovrHmd ovrHmd_CreateDebug(ovrHmdType)</code><br>
    * <i>native declaration : OVR_CAPI.h:720</i>
    */
-  OvrLibrary.Hmd ovrHmd_CreateDebug(int type);
+  Hmd ovrHmd_CreateDebug(int type);
 
   /**
    * Pass null hmd to get global error (for create, etc).<br>
    * Original signature : <code>char* ovrHmd_GetLastError(ovrHmd)</code><br>
    * <i>native declaration : OVR_CAPI.h:726</i>
    */
-  Pointer ovrHmd_GetLastError(OvrLibrary.Hmd hmd);
+  String ovrHmd_GetLastError(Hmd hmd);
 
   /**
    * capabilities are available.<br>
    * Original signature : <code>int ovrHmd_GetEnabledCaps(ovrHmd)</code><br>
    * <i>native declaration : OVR_CAPI.h:734</i>
    */
-  int ovrHmd_GetEnabledCaps(OvrLibrary.Hmd hmd);
+  int ovrHmd_GetEnabledCaps(Hmd hmd);
 
   /**
    * such as ovrHmd_LowPersistance.<br>
@@ -273,7 +272,7 @@ public interface OvrLibrary extends Library {
    * <code>void ovrHmd_SetEnabledCaps(ovrHmd, unsigned int)</code><br>
    * <i>native declaration : OVR_CAPI.h:738</i>
    */
-  void ovrHmd_SetEnabledCaps(OvrLibrary.Hmd hmd, int hmdCaps);
+  void ovrHmd_SetEnabledCaps(Hmd hmd, int hmdCaps);
 
   /**
    * supportedSensorCaps.<br>
@@ -281,21 +280,21 @@ public interface OvrLibrary extends Library {
    * <code>ovrBool ovrHmd_StartSensor(ovrHmd, unsigned int, unsigned int)</code><br>
    * <i>native declaration : OVR_CAPI.h:754</i>
    */
-  byte ovrHmd_StartSensor(OvrLibrary.Hmd hmd, int supportedSensorCaps, int requiredSensorCaps);
+  byte ovrHmd_StartSensor(Hmd hmd, int supportedSensorCaps, int requiredSensorCaps);
 
   /**
    * Stops sensor sampling, shutting down internal resources.<br>
    * Original signature : <code>void ovrHmd_StopSensor(ovrHmd)</code><br>
    * <i>native declaration : OVR_CAPI.h:757</i>
    */
-  void ovrHmd_StopSensor(OvrLibrary.Hmd hmd);
+  void ovrHmd_StopSensor(Hmd hmd);
 
   /**
    * Resets sensor orientation.<br>
    * Original signature : <code>void ovrHmd_ResetSensor(ovrHmd)</code><br>
    * <i>native declaration : OVR_CAPI.h:759</i>
    */
-  void ovrHmd_ResetSensor(OvrLibrary.Hmd hmd);
+  void ovrHmd_ResetSensor(Hmd hmd);
 
   /**
    * This may also be used for more refined timing of FrontBuffer rendering
@@ -304,7 +303,7 @@ public interface OvrLibrary extends Library {
    * <code>ovrSensorState ovrHmd_GetSensorState(ovrHmd, double)</code><br>
    * <i>native declaration : OVR_CAPI.h:766</i>
    */
-  SensorState.ByValue ovrHmd_GetSensorState(OvrLibrary.Hmd hmd, double absTime);
+  SensorState.ByValue ovrHmd_GetSensorState(Hmd hmd, double absTime);
 
   /**
    * Only valid after StartSensor.<br>
@@ -312,7 +311,7 @@ public interface OvrLibrary extends Library {
    * <code>ovrBool ovrHmd_GetSensorDesc(ovrHmd, ovrSensorDesc*)</code><br>
    * <i>native declaration : OVR_CAPI.h:770</i>
    */
-  byte ovrHmd_GetSensorDesc(OvrLibrary.Hmd hmd, SensorDesc descOut);
+  byte ovrHmd_GetSensorDesc(Hmd hmd, SensorDesc descOut);
 
   /**
    * Fills in description about HMD; this is the same as filled in by
@@ -320,7 +319,7 @@ public interface OvrLibrary extends Library {
    * Original signature : <code>void ovrHmd_GetDesc(ovrHmd, ovrHmdDesc*)</code><br>
    * <i>native declaration : OVR_CAPI.h:777</i>
    */
-  void ovrHmd_GetDesc(OvrLibrary.Hmd hmd, HmdDesc desc);
+  void ovrHmd_GetDesc(Hmd hmd, HmdDesc desc);
 
   /**
    * can improve performance.<br>
@@ -329,7 +328,7 @@ public interface OvrLibrary extends Library {
    * <br>
    * <i>native declaration : OVR_CAPI.h:784</i>
    */
-  OvrSizei.ByValue ovrHmd_GetFovTextureSize(OvrLibrary.Hmd hmd, int eye, FovPort.ByValue fov,
+  OvrSizei.ByValue ovrHmd_GetFovTextureSize(Hmd hmd, int eye, FovPort.ByValue fov,
       float pixelsPerDisplayPixel);
 
   /**
@@ -338,7 +337,7 @@ public interface OvrLibrary extends Library {
    * <br>
    * <i>native declaration : OVR_CAPI.h:826</i>
    */
-  byte ovrHmd_ConfigureRendering(OvrLibrary.Hmd hmd, RenderAPIConfig apiConfig, int distortionCaps, FovPort eyeFovIn[],
+  byte ovrHmd_ConfigureRendering(Hmd hmd, RenderAPIConfig apiConfig, int distortionCaps, FovPort eyeFovIn[],
       EyeRenderDesc eyeRenderDescOut[]);
 
   /**
@@ -356,7 +355,7 @@ public interface OvrLibrary extends Library {
    * <code>ovrFrameTiming ovrHmd_BeginFrame(ovrHmd, unsigned int)</code><br>
    * <i>native declaration : OVR_CAPI.h:837</i>
    */
-  FrameTiming.ByValue ovrHmd_BeginFrame(OvrLibrary.Hmd hmd, int frameIndex);
+  FrameTiming.ByValue ovrHmd_BeginFrame(Hmd hmd, int frameIndex);
 
   /**
    * *** This Function will to Present/SwapBuffers and potentially wait for GPU
@@ -364,7 +363,7 @@ public interface OvrLibrary extends Library {
    * Original signature : <code>void ovrHmd_EndFrame(ovrHmd)</code><br>
    * <i>native declaration : OVR_CAPI.h:843</i>
    */
-  void ovrHmd_EndFrame(OvrLibrary.Hmd hmd);
+  void ovrHmd_EndFrame(Hmd hmd);
 
   /**
    * HmdDesc.EyeRenderOrder[0] first.<br>
@@ -372,7 +371,7 @@ public interface OvrLibrary extends Library {
    * <code>ovrPosef ovrHmd_BeginEyeRender(ovrHmd, ovrEyeType)</code><br>
    * <i>native declaration : OVR_CAPI.h:853</i>
    */
-  Posef.ByValue ovrHmd_BeginEyeRender(OvrLibrary.Hmd hmd, int eye);
+  Posef.ByValue ovrHmd_BeginEyeRender(Hmd hmd, int eye);
 
   /**
    * be different if a different pose was used for rendering.<br>
@@ -381,7 +380,7 @@ public interface OvrLibrary extends Library {
    * <br>
    * <i>native declaration : OVR_CAPI.h:861</i>
    */
-  void ovrHmd_EndEyeRender(OvrLibrary.Hmd hmd, int eye, Posef.ByValue renderPose, Texture eyeTexture);
+  void ovrHmd_EndEyeRender(Hmd hmd, int eye, Posef.ByValue renderPose, Texture eyeTexture);
 
   /**
    * the game side.<br>
@@ -390,7 +389,7 @@ public interface OvrLibrary extends Library {
    * <br>
    * <i>native declaration : OVR_CAPI.h:888</i>
    */
-  EyeRenderDesc.ByValue ovrHmd_GetRenderDesc(OvrLibrary.Hmd hmd, int eyeType, FovPort.ByValue fov);
+  EyeRenderDesc.ByValue ovrHmd_GetRenderDesc(Hmd hmd, int eyeType, FovPort.ByValue fov);
 
   /**
    * ovrDistortionMesh values will be set to null.<br>
@@ -399,7 +398,7 @@ public interface OvrLibrary extends Library {
    * <br>
    * <i>native declaration : OVR_CAPI.h:924</i>
    */
-  byte ovrHmd_CreateDistortionMesh(OvrLibrary.Hmd hmd, int eyeType, FovPort.ByValue fov, int distortionCaps,
+  byte ovrHmd_CreateDistortionMesh(Hmd hmd, int eyeType, FovPort.ByValue fov, int distortionCaps,
       DistortionMesh meshData);
 
   /**
@@ -427,7 +426,7 @@ public interface OvrLibrary extends Library {
    * <code>ovrFrameTiming ovrHmd_GetFrameTiming(ovrHmd, unsigned int)</code><br>
    * <i>native declaration : OVR_CAPI.h:942</i>
    */
-  FrameTiming.ByValue ovrHmd_GetFrameTiming(OvrLibrary.Hmd hmd, int frameIndex);
+  FrameTiming.ByValue ovrHmd_GetFrameTiming(Hmd hmd, int frameIndex);
 
   /**
    * pass the same frame index as was used for GetFrameTiming on the main
@@ -436,14 +435,14 @@ public interface OvrLibrary extends Library {
    * <code>ovrFrameTiming ovrHmd_BeginFrameTiming(ovrHmd, unsigned int)</code><br>
    * <i>native declaration : OVR_CAPI.h:947</i>
    */
-  FrameTiming.ByValue ovrHmd_BeginFrameTiming(OvrLibrary.Hmd hmd, int frameIndex);
+  FrameTiming.ByValue ovrHmd_BeginFrameTiming(Hmd hmd, int frameIndex);
 
   /**
    * before this call to reduce latency and ensure proper timing.<br>
    * Original signature : <code>void ovrHmd_EndFrameTiming(ovrHmd)</code><br>
    * <i>native declaration : OVR_CAPI.h:952</i>
    */
-  void ovrHmd_EndFrameTiming(OvrLibrary.Hmd hmd);
+  void ovrHmd_EndFrameTiming(Hmd hmd);
 
   /**
    * isn't called. Resets internal frame index to the specified number.<br>
@@ -451,7 +450,7 @@ public interface OvrLibrary extends Library {
    * <code>void ovrHmd_ResetFrameTiming(ovrHmd, unsigned int)</code><br>
    * <i>native declaration : OVR_CAPI.h:957</i>
    */
-  void ovrHmd_ResetFrameTiming(OvrLibrary.Hmd hmd, int frameIndex);
+  void ovrHmd_ResetFrameTiming(Hmd hmd, int frameIndex);
 
   /**
    * Must be called between ovrHmd_BeginFrameTiming & ovrHmd_EndFrameTiming.<br>
@@ -459,7 +458,7 @@ public interface OvrLibrary extends Library {
    * <code>ovrPosef ovrHmd_GetEyePose(ovrHmd, ovrEyeType)</code><br>
    * <i>native declaration : OVR_CAPI.h:962</i>
    */
-  Posef.ByValue ovrHmd_GetEyePose(OvrLibrary.Hmd hmd, int eye);
+  Posef.ByValue ovrHmd_GetEyePose(Hmd hmd, int eye);
 
   /**
    * Must be called on the same thread as ovrHmd_BeginFrameTiming.<br>
@@ -468,7 +467,7 @@ public interface OvrLibrary extends Library {
    * <br>
    * <i>native declaration : OVR_CAPI.h:969</i>
    */
-  void ovrHmd_GetEyeTimewarpMatrices(OvrLibrary.Hmd hmd, int eye, Posef.ByValue renderPose,
+  void ovrHmd_GetEyeTimewarpMatrices(Hmd hmd, int eye, Posef.ByValue renderPose,
       OvrMatrix4f twmOut[]);
 
   /**
@@ -520,14 +519,14 @@ public interface OvrLibrary extends Library {
    * <code>ovrBool ovrHmd_ProcessLatencyTest(ovrHmd, unsigned char[3])</code><br>
    * <i>native declaration : OVR_CAPI.h:1001</i>
    */
-  byte ovrHmd_ProcessLatencyTest(OvrLibrary.Hmd hmd, ByteBuffer rgbColorOut);
+  byte ovrHmd_ProcessLatencyTest(Hmd hmd, ByteBuffer rgbColorOut);
 
   /**
    * Buffer is valid until next call.<br>
    * Original signature : <code>char* ovrHmd_GetLatencyTestResult(ovrHmd)</code><br>
    * <i>native declaration : OVR_CAPI.h:1005</i>
    */
-  Pointer ovrHmd_GetLatencyTestResult(OvrLibrary.Hmd hmd);
+  Pointer ovrHmd_GetLatencyTestResult(Hmd hmd);
 
   /**
    * pixel-read back method (-1 for invalid or N/A)<br>
@@ -535,7 +534,7 @@ public interface OvrLibrary extends Library {
    * <code>double ovrHmd_GetMeasuredLatencyTest2(ovrHmd)</code><br>
    * <i>native declaration : OVR_CAPI.h:1009</i>
    */
-  double ovrHmd_GetMeasuredLatencyTest2(OvrLibrary.Hmd hmd);
+  double ovrHmd_GetMeasuredLatencyTest2(Hmd hmd);
 
   /**
    * Returns defaultValue if property doesn't exist.<br>
@@ -543,7 +542,7 @@ public interface OvrLibrary extends Library {
    * <code>float ovrHmd_GetFloat(ovrHmd, const char*, float)</code><br>
    * <i>native declaration : OVR_CAPI.h:1045</i>
    */
-  float ovrHmd_GetFloat(OvrLibrary.Hmd hmd, String propertyName, float defaultVal);
+  float ovrHmd_GetFloat(Hmd hmd, String propertyName, float defaultVal);
 
   /**
    * Modify float property; false if property doesn't exist or is readonly.<br>
@@ -551,7 +550,7 @@ public interface OvrLibrary extends Library {
    * <code>ovrBool ovrHmd_SetFloat(ovrHmd, const char*, float)</code><br>
    * <i>native declaration : OVR_CAPI.h:1048</i>
    */
-  byte ovrHmd_SetFloat(OvrLibrary.Hmd hmd, String propertyName, float value);
+  byte ovrHmd_SetFloat(Hmd hmd, String propertyName, float value);
 
   /**
    * Maximum of arraySize elements will be written.<br>
@@ -560,7 +559,7 @@ public interface OvrLibrary extends Library {
    * <br>
    * <i>native declaration : OVR_CAPI.h:1053</i>
    */
-  int ovrHmd_GetFloatArray(OvrLibrary.Hmd hmd, String propertyName, FloatBuffer values, int arraySize);
+  int ovrHmd_GetFloatArray(Hmd hmd, String propertyName, FloatBuffer values, int arraySize);
 
   /**
    * Modify float[] property; false if property doesn't exist or is readonly.<br>
@@ -569,7 +568,7 @@ public interface OvrLibrary extends Library {
    * <br>
    * <i>native declaration : OVR_CAPI.h:1057</i>
    */
-  byte ovrHmd_SetFloatArray(OvrLibrary.Hmd hmd, String propertyName, FloatBuffer values, int arraySize);
+  byte ovrHmd_SetFloatArray(Hmd hmd, String propertyName, FloatBuffer values, int arraySize);
 
   /**
    * String memory is guaranteed to exist until next call to GetString or
@@ -578,7 +577,7 @@ public interface OvrLibrary extends Library {
    * <code>char* ovrHmd_GetString(ovrHmd, const char*, const char*)</code><br>
    * <i>native declaration : OVR_CAPI.h:1063</i>
    */
-  Pointer ovrHmd_GetString(OvrLibrary.Hmd hmd, String propertyName, String defaultVal);
+  String ovrHmd_GetString(Hmd hmd, String propertyName, String defaultVal);
 
   /**
    * Can be used to check existence of a property.<br>
@@ -586,248 +585,5 @@ public interface OvrLibrary extends Library {
    * <code>int ovrHmd_GetArraySize(ovrHmd, const char*)</code><br>
    * <i>native declaration : OVR_CAPI.h:1068</i>
    */
-  int ovrHmd_GetArraySize(OvrLibrary.Hmd hmd, String propertyName);
-
-  public static class Hmd extends PointerType {
-    boolean inFrame = false;
-    int currentEye = -1;
-
-    static public FovPort.ByValue fromFovPort(FovPort fov) {
-      if (fov instanceof FovPort.ByValue) {
-        return (FovPort.ByValue) fov;
-      }
-      return new FovPort.ByValue(fov);
-    }
-
-    static public Posef.ByValue fromPose(Posef pose) {
-      if (pose instanceof Posef.ByValue) {
-        return (Posef.ByValue) pose;
-      }
-      return new Posef.ByValue(pose);
-    }
-
-    static public OvrMatrix4f.ByValue fromMatrix(OvrMatrix4f m) {
-      if (m instanceof OvrMatrix4f.ByValue) {
-        return (OvrMatrix4f.ByValue) m;
-      }
-      return new OvrMatrix4f.ByValue(m);
-    }
-
-    static public OvrVector2f.ByValue fromVector(OvrVector2f v) {
-      if (v instanceof OvrVector2f.ByValue) {
-        return (OvrVector2f.ByValue) v;
-      }
-      return new OvrVector2f.ByValue(v);
-    }
-
-    public Hmd(Pointer address) {
-      super(address);
-    }
-
-    public Hmd() {
-      super();
-    }
-
-    public static OvrLibrary.Hmd create(int index) {
-      return INSTANCE.ovrHmd_Create(index);
-    }
-
-    public static OvrLibrary.Hmd createDebug(int type) {
-      return INSTANCE.ovrHmd_CreateDebug(type);
-    }
-
-    public void destroy() {
-      INSTANCE.ovrHmd_Destroy(this);
-    }
-
-    public Pointer getLastError() {
-      return INSTANCE.ovrHmd_GetLastError(this);
-    }
-
-    public int getEnabledCaps() {
-      return INSTANCE.ovrHmd_GetEnabledCaps(this);
-    }
-
-    public void setEnabledCaps(int hmdCaps) {
-      INSTANCE.ovrHmd_SetEnabledCaps(this, hmdCaps);
-    }
-
-    public byte startSensor(int supportedSensorCaps, int requiredSensorCaps) {
-      return INSTANCE.ovrHmd_StartSensor(this, supportedSensorCaps, requiredSensorCaps);
-    }
-
-    public void stopSensor() {
-      INSTANCE.ovrHmd_StopSensor(this);
-    }
-
-    public void resetSensor() {
-      INSTANCE.ovrHmd_ResetSensor(this);
-    }
-
-    public SensorState getSensorState(double absTime) {
-      return INSTANCE.ovrHmd_GetSensorState(this, absTime);
-    }
-
-    public SensorDesc getSensorDesc() {
-      SensorDesc descOut = new SensorDesc();
-      if (0 == INSTANCE.ovrHmd_GetSensorDesc(this, descOut)) {
-        throw new IllegalStateException("Unable to fetch sensor description");
-      }
-      return descOut;
-    }
-
-    public HmdDesc getDesc() {
-      HmdDesc desc = new HmdDesc();
-      INSTANCE.ovrHmd_GetDesc(this, desc);
-      return desc;
-    }
-
-    public OvrSizei getFovTextureSize(int eye, FovPort fov, float pixelsPerDisplayPixel) {
-      return INSTANCE.ovrHmd_GetFovTextureSize(this, eye, fromFovPort(fov), pixelsPerDisplayPixel);
-    }
-
-    public EyeRenderDesc[] configureRendering(RenderAPIConfig apiConfig, int distortionCaps, FovPort eyeFovIn[]) {
-      Pointer first = eyeFovIn[0].getPointer();
-      int size = eyeFovIn[0].size();
-      Pointer secondCalc = first.getPointer(size);
-      Pointer secondActual = eyeFovIn[1].getPointer().getPointer(0);
-      if (!secondCalc.equals(secondActual)) {
-        throw new IllegalStateException(
-            "eyeFovIn must be a contiguous array in memory.  Use new FovPort().toArray(2) to create it");
-      }
-      EyeRenderDesc eyeRenderDescs[] = (EyeRenderDesc[]) new EyeRenderDesc().toArray(2);
-      if (0 == INSTANCE.ovrHmd_ConfigureRendering(this, apiConfig, distortionCaps, eyeFovIn, eyeRenderDescs)) {
-        throw new IllegalStateException("Unable to configure rendering");
-      }
-      return eyeRenderDescs;
-    }
-
-    public FrameTiming beginFrame(int frameIndex) {
-      return INSTANCE.ovrHmd_BeginFrame(this, frameIndex);
-    }
-
-    public void endFrame() {
-      INSTANCE.ovrHmd_EndFrame(this);
-    }
-
-    public Posef beginEyeRender(int eye) {
-      return INSTANCE.ovrHmd_BeginEyeRender(this, eye);
-    }
-
-    public void endEyeRender(int eye, Posef renderPose, Texture eyeTexture) {
-      INSTANCE.ovrHmd_EndEyeRender(this, eye, fromPose(renderPose), eyeTexture);
-    }
-
-    public EyeRenderDesc getRenderDesc(int eyeType, FovPort fov) {
-      return INSTANCE.ovrHmd_GetRenderDesc(this, eyeType, fromFovPort(fov));
-    }
-
-    public DistortionMesh createDistortionMesh(int eyeType, FovPort fov, int distortionCaps) {
-      DistortionMesh meshData = new DistortionMesh();
-      if (0 == INSTANCE.ovrHmd_CreateDistortionMesh(this, eyeType, fromFovPort(fov), distortionCaps, meshData)) {
-        throw new IllegalStateException("Unable to create distortion mesh");
-      }
-      return meshData;
-    }
-
-    public FrameTiming getFrameTiming(int frameIndex) {
-      return INSTANCE.ovrHmd_GetFrameTiming(this, frameIndex);
-    }
-
-    public FrameTiming beginFrameTiming(int frameIndex) {
-      return INSTANCE.ovrHmd_BeginFrameTiming(this, frameIndex);
-    }
-
-    public void endFrameTiming() {
-      INSTANCE.ovrHmd_EndFrameTiming(this);
-    }
-
-    public void resetFrameTiming(int frameIndex) {
-      INSTANCE.ovrHmd_ResetFrameTiming(this, frameIndex);
-    }
-
-    public Posef getEyePose(int eye) {
-      return INSTANCE.ovrHmd_GetEyePose(this, eye);
-    }
-
-    public void getEyeTimewarpMatrices(int eye, Posef renderPose, OvrMatrix4f twmOut[]) {
-      INSTANCE.ovrHmd_GetEyeTimewarpMatrices(this, eye, fromPose(renderPose), twmOut);
-    }
-
-    public byte processLatencyTest(ByteBuffer rgbColorOut) {
-      return INSTANCE.ovrHmd_ProcessLatencyTest(this, rgbColorOut);
-    }
-
-    public Pointer getLatencyTestResult() {
-      return INSTANCE.ovrHmd_GetLatencyTestResult(this);
-    }
-
-    public double getMeasuredLatencyTest2() {
-      return INSTANCE.ovrHmd_GetMeasuredLatencyTest2(this);
-    }
-
-    public float getFloat(String propertyName, float defaultVal) {
-      return INSTANCE.ovrHmd_GetFloat(this, propertyName, defaultVal);
-    }
-
-    public byte setFloat(String propertyName, float value) {
-      return INSTANCE.ovrHmd_SetFloat(this, propertyName, value);
-    }
-
-    public float[] getFloatArray(String propertyName) {
-      int arraySize = getArraySize(propertyName);
-      if (0 == arraySize) {
-        return null;
-      }
-      return getFloatArray(propertyName, arraySize);
-    }
-
-    public float[] getFloatArray(String propertyName, int arraySize) {
-      FloatBuffer buffer = FloatBuffer.allocate(arraySize);
-      int result = INSTANCE.ovrHmd_GetFloatArray(this, propertyName, buffer, arraySize);
-      if (0 == result) {
-        return null;
-      }
-      return buffer.array();
-    }
-
-    public byte setFloatArray(String propertyName, float[] values) {
-      return setFloatArray(propertyName, FloatBuffer.wrap(values), values.length);
-    }
-
-    public int getFloatArray(String propertyName, FloatBuffer values, int arraySize) {
-      return INSTANCE.ovrHmd_GetFloatArray(this, propertyName, values, arraySize);
-    }
-
-    public byte setFloatArray(String propertyName, FloatBuffer values, int arraySize) {
-      return INSTANCE.ovrHmd_SetFloatArray(this, propertyName, values, arraySize);
-    }
-
-    public Pointer getString(String propertyName, String defaultVal) {
-      return INSTANCE.ovrHmd_GetString(this, propertyName, defaultVal);
-    }
-
-    public int getArraySize(String propertyName) {
-      return INSTANCE.ovrHmd_GetArraySize(this, propertyName);
-    }
-
-    public static OvrMatrix4f getPerspectiveProjection(FovPort fov, float znear, float zfar, boolean rightHanded) {
-      return INSTANCE.ovrMatrix4f_Projection(fromFovPort(fov), znear, zfar, (byte) (rightHanded ? 1 : 0));
-    }
-
-    public static OvrMatrix4f getOrthographicProjection(OvrMatrix4f projection, OvrVector2f orthoScale,
-        float orthoDistance, float eyeViewAdjustX) {
-      return INSTANCE.ovrMatrix4f_OrthoSubProjection(fromMatrix(projection), fromVector(orthoScale), orthoDistance,
-          eyeViewAdjustX);
-    }
-
-    public static double getTimeInSeconds() {
-      return INSTANCE.ovr_GetTimeInSeconds();
-    }
-
-    public static void waitTillTime(double absTime) {
-      INSTANCE.ovr_WaitTillTime(absTime);
-    }
-  };
-
+  int ovrHmd_GetArraySize(Hmd hmd, String propertyName);
 }

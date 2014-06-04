@@ -23,7 +23,7 @@ public class RenderAPIConfigHeader extends Structure {
    * @see ovrRenderAPIType<br>
    *      C type : ovrRenderAPIType
    */
-  public int API;
+  public int API = OvrLibrary.ovrRenderAPIType.ovrRenderAPI_OpenGL;
   /** C type : ovrSizei */
   public OvrSizei RTSize;
   public int Multisample;
@@ -44,9 +44,8 @@ public class RenderAPIConfigHeader extends Structure {
    * @param RTSize
    *          C type : ovrSizei
    */
-  public RenderAPIConfigHeader(int API, OvrSizei RTSize, int Multisample) {
+  public RenderAPIConfigHeader(OvrSizei RTSize, int Multisample) {
     super();
-    this.API = API;
     this.RTSize = RTSize;
     this.Multisample = Multisample;
   }

@@ -3,7 +3,6 @@ package com.oculusvr.capi;
 import java.util.Arrays;
 import java.util.List;
 
-import com.oculusvr.capi.OvrLibrary.Hmd;
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 
@@ -31,9 +30,9 @@ public class HmdDesc extends Structure {
    */
   public int Type;
   /** C type : const char* */
-  public Pointer ProductName;
+  public String ProductName;
   /** C type : const char* */
-  public Pointer Manufacturer;
+  public String Manufacturer;
   public int HmdCaps;
   public int SensorCaps;
   public int DistortionCaps;
@@ -48,7 +47,7 @@ public class HmdDesc extends Structure {
   /** C type : ovrEyeType[ovrEye_Count] */
   public int[] EyeRenderOrder = new int[com.oculusvr.capi.OvrLibrary.ovrEyeType.ovrEye_Count];
   /** C type : const char* */
-  public Pointer DisplayDeviceName;
+  public String DisplayDeviceName;
   public int DisplayId;
 
   public HmdDesc() {
