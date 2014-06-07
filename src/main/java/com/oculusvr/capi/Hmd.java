@@ -46,6 +46,16 @@ public class Hmd extends PointerType {
     return new OvrVector2f.ByValue(v);
   }
 
+  public static void initialize() {
+    if (0 == OvrLibrary.INSTANCE.ovr_Initialize()) {
+      throw new IllegalStateException("Unable to initialize Oculus SDK");
+    }
+  }
+
+  public static void shutdown() {
+    OvrLibrary.INSTANCE.ovr_Shutdown();
+  }
+
   public static Hmd create(int index) {
     return OvrLibrary.INSTANCE.ovrHmd_Create(index);
   }
@@ -268,4 +278,5 @@ public class Hmd extends PointerType {
   public static void waitTillTime(double absTime) {
     OvrLibrary.INSTANCE.ovr_WaitTillTime(absTime);
   }
+
 }
