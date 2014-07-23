@@ -3,6 +3,7 @@ package com.oculusvr.capi;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
+import com.sun.jna.Callback;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
 import com.sun.jna.NativeLibrary;
@@ -339,6 +340,14 @@ public interface OvrLibrary extends Library {
    */
   byte ovrHmd_ConfigureRendering(Hmd hmd, RenderAPIConfig apiConfig, int distortionCaps, FovPort eyeFovIn[],
       EyeRenderDesc eyeRenderDescOut[]);
+
+  
+
+  public interface ovrSwapBufferCallback extends Callback {
+      void callback(Pointer userData);
+  }
+
+  void ovrHmd_SetSwapBuffersCallback(Hmd hmd, ovrSwapBufferCallback evnHnd, Pointer userData);
 
   /**
    * Original signature :

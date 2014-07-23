@@ -6,6 +6,7 @@ import java.nio.FloatBuffer;
 import javax.annotation.Nonnull;
 
 import com.google.common.base.Preconditions;
+import com.oculusvr.capi.OvrLibrary.ovrSwapBufferCallback;
 import com.sun.jna.Pointer;
 import com.sun.jna.PointerType;
 
@@ -129,6 +130,11 @@ public class Hmd extends PointerType {
     configuredRendering = true;
     return eyeRenderDescs;
   }
+
+  public void setSwapBuffersCallback(ovrSwapBufferCallback callback, Pointer userData) {
+    OvrLibrary.INSTANCE.ovrHmd_SetSwapBuffersCallback(this, callback, userData);
+  }
+
 
   public FrameTiming beginFrame(int frameIndex) {
     Preconditions.checkState(configuredRendering, "rendering must be configured before beginEyeRender is called");
