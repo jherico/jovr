@@ -19,11 +19,15 @@ import com.sun.jna.Structure;
  * href="http://jna.dev.java.net/">JNA</a>.
  */
 public class Texture extends Structure {
+  static final boolean is64Bit;
+  static {
+    is64Bit = "64".equalsIgnoreCase(System.getProperty("sun.arch.data.model"));
+  }
   /** C type : ovrTextureHeader */
   public TextureHeader Header;
   /** C type : uintptr_t[8] */
   public int TextureId;
-  public int Padding[] = new int[7];
+  public final int Padding[] = new int[15];
 
   public Texture() {
     super();

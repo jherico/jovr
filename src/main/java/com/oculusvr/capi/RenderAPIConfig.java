@@ -22,7 +22,7 @@ public class RenderAPIConfig extends Structure {
   /** C type : ovrRenderAPIConfigHeader */
   public RenderAPIConfigHeader Header;
   /** C type : uintptr_t[8] */
-  public final int PlatformData[] = new int[8];
+  public final int PlatformData[] = new int[15];
 
   public RenderAPIConfig() {
     super();

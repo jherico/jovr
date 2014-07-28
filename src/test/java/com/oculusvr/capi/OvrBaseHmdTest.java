@@ -5,13 +5,13 @@ import org.junit.Before;
 
 public abstract class OvrBaseHmdTest extends OvrBaseTest {
 
-  protected Hmd hmd;
+  protected HmdDesc hmd;
   
   @Before
   @Override
   public void setup() {
     super.setup();
-    hmd = Hmd.create(0); 
+    hmd = HmdDesc.create(0); 
 //    hmd = Hmd.createDebug(ovrHmdType.ovrHmd_DK2);
     assert(null != hmd);
   }
