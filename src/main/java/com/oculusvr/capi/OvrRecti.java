@@ -54,6 +54,13 @@ public class OvrRecti extends Structure {
   };
 
   public static class ByValue extends OvrRecti implements Structure.ByValue {
+    public ByValue() {
 
+    }
+
+    public ByValue(OvrRecti v) {
+      this.Pos = v.Pos;
+      this.Size = v.Size;
+    }
   };
 }

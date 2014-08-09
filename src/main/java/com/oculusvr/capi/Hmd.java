@@ -16,7 +16,7 @@ import com.sun.jna.Structure;
  * a tool written by <a href="http://ochafik.com/">Olivier Chafik</a> that <a href="http://code.google.com/p/jnaerator/wiki/CreditsAndLicense">uses a few opensource projects.</a>.<br>
  * For help, please visit <a href="http://nativelibs4java.googlecode.com/">NativeLibs4Java</a> , <a href="http://rococoa.dev.java.net/">Rococoa</a>, or <a href="http://jna.dev.java.net/">JNA</a>.
  */
-public class HmdDesc extends Structure {
+public class Hmd extends Structure {
   public ovrHmdStruct Handle;
   /** @see ovrHmdType */
   public int Type;
@@ -42,7 +42,7 @@ public class HmdDesc extends Structure {
   public Pointer DisplayDeviceName;
   public int DisplayId;
   
-  public HmdDesc() {
+  public Hmd() {
     super();
   }
   
@@ -50,7 +50,7 @@ public class HmdDesc extends Structure {
   protected List<? > getFieldOrder() {
     return Arrays.asList("Handle", "Type", "ProductName", "Manufacturer", "VendorId", "ProductId", "SerialNumber", "FirmwareMajor", "FirmwareMinor", "CameraFrustumHFovInRadians", "CameraFrustumVFovInRadians", "CameraFrustumNearZInMeters", "CameraFrustumFarZInMeters", "HmdCaps", "TrackingCaps", "DistortionCaps", "DefaultEyeFov", "MaxEyeFov", "EyeRenderOrder", "Resolution", "WindowsPos", "DisplayDeviceName", "DisplayId");
   }
-  public HmdDesc(Pointer peer) {
+  public Hmd(Pointer peer) {
     super(peer);
   }
 
@@ -86,6 +86,22 @@ public class HmdDesc extends Structure {
     return new OvrVector2f.ByValue(v);
   }
 
+  @Nonnull 
+  static private OvrSizei.ByValue byValue(@Nonnull OvrSizei v) {
+    if (v instanceof OvrSizei.ByValue) {
+      return (OvrSizei.ByValue) v;
+    }
+    return new OvrSizei.ByValue(v);
+  }
+
+  @Nonnull 
+  static private OvrRecti.ByValue byValue(@Nonnull OvrRecti v) {
+    if (v instanceof OvrRecti.ByValue) {
+      return (OvrRecti.ByValue) v;
+    }
+    return new OvrRecti.ByValue(v);
+  }
+  
   public static void initialize() {
     if (0 == OvrLibrary.INSTANCE.ovr_Initialize()) {
       throw new IllegalStateException("Unable to initialize Oculus SDK");
@@ -96,12 +112,12 @@ public class HmdDesc extends Structure {
     OvrLibrary.INSTANCE.ovr_Shutdown();
   }
 
-  public static HmdDesc create(int index) {
+  public static Hmd create(int index) {
     return OvrLibrary.INSTANCE.ovrHmd_Create(index);
   }
 
   @Nonnull 
-  public static HmdDesc createDebug(int type) {
+  public static Hmd createDebug(int type) {
     return OvrLibrary.INSTANCE.ovrHmd_CreateDebug(type);
   }
 
@@ -175,6 +191,23 @@ public class HmdDesc extends Structure {
     return meshData;
   }
 
+
+  public static void destroyDistortionMesh(DistortionMesh meshData) {
+    OvrLibrary.INSTANCE.ovrHmd_DestroyDistortionMesh(meshData);
+  }
+
+  public static OvrVector2f[] getRenderScaleAndOffset(FovPort fov, OvrSizei textureSize,
+      OvrRecti renderViewport) {
+    OvrVector2f results[] = (OvrVector2f[]) new OvrVector2f().toArray(2);
+    OvrLibrary.INSTANCE.ovrHmd_GetRenderScaleAndOffset(
+        byValue(fov), 
+        byValue(textureSize), 
+        byValue(renderViewport), 
+        results);
+    return results;
+  }
+
+  
   @Nonnull
   public FrameTiming getFrameTiming(int frameIndex) {
     return OvrLibrary.INSTANCE.ovrHmd_GetFrameTiming(this, frameIndex);
@@ -261,5 +294,15 @@ public class HmdDesc extends Structure {
   public static void waitTillTime(double absTime) {
     OvrLibrary.INSTANCE.ovr_WaitTillTime(absTime);
   }
-  
+
+  public HSWDisplayState getHSWDisplayState() {
+    HSWDisplayState hasWarningState = new HSWDisplayState();
+    OvrLibrary.INSTANCE.ovrHmd_GetHSWDisplayState(this, hasWarningState);
+    return hasWarningState;
+  }
+
+  public boolean dismissHSWDisplay() {
+    return 0 != OvrLibrary.INSTANCE.ovrHmd_DismissHSWDisplay(this);
+  }
+
 }

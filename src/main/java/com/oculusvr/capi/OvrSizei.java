@@ -46,6 +46,13 @@ public class OvrSizei extends Structure {
   };
 
   public static class ByValue extends OvrSizei implements Structure.ByValue {
+    public ByValue() {
+      
+    }
+    
+    public ByValue(OvrSizei v) {
+      super(v.w, v.h);
+    }
 
   };
 }
