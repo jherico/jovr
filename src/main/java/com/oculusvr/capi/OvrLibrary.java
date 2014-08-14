@@ -243,6 +243,19 @@ public interface OvrLibrary extends Library {
   byte ovr_Initialize();
 
   /**
+   * ovr_InitializeRenderingShim initializes the rendering shim appart from everything
+   * else in LibOVR. This may be helpful if the application prefers to avoid
+   * creating any OVR resources (allocations, service connections, etc) at this point.
+   * ovr_InitializeRenderingShim does not bring up anything within LibOVR except the
+   * necessary hooks to enable the Direct-to-Rift functionality.
+   *
+   * Either ovr_InitializeRenderingShim() or ovr_Initialize() must be called before any
+   * Direct3D or OpenGL initilization is done by applictaion (creation of devices, etc).
+   * ovr_Initialize() must still be called after to use the rest of LibOVR APIs.
+   */
+  void ovr_InitializeRenderingShim();
+
+  /**
    * Shuts down all Oculus functionality.<br>
    * Original signature : <code>void ovr_Shutdown()</code><br>
    * <i>native declaration : line 482</i>
