@@ -304,5 +304,9 @@ public class Hmd extends Structure {
   public boolean dismissHSWDisplay() {
     return 0 != OvrLibrary.INSTANCE.ovrHmd_DismissHSWDisplay(this);
   }
+  
+  public void enableHswDisplay(boolean enable) {
+    OvrLibrary.INSTANCE.ovrhmd_EnableHSWDisplaySDKRender(this, (byte)(enable ? 1 : 0));
+  }
 
 }

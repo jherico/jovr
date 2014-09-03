@@ -25,7 +25,7 @@ public interface OvrLibrary extends Library {
   
   public static final String JNA_LIBRARY_NAME = "OVR_C";
   // Used for testing debug builds
-  // public static final String JNA_LIBRARY_NAME = "/Users/bdavis/Git/OculusRiftExamples/build64/output/OVR_Cd.dll";
+  // public static final String JNA_LIBRARY_NAME = "C:/Users/bdavis/Git/OculusRiftExamples/build64/output/OVR_Cd.dll";
   // public static final String JNA_LIBRARY_NAME = "/Users/bdavis/git/OculusRiftExamples/build/output/libOVR_Cd.dylib";
   public static final NativeLibrary JNA_NATIVE_LIB = NativeLibrary.getInstance(OvrLibrary.JNA_LIBRARY_NAME);
   public static final OvrLibrary INSTANCE = (OvrLibrary) Native.loadLibrary(OvrLibrary.JNA_LIBRARY_NAME,
@@ -542,6 +542,8 @@ public interface OvrLibrary extends Library {
    */
   byte ovrHmd_DismissHSWDisplay(Hmd hmd);
 
+  void ovrhmd_EnableHSWDisplaySDKRender(Hmd hmd, byte enabled);
+  
   /**
    * Returns defaultValue if property doesn't exist.<br>
    * Original signature :
