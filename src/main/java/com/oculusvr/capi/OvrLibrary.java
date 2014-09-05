@@ -156,6 +156,12 @@ public interface OvrLibrary extends Library {
      * <i>native declaration : line 213</i>
      */
     public static final int ovrDistortionCap_Overdrive = 0x80;
+  
+    /**
+     * High-quality sampling of distortion buffer for anti-aliasing<br>
+     */
+    public static final int ovrDistortionCap_HqDistortion = 0x100;
+
     /**
      * Use when profiling with timewarp to remove false positives<br>
      * <i>native declaration : line 215</i>
