@@ -18,12 +18,12 @@ import com.google.common.base.Predicate;
 public final class RiftTracker implements Runnable {
 
     public static final int           SENSOR_VENDOR_ID    = 0x2833;
-    public static final int           SENSOR_PRODUCT_ID   = 0x0001;
+    public static final int           SENSOR_PRODUCT_ID   = 33;
     private static final short        KEEP_ALIVE_TIME     = 10 * 1000;
     private static final short        KEEP_ALIVE_INTERVAL = 3 * 1000;
 
     // The device provided by the hidapi library
-    private final HIDDevice           device;
+    public final HIDDevice           device;
     private final Thread              listener;
     private final ByteBuffer          buffer              = ByteBuffer.allocate(62).order(ByteOrder.nativeOrder());
     private volatile boolean          shutdown            = false;
@@ -114,8 +114,11 @@ public final class RiftTracker implements Runnable {
         HIDDeviceInfo[] devs = mgr.listDevices();
         for (HIDDeviceInfo d : devs)
         {
-            if (d.getVendor_id() == SENSOR_VENDOR_ID && d.getProduct_id() == SENSOR_PRODUCT_ID)
+            if (d.getVendor_id() == SENSOR_VENDOR_ID) {
+              if (d.getProduct_id() == SENSOR_PRODUCT_ID) {
                 return d.open();
+              }
+            }
         }
 
         return mgr.openById(SENSOR_VENDOR_ID, SENSOR_PRODUCT_ID, null);
