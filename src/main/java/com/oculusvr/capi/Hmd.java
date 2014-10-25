@@ -152,14 +152,18 @@ public class Hmd extends Structure {
   public OvrSizei getFovTextureSize(int eye, FovPort fov, float pixelsPerDisplayPixel) {
     return OvrLibrary.INSTANCE.ovrHmd_GetFovTextureSize(this, eye, byValue(fov), pixelsPerDisplayPixel);
   }
+  
+  private static <T extends Structure> void checkContiguous(T[] ts) {
+    Pointer first = ts[0].getPointer();
+    int size = ts[0].size();
+    Pointer secondCalc = first.getPointer(size);
+    Pointer secondActual = ts[1].getPointer().getPointer(0);
+    Preconditions.checkArgument(secondCalc.equals(secondActual), 
+        "array must be contiguous in memory.");
+  }
 
   public EyeRenderDesc[] configureRendering(RenderAPIConfig apiConfig, int distortionCaps, FovPort eyeFovIn[]) {
-    Pointer first = eyeFovIn[0].getPointer();
-    int size = eyeFovIn[0].size();
-    Pointer secondCalc = first.getPointer(size);
-    Pointer secondActual = eyeFovIn[1].getPointer().getPointer(0);
-    Preconditions.checkArgument(secondCalc.equals(secondActual), 
-        "eyeFovIn must be a contiguous array in memory.  Use new FovPort().toArray(2) to create it");
+    checkContiguous(eyeFovIn);
     EyeRenderDesc eyeRenderDescs[] = (EyeRenderDesc[]) new EyeRenderDesc().toArray(2);
     if (0 == OvrLibrary.INSTANCE.ovrHmd_ConfigureRendering(this, apiConfig, distortionCaps, eyeFovIn, eyeRenderDescs)) {
       throw new IllegalStateException("Unable to configure rendering");
@@ -227,8 +231,16 @@ public class Hmd extends Structure {
   }
 
   @Nonnull
+  @Deprecated
   public Posef getEyePose(int eye) {
-    return OvrLibrary.INSTANCE.ovrHmd_GetEyePose(this, eye);
+    return OvrLibrary.INSTANCE.ovrHmd_GetHmdPosePerEye(this, eye);
+  }
+
+  public Posef[] getEyePoses(int frameIndex, OvrVector3f hmdToEyeViewOffsets[]) {
+    //checkContiguous(hmdToEyeViewOffsets);
+    Posef results[] = (Posef[]) new Posef().toArray(2);
+    OvrLibrary.INSTANCE.ovrHmd_GetEyePoses(this, frameIndex, hmdToEyeViewOffsets, results, null);
+    return results;
   }
 
   public void getEyeTimewarpMatrices(int eye, Posef renderPose, OvrMatrix4f twmOut[]) {

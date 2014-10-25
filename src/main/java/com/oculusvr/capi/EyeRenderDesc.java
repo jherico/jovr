@@ -27,7 +27,7 @@ public class EyeRenderDesc extends Structure {
   /** How many display pixels will fit in tan(angle) = 1. */
   public OvrVector2f PixelsPerTanAngleAtCenter;
   /** Translation to be applied to view matrix. */
-  public OvrVector3f ViewAdjust;
+  public OvrVector3f HmdToEyeViewOffset;
 
   public EyeRenderDesc() {
     super();
@@ -35,17 +35,17 @@ public class EyeRenderDesc extends Structure {
 
   @Override
   protected List<?> getFieldOrder() {
-    return Arrays.asList("Eye", "Fov", "DistortedViewport", "PixelsPerTanAngleAtCenter", "ViewAdjust");
+    return Arrays.asList("Eye", "Fov", "DistortedViewport", "PixelsPerTanAngleAtCenter", "HmdToEyeViewOffset");
   }
 
   public EyeRenderDesc(int Eye, FovPort Fov, OvrRecti DistortedViewport, OvrVector2f PixelsPerTanAngleAtCenter,
-      OvrVector3f ViewAdjust) {
+      OvrVector3f HmdToEyeViewOffset) {
     super();
     this.Eye = Eye;
     this.Fov = Fov;
     this.DistortedViewport = DistortedViewport;
     this.PixelsPerTanAngleAtCenter = PixelsPerTanAngleAtCenter;
-    this.ViewAdjust = ViewAdjust;
+    this.HmdToEyeViewOffset = HmdToEyeViewOffset;
   }
 
   public EyeRenderDesc(Pointer peer) {

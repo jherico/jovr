@@ -15,22 +15,29 @@ public class TrackingState extends Structure {
   public Posef LeveledCameraPose;
   public SensorData RawSensorData;
   public int StatusFlags;
+  public double LastVisionProcessingTime;
+  public double LastVisionFrameLatency;
+  public int LastCameraFrameCounter;
   public TrackingState() {
     super();
   }
   
   @Override
   protected List<? > getFieldOrder() {
-    return Arrays.asList("HeadPose", "CameraPose", "LeveledCameraPose", "RawSensorData", "StatusFlags");
+    return Arrays.asList("HeadPose", "CameraPose", "LeveledCameraPose", "RawSensorData", "StatusFlags", "LastVisionProcessingTime", "LastVisionFrameLatency", "LastCameraFrameCounter");
   }
-  public TrackingState(PoseStatef HeadPose, Posef CameraPose, Posef LeveledCameraPose, SensorData RawSensorData, int StatusFlags) {
+  public TrackingState(PoseStatef HeadPose, Posef CameraPose, Posef LeveledCameraPose, SensorData RawSensorData, int StatusFlags, double LastVisionProcessingTime,  double LastVisionFrameLatency, int LastCameraFrameCounter) {
     super();
     this.HeadPose = HeadPose;
     this.CameraPose = CameraPose;
     this.LeveledCameraPose = LeveledCameraPose;
     this.RawSensorData = RawSensorData;
     this.StatusFlags = StatusFlags;
+    this.LastVisionProcessingTime = LastVisionProcessingTime;
+    this.LastVisionFrameLatency = LastVisionFrameLatency;
+    this.LastCameraFrameCounter = LastCameraFrameCounter;
   }
+
   public TrackingState(Pointer peer) {
     super(peer);
   }

@@ -404,7 +404,10 @@ public interface OvrLibrary extends Library {
    * <code>ovrPosef ovrHmd_GetEyePose(ovrHmd, ovrEyeType)</code><br>
    * <i>native declaration : line 642</i>
    */
-  Posef.ByValue ovrHmd_GetEyePose(Hmd hmd, int eye);
+  Posef.ByValue ovrHmd_GetHmdPosePerEye(Hmd hmd, int eye);
+
+  void ovrHmd_GetEyePoses(Hmd hmd, int frameIndex, OvrVector3f hmdToEyeViewOffset[],
+      Posef outEyePoses[], TrackingState outHmdTrackingState);
 
   /**
    * setup for client rendered distortion.<br>
@@ -502,7 +505,7 @@ public interface OvrLibrary extends Library {
    * <i>native declaration : line 762</i>
    */
   OvrMatrix4f.ByValue ovrMatrix4f_OrthoSubProjection(OvrMatrix4f.ByValue projection, OvrVector2f.ByValue orthoScale,
-      float orthoDistance, float eyeViewAdjustX);
+      float orthoDistance, float hmdToEyeViewOffsetX);
 
   /**
    * value as used in sensor messages.<br>
