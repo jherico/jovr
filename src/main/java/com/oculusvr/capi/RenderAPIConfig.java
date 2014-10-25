@@ -22,7 +22,7 @@ public class RenderAPIConfig extends Structure {
   /** C type : ovrRenderAPIConfigHeader */
   public RenderAPIConfigHeader Header;
   /** C type : uintptr_t[8] */
-  public final int PlatformData[] = new int[15];
+  public Pointer PlatformData[] = new Pointer[8];
 
   public RenderAPIConfig() {
     super();
@@ -45,7 +45,7 @@ public class RenderAPIConfig extends Structure {
     if ((PlatformData.length != this.PlatformData.length))
       throw new IllegalArgumentException("Wrong array size !");
     for (int i = 0; i < this.PlatformData.length; ++i) {
-      this.PlatformData[i] = PlatformData[i];
+      this.PlatformData[i] = Pointer.createConstant(0);
     }
   }
 
