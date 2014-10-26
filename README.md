@@ -2,6 +2,46 @@ Java bindings for using the Oculus Rift head tracker
 
 Changes
 
+0.4.3.0
+
+* Initial support for Oculus SDK 0.4.3
+* Linux support added to SDK, linux binary added
+
+0.4.2.0
+
+* Initial support for Oculus SDK 0.4.2
+* Exposing high quality rendering flag (no effect on GL) 
+
+0.4.1.2
+
+* Exposing HSW render disable method 
+
+0.4.1.1
+
+* updating binaries
+
+0.4.1.0
+
+* Initial support for Oculus SDK 0.4.1
+* OSX support added to SDK, OSX binary added
+
+0.4.0.1
+
+* Adding some annotations and missing functions
+
+0.4.0.0
+
+* Initial support for Oculus SDK 0.4.0
+* Removed swapbuffer callback mechanism
+
+0.3.2.5
+
+* Adding swapbuffer callback
+
+0.3.2.4
+
+* Adding static init and shutdown methods to convenience class
+
 0.3.2.3
 
 * Added Guava dependency
