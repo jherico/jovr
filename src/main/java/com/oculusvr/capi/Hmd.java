@@ -162,10 +162,14 @@ public class Hmd extends Structure {
         "array must be contiguous in memory.");
   }
 
-  public EyeRenderDesc[] configureRendering(RenderAPIConfig apiConfig, int distortionCaps, FovPort eyeFovIn[]) {
+  public EyeRenderDesc[] configureRendering(GlConfig apiConfig, int distortionCaps, FovPort eyeFovIn[]) {
     checkContiguous(eyeFovIn);
+    apiConfig.setType(GlConfigData.class);
+    apiConfig.write();
+    apiConfig.setType(RenderAPIConfig.class);
+    apiConfig.read();
     EyeRenderDesc eyeRenderDescs[] = (EyeRenderDesc[]) new EyeRenderDesc().toArray(2);
-    if (0 == OvrLibrary.INSTANCE.ovrHmd_ConfigureRendering(this, apiConfig, distortionCaps, eyeFovIn, eyeRenderDescs)) {
+    if (0 == OvrLibrary.INSTANCE.ovrHmd_ConfigureRendering(this, apiConfig.Config, distortionCaps, eyeFovIn, eyeRenderDescs)) {
       throw new IllegalStateException("Unable to configure rendering");
     }
     return eyeRenderDescs;

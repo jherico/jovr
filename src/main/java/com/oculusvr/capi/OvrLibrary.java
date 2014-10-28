@@ -23,11 +23,11 @@ import com.sun.jna.PointerType;
  */
 public interface OvrLibrary extends Library {
   
-  public static final String JNA_LIBRARY_NAME = "OculusVR";
+  // public static final String JNA_LIBRARY_NAME = "OculusVR";
   // Used for testing debug builds
   // public static final String JNA_LIBRARY_NAME = "C:/Users/bdavis/Git/OculusRiftExamples/build64/output/OculusVRd.dll";
   // public static final String JNA_LIBRARY_NAME = "/Users/bdavis/git/OculusRiftInAction/build/output/libOculusVR.dylib";
-  // public static final String JNA_LIBRARY_NAME = "/home/bdavis/eclipse/OculusRiftExamples/.build/output/libOculusVR.so";
+  public static final String JNA_LIBRARY_NAME = "/home/bdavis/git/OculusRiftInAction/.build/output/libOculusVRd.so";
   public static final NativeLibrary JNA_NATIVE_LIB = NativeLibrary.getInstance(OvrLibrary.JNA_LIBRARY_NAME);
   public static final OvrLibrary INSTANCE = (OvrLibrary) Native.loadLibrary(OvrLibrary.JNA_LIBRARY_NAME,
       OvrLibrary.class);
@@ -132,6 +132,10 @@ public interface OvrLibrary extends Library {
      * <i>native declaration : line 208</i>
      */
     public static final int ovrDistortionCap_TimeWarp = 0x02;
+
+    public static final int ovrDistortionCap_LinuxDevFullscreen = 0x200;
+    
+    
     /**
      * Supports vignetting around the edges of the view.<br>
      * <i>native declaration : line 209</i>

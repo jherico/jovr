@@ -1,10 +1,8 @@
 package com.oculusvr.capi;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
+import com.sun.jna.Union;
 
 /**
  * <i>native declaration : /usr/include/stdint.h</i><br>
@@ -18,30 +16,24 @@ import com.sun.jna.Structure;
  * href="http://rococoa.dev.java.net/">Rococoa</a>, or <a
  * href="http://jna.dev.java.net/">JNA</a>.
  */
-public class RenderAPIConfig extends Structure {
+public class GlConfig extends Union {
   /** C type : ovrRenderAPIConfigHeader */
-  public RenderAPIConfigHeader Header;
-  /** C type : uintptr_t[8] */
-  public int PlatformData[] = new int[16];
+  public RenderAPIConfig Config;
+  public GlConfigData OGL;
 
-  public RenderAPIConfig() {
+  public GlConfig() {
     super();
   }
 
-  @Override
-  protected List<?> getFieldOrder() {
-    return Arrays.asList("Header", "PlatformData");
-  }
-
-  public RenderAPIConfig(Pointer peer) {
+  public GlConfig(Pointer peer) {
     super(peer);
   }
 
-  public static class ByReference extends RenderAPIConfig implements Structure.ByReference {
+  public static class ByReference extends GlConfig implements Structure.ByReference {
 
   };
 
-  public static class ByValue extends RenderAPIConfig implements Structure.ByValue {
+  public static class ByValue extends GlConfig implements Structure.ByValue {
 
   };
 }
