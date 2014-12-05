@@ -175,7 +175,7 @@ public class Hmd extends Structure {
     return OvrLibrary.INSTANCE.ovrHmd_BeginFrame(this, frameIndex);
   }
 
-  public void endFrame(Posef renderPose[], Texture eyeTexture[]) {
+  public void endFrame(Posef renderPose[], GLTexture eyeTexture[]) {
     OvrLibrary.INSTANCE.ovrHmd_EndFrame(this, renderPose, eyeTexture);
   }
 

@@ -25,7 +25,7 @@ public interface OvrLibrary extends Library {
   
   public static final String JNA_LIBRARY_NAME = "OculusVR";
   // Used for testing debug builds
-  // public static final String JNA_LIBRARY_NAME = "C:/Users/bdavis/Git/OculusRiftExamples/build64/output/OculusVRd.dll";
+  // public static final String JNA_LIBRARY_NAME = "C:/Users/bdavis/Git/OculusRiftExamples/build32/output/OculusVR.dll";
   // public static final String JNA_LIBRARY_NAME = "/Users/bdavis/git/OculusRiftInAction/build/output/libOculusVR.dylib";
   // public static final String JNA_LIBRARY_NAME = "/home/bdavis/eclipse/OculusRiftExamples/.build/output/libOculusVR.so";
   public static final NativeLibrary JNA_NATIVE_LIB = NativeLibrary.getInstance(OvrLibrary.JNA_LIBRARY_NAME);
@@ -91,12 +91,15 @@ public interface OvrLibrary extends Library {
      * <i>native declaration : line 179</i>
      */
     public static final int ovrHmdCap_DynamicPrediction = 0x0200;
+    
+    public static final int ovrHmdCap_DirectPentile = 0x0400;
+
     /** <i>native declaration : line 181</i> */
     public static final int ovrHmdCap_NoVSync = 0x1000;
     /** <i>native declaration : line 184</i> */
-    public static final int ovrHmdCap_Writable_Mask = 0x33F0;
+    public static final int ovrHmdCap_Writable_Mask = 0x32F0;
     /** <i>native declaration : line 186</i> */
-    public static final int ovrHmdCap_Service_Mask = 0x23F0;
+    public static final int ovrHmdCap_Service_Mask = 0x22F0;
   };
 
   /** enum values */
@@ -162,6 +165,8 @@ public interface OvrLibrary extends Library {
      * High-quality sampling of distortion buffer for anti-aliasing<br>
      */
     public static final int ovrDistortionCap_HqDistortion = 0x100;
+    public static final int ovrDistortionCap_LinuxDevFullscreen = 0x200;
+    public static final int ovrDistortionCap_ComputeShader = 0x400;
 
     /**
      * Use when profiling with timewarp to remove false positives<br>
@@ -396,7 +401,7 @@ public interface OvrLibrary extends Library {
    * <br>
    * <i>native declaration : line 634</i>
    */
-  void ovrHmd_EndFrame(Hmd hmd, Posef renderPose[], Texture eyeTexture[]);
+  void ovrHmd_EndFrame(Hmd hmd, Posef renderPose[], GLTexture eyeTexture[]);
 
   /**
    * - If the pose is used for rendering the eye, it should be passed to

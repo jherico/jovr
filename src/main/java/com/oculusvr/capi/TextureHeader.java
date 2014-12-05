@@ -31,14 +31,15 @@ public class TextureHeader extends Structure {
    * C type : ovrRecti
    */
   public OvrRecti RenderViewport;
-
+  public int _PAD0_ = 0;
+  
   public TextureHeader() {
     super();
   }
 
   @Override
   protected List<?> getFieldOrder() {
-    return Arrays.asList("API", "TextureSize", "RenderViewport");
+    return Arrays.asList("API", "TextureSize", "RenderViewport", "_PAD0_");
   }
 
   /**

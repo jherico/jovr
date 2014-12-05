@@ -26,8 +26,7 @@ public class Texture extends Structure {
   /** C type : ovrTextureHeader */
   public TextureHeader Header;
   /** C type : uintptr_t[8] */
-  public int TextureId;
-  public final int Padding[] = new int[15];
+  public Pointer PlatformData[] = new Pointer[8];
 
   public Texture() {
     super();
@@ -35,7 +34,7 @@ public class Texture extends Structure {
 
   @Override
   protected List<?> getFieldOrder() {
-    return Arrays.asList("Header", "TextureId", "Padding");
+    return Arrays.asList("Header", "PlatformData");
   }
 
   /**
@@ -44,10 +43,12 @@ public class Texture extends Structure {
    * @param PlatformData
    *          C type : uintptr_t[8]
    */
-  public Texture(TextureHeader Header, int TextureId) {
+  public Texture(TextureHeader Header) {
     super();
+    for (int i = 0; i < PlatformData.length; ++i) {
+      PlatformData[i] = Pointer.NULL;
+    }
     this.Header = Header;
-    this.TextureId = TextureId;
   }
 
   public Texture(Pointer peer) {

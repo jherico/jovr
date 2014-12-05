@@ -6,7 +6,7 @@
     <version>1.0.0</version>
   </parent>
   <artifactId>jovr</artifactId>
-  <version>0.4.3.1-SNAPSHOT</version>
+  <version>0.4.4.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>Oculus Rift head tracker library</name>

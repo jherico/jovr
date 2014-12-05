@@ -25,7 +25,7 @@ public class RenderAPIConfigHeader extends Structure {
    */
   public int API = OvrLibrary.ovrRenderAPIType.ovrRenderAPI_OpenGL;
   /** C type : ovrSizei */
-  public OvrSizei RTSize;
+  public OvrSizei BackBufferSize;
   public int Multisample;
 
   public RenderAPIConfigHeader() {
@@ -34,7 +34,7 @@ public class RenderAPIConfigHeader extends Structure {
 
   @Override
   protected List<?> getFieldOrder() {
-    return Arrays.asList("API", "RTSize", "Multisample");
+    return Arrays.asList("API", "BackBufferSize", "Multisample");
   }
 
   /**
@@ -44,9 +44,9 @@ public class RenderAPIConfigHeader extends Structure {
    * @param RTSize
    *          C type : ovrSizei
    */
-  public RenderAPIConfigHeader(OvrSizei RTSize, int Multisample) {
+  public RenderAPIConfigHeader(OvrSizei BackBufferSize, int Multisample) {
     super();
-    this.RTSize = RTSize;
+    this.BackBufferSize = BackBufferSize;
     this.Multisample = Multisample;
   }
 
