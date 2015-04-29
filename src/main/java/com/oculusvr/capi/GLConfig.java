@@ -13,15 +13,13 @@ public class GLConfig extends Union {
 	public GLConfigData OGL;
 	public GLConfig() {
 		super();
-	}
-	public GLConfig(RenderAPIConfig Config) {
-		super();
-		this.Config = Config;
-		setType(RenderAPIConfig.class);
+              this.setTypedValue(OGL);
+              setType(GLConfigData.class);
 	}
 	public GLConfig(GLConfigData OGL) {
 		super();
 		this.OGL = OGL;
+		this.setTypedValue(OGL);
 		setType(GLConfigData.class);
 	}
 	public GLConfig(Pointer peer) {

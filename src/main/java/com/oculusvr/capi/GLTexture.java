@@ -13,15 +13,13 @@ public class GLTexture extends Union {
 	public GLTextureData OGL;
 	public GLTexture() {
 		super();
-	}
-	public GLTexture(Texture Texture) {
-		super();
-		this.Texture = Texture;
-		setType(Texture.class);
+		this.setTypedValue(OGL);
+              setType(GLTextureData.class);
 	}
 	public GLTexture(GLTextureData OGL) {
 		super();
 		this.OGL = OGL;
+              this.setTypedValue(OGL);
 		setType(GLTextureData.class);
 	}
 	public GLTexture(Pointer peer) {
