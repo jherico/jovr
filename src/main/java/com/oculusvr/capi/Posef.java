@@ -31,6 +31,7 @@ public class Posef extends Structure {
 		
 	};
 	public static class ByValue extends Posef implements Structure.ByValue {
+	    public ByValue() { }
 	  public ByValue(Posef o) {
 	    super(o.Orientation, o.Position);
 	  }

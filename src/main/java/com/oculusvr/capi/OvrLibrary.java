@@ -13,14 +13,12 @@ import com.sun.jna.PointerType;
  * a tool written by <a href="http://ochafik.com/">Olivier Chafik</a> that <a href="http://code.google.com/p/jnaerator/wiki/CreditsAndLicense">uses a few opensource projects.</a>.<br>
  * For help, please visit <a href="http://nativelibs4java.googlecode.com/">NativeLibs4Java</a> , <a href="http://rococoa.dev.java.net/">Rococoa</a>, or <a href="http://jna.dev.java.net/">JNA</a>.
  */
-public class OvrLibrary implements Library {
-    public static final String JNA_LIBRARY_NAME = "LibOVRRT64_0_5.dll";
-//    static {
-//        Native.register(OvrLibrary.class, OvrLibrary.JNA_NATIVE_LIB);
-//    }
-       public static final OvrLibrary INSTANCE = (OvrLibrary) Native.loadLibrary(JNA_LIBRARY_NAME, OvrLibrary.class);
 
-       public static interface ovrHmdType {
+public interface OvrLibrary extends Library {
+  public static final String JNA_LIBRARY_NAME = "LibOVRRT64_0_5.dll";
+  public static final OvrLibrary INSTANCE = (OvrLibrary) Native.loadLibrary(OvrLibrary.JNA_LIBRARY_NAME, OvrLibrary.class);
+
+  public static interface ovrHmdType {
         public static final int ovrHmd_None = 0;
         public static final int ovrHmd_DK1 = 3;
         public static final int ovrHmd_DKHD = 4;
@@ -101,6 +99,13 @@ public class OvrLibrary implements Library {
         public static final int ovrLogLevel_Info = 1;
         public static final int ovrLogLevel_Error = 2;
     };
+    public static interface ovrProjectionModifier {
+           public static final int ovrProjection_None = 0x00;
+           public static final int ovrProjection_RightHanded = 0x01;
+           public static final int ovrProjection_FarLessThanNear = 0x02;
+           public static final int ovrProjection_FarClipAtInfinity = 0x04;
+           public static final int ovrProjection_ClipRangeOpenGL = 0x08;
+    };
     public static final String OVR_KEY_USER = "User";
     public static final String OVR_KEY_NAME = "Name";
     public static final String OVR_KEY_GENDER = "Gender";
@@ -131,60 +136,66 @@ public class OvrLibrary implements Library {
     public static final int ovrFalse = 0;
     public static final int ovrTrue = 1;
     public interface ovrLogCallback extends Callback {
-        void apply(int level, Pointer message);
+        void apply(int level, String message);
     };
-    public static native byte ovr_InitializeRenderingShimVersion(int requestedMinorVersion);
-    public static native byte ovr_InitializeRenderingShim();
-    public static native byte ovr_Initialize(InitParams params);
-    public static native void ovr_Shutdown();
-    public static native Pointer ovr_GetVersionString();
-    public static native int ovrHmd_Detect();
-    public static native Hmd ovrHmd_Create(int index);
-    public static native void ovrHmd_Destroy(Hmd hmd);
-    public static native Hmd ovrHmd_CreateDebug(int type);
-    public static native String ovrHmd_GetLastError(Hmd hmd);
-    public static native byte ovrHmd_AttachToWindow(Hmd hmd, Pointer window, OvrRecti destMirrorRect, OvrRecti sourceRenderTargetRect);
-    public static native int ovrHmd_GetEnabledCaps(Hmd hmd);
-    public static native void ovrHmd_SetEnabledCaps(Hmd hmd, int hmdCaps);
-    public static native byte ovrHmd_ConfigureTracking(Hmd hmd, int supportedTrackingCaps, int requiredTrackingCaps);
-    public static native void ovrHmd_RecenterPose(Hmd hmd);
-    public static native TrackingState.ByValue ovrHmd_GetTrackingState(Hmd hmd, double absTime);
-    public static native com.oculusvr.capi.OvrSizei.ByValue ovrHmd_GetFovTextureSize(Hmd hmd, int eye, FovPort.ByValue fov, float pixelsPerDisplayPixel);
-    public static native byte ovrHmd_ConfigureRendering(Hmd hmd, RenderAPIConfig apiConfig, int distortionCaps, FovPort eyeFovIn[], EyeRenderDesc eyeRenderDescOut[]);
-    public static native com.oculusvr.capi.FrameTiming.ByValue ovrHmd_BeginFrame(Hmd hmd, int frameIndex);
-    public static native void ovrHmd_EndFrame(Hmd hmd, Posef renderPose[], GLTexture eyeTexture[]);
-    public static native void ovrHmd_GetEyePoses(Hmd hmd, int frameIndex, OvrVector3f hmdToEyeViewOffset[], Posef outEyePoses[], TrackingState outHmdTrackingState);
-    public static native Posef.ByValue ovrHmd_GetHmdPosePerEye(Hmd hmd, int eye);
-    public static native EyeRenderDesc.ByValue ovrHmd_GetRenderDesc(Hmd hmd, int eyeType, FovPort.ByValue fov);
-    public static native byte ovrHmd_CreateDistortionMesh(Hmd hmd, int eyeType, FovPort.ByValue fov, int distortionCaps, DistortionMesh meshData);
-    public static native byte ovrHmd_CreateDistortionMeshDebug(Hmd Hmd, int eyeType, FovPort.ByValue fov, int distortionCaps, DistortionMesh meshData, float debugEyeReliefOverrideInMetres);
-    public static native void ovrHmd_DestroyDistortionMesh(DistortionMesh meshData);
-    public static native void ovrHmd_GetRenderScaleAndOffset(FovPort.ByValue fov, com.oculusvr.capi.OvrSizei.ByValue textureSize, OvrRecti.ByValue renderViewport, OvrVector2f uvScaleOffsetOut[]);
-    public static native com.oculusvr.capi.FrameTiming.ByValue ovrHmd_GetFrameTiming(Hmd hmd, int frameIndex);
-    public static native com.oculusvr.capi.FrameTiming.ByValue ovrHmd_BeginFrameTiming(Hmd hmd, int frameIndex);
-    public static native void ovrHmd_EndFrameTiming(Hmd hmd);
-    public static native void ovrHmd_ResetFrameTiming(Hmd hmd, int frameIndex);
-    public static native void ovrHmd_GetEyeTimewarpMatrices(Hmd hmd, int eye, Posef.ByValue renderPose, OvrMatrix4f twmOut[]);
-    public static native void ovrHmd_GetEyeTimewarpMatricesDebug(Hmd Hmd, int eye, Posef.ByValue renderPose, com.oculusvr.capi.OvrQuaternionf.ByValue playerTorsoMotion, OvrMatrix4f twmOut[], double debugTimingOffsetInSeconds);
-    public static native double ovr_GetTimeInSeconds();
-    public static native byte ovrHmd_ProcessLatencyTest(Hmd hmd, ByteBuffer rgbColorOut);
-    public static native Pointer ovrHmd_GetLatencyTestResult(Hmd hmd);
-    public static native byte ovrHmd_GetLatencyTest2DrawColor(Hmd Hmd, ByteBuffer rgbColorOut);
-    public static native void ovrHmd_GetHSWDisplayState(Hmd hmd, HSWDisplayState hasWarningState);
-    public static native byte ovrHmd_DismissHSWDisplay(Hmd hmd);
-    public static native byte ovrHmd_GetBool(Hmd hmd, String propertyName, byte defaultVal);
-    public static native byte ovrHmd_SetBool(Hmd hmd, String propertyName, byte value);
-    public static native int ovrHmd_GetInt(Hmd hmd, String propertyName, int defaultVal);
-    public static native byte ovrHmd_SetInt(Hmd hmd, String propertyName, int value);
-    public static native float ovrHmd_GetFloat(Hmd hmd, String propertyName, float defaultVal);
-    public static native byte ovrHmd_SetFloat(Hmd hmd, String propertyName, float value);
-    public static native int ovrHmd_GetFloatArray(Hmd hmd, String propertyName, FloatBuffer values, int arraySize);
-    public static native byte ovrHmd_SetFloatArray(Hmd hmd, String propertyName, FloatBuffer values, int arraySize);
-    public static native String ovrHmd_GetString(Hmd hmd, String propertyName, String defaultVal);
-    public static native byte ovrHmd_SetString(Hmd Hmd, String propertyName, String value);
-    public static native int ovr_TraceMessage(int level, String message);
-    public static native byte ovrHmd_StartPerfLog(Hmd hmd, String fileName, String userData1);
-    public static native byte ovrHmd_StopPerfLog(Hmd hmd);
+    byte ovr_InitializeRenderingShimVersion(int requestedMinorVersion);
+    byte ovr_InitializeRenderingShim();
+    byte ovr_Initialize(InitParams params);
+    void ovr_Shutdown();
+    Pointer ovr_GetVersionString();
+    int ovrHmd_Detect();
+    Hmd ovrHmd_Create(int index);
+    void ovrHmd_Destroy(Hmd hmd);
+    Hmd ovrHmd_CreateDebug(int type);
+    String ovrHmd_GetLastError(Hmd hmd);
+    byte ovrHmd_AttachToWindow(Hmd hmd, Pointer window, OvrRecti destMirrorRect, OvrRecti sourceRenderTargetRect);
+    int ovrHmd_GetEnabledCaps(Hmd hmd);
+    void ovrHmd_SetEnabledCaps(Hmd hmd, int hmdCaps);
+    byte ovrHmd_ConfigureTracking(Hmd hmd, int supportedTrackingCaps, int requiredTrackingCaps);
+    void ovrHmd_RecenterPose(Hmd hmd);
+    TrackingState.ByValue ovrHmd_GetTrackingState(Hmd hmd, double absTime);
+    com.oculusvr.capi.OvrSizei.ByValue ovrHmd_GetFovTextureSize(Hmd hmd, int eye, FovPort.ByValue fov, float pixelsPerDisplayPixel);
+    byte ovrHmd_ConfigureRendering(Hmd hmd, RenderAPIConfig apiConfig, int distortionCaps, FovPort eyeFovIn[], EyeRenderDesc eyeRenderDescOut[]);
+    com.oculusvr.capi.FrameTiming.ByValue ovrHmd_BeginFrame(Hmd hmd, int frameIndex);
+    void ovrHmd_EndFrame(Hmd hmd, Posef renderPose[], GLTexture eyeTexture[]);
+    void ovrHmd_GetEyePoses(Hmd hmd, int frameIndex, OvrVector3f hmdToEyeViewOffset[], Posef outEyePoses[], TrackingState outHmdTrackingState);
+    Posef.ByValue ovrHmd_GetHmdPosePerEye(Hmd hmd, int eye);
+    EyeRenderDesc.ByValue ovrHmd_GetRenderDesc(Hmd hmd, int eyeType, FovPort.ByValue fov);
+    byte ovrHmd_CreateDistortionMesh(Hmd hmd, int eyeType, FovPort.ByValue fov, int distortionCaps, DistortionMesh meshData);
+    byte ovrHmd_CreateDistortionMeshDebug(Hmd Hmd, int eyeType, FovPort.ByValue fov, int distortionCaps, DistortionMesh meshData, float debugEyeReliefOverrideInMetres);
+    void ovrHmd_DestroyDistortionMesh(DistortionMesh meshData);
+    void ovrHmd_GetRenderScaleAndOffset(FovPort.ByValue fov, com.oculusvr.capi.OvrSizei.ByValue textureSize, OvrRecti.ByValue renderViewport, OvrVector2f uvScaleOffsetOut[]);
+    com.oculusvr.capi.FrameTiming.ByValue ovrHmd_GetFrameTiming(Hmd hmd, int frameIndex);
+    com.oculusvr.capi.FrameTiming.ByValue ovrHmd_BeginFrameTiming(Hmd hmd, int frameIndex);
+    void ovrHmd_EndFrameTiming(Hmd hmd);
+    void ovrHmd_ResetFrameTiming(Hmd hmd, int frameIndex);
+    void ovrHmd_GetEyeTimewarpMatrices(Hmd hmd, int eye, Posef.ByValue renderPose, OvrMatrix4f twmOut[]);
+    void ovrHmd_GetEyeTimewarpMatricesDebug(Hmd Hmd, int eye, Posef.ByValue renderPose, com.oculusvr.capi.OvrQuaternionf.ByValue playerTorsoMotion, OvrMatrix4f twmOut[], double debugTimingOffsetInSeconds);
+    double ovr_GetTimeInSeconds();
+    byte ovrHmd_ProcessLatencyTest(Hmd hmd, ByteBuffer rgbColorOut);
+    Pointer ovrHmd_GetLatencyTestResult(Hmd hmd);
+    byte ovrHmd_GetLatencyTest2DrawColor(Hmd Hmd, ByteBuffer rgbColorOut);
+    void ovrHmd_GetHSWDisplayState(Hmd hmd, HSWDisplayState hasWarningState);
+    byte ovrHmd_DismissHSWDisplay(Hmd hmd);
+    byte ovrHmd_GetBool(Hmd hmd, String propertyName, byte defaultVal);
+    byte ovrHmd_SetBool(Hmd hmd, String propertyName, byte value);
+    int ovrHmd_GetInt(Hmd hmd, String propertyName, int defaultVal);
+    byte ovrHmd_SetInt(Hmd hmd, String propertyName, int value);
+    float ovrHmd_GetFloat(Hmd hmd, String propertyName, float defaultVal);
+    byte ovrHmd_SetFloat(Hmd hmd, String propertyName, float value);
+    int ovrHmd_GetFloatArray(Hmd hmd, String propertyName, FloatBuffer values, int arraySize);
+    byte ovrHmd_SetFloatArray(Hmd hmd, String propertyName, FloatBuffer values, int arraySize);
+    String ovrHmd_GetString(Hmd hmd, String propertyName, String defaultVal);
+    byte ovrHmd_SetString(Hmd Hmd, String propertyName, String value);
+    int ovr_TraceMessage(int level, String message);
+    byte ovrHmd_StartPerfLog(Hmd hmd, String fileName, String userData1);
+    byte ovrHmd_StopPerfLog(Hmd hmd);
+
+    OvrMatrix4f.ByValue ovrMatrix4f_Projection(FovPort.ByValue fov, float znear, float zfar, int projectionModFlags);
+    OvrMatrix4f.ByValue ovrMatrix4f_OrthoSubProjection(OvrMatrix4f.ByValue projection, OvrVector2f.ByValue orthoScale, float orthoDistance, float hmdToEyeViewOffsetX);
+    double ovr_WaitTillTime(double absTime);
+
+
     /** Pointer to unknown (opaque) type */
     public static class ovrHmdStruct extends PointerType {
         public ovrHmdStruct(Pointer address) {

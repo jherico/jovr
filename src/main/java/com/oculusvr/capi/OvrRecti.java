@@ -31,6 +31,7 @@ public class OvrRecti extends Structure {
 		
 	};
 	public static class ByValue extends OvrRecti implements Structure.ByValue {
+	    public ByValue() { }
               public ByValue(OvrRecti o) {
                 super(o.Pos, o.Size);
          }

@@ -103,7 +103,17 @@ public class Hmd extends Structure {
   }
   
   public static void initialize() {
-    if (0 == OvrLibrary.INSTANCE.ovr_Initialize(new InitParams(Pointer.NULL))) {
+    InitParams init = new InitParams();
+    init.Flags = OvrLibrary.ovrInitFlags.ovrInit_Debug;
+    init.LogCallback = new OvrLibrary.ovrLogCallback() {
+      @Override
+      public void apply(int level, String message) {
+        System.out.println(message);
+      }
+    };
+    init.ConnectionTimeoutMS = 0;
+    init.RequestedMinorVersion = 0;
+    if (0 == OvrLibrary.INSTANCE.ovr_Initialize(init)) {
       throw new IllegalStateException("Unable to initialize Oculus SDK");
     }
   }
@@ -288,23 +298,23 @@ public class Hmd extends Structure {
     return OvrLibrary.INSTANCE.ovrHmd_GetString(this, propertyName, defaultVal);
   }
 
-//  public static OvrMatrix4f getPerspectiveProjection(@Nonnull FovPort fov, float znear, float zfar, boolean rightHanded) {
-//    Preconditions.checkArgument(znear < zfar, "znear must be less than zfar");
-//    return OvrLibrary.INSTANCE.ovrMatrix4f_Projection(byValue(fov), znear, zfar, (byte) (rightHanded ? 1 : 0));
-//  }
-//
-//  public static OvrMatrix4f getOrthographicProjection(@Nonnull OvrMatrix4f projection, @Nonnull OvrVector2f orthoScale,
-//      float orthoDistance, float eyeViewAdjustX) {
-//    return OvrLibrary.INSTANCE.ovrMatrix4f_OrthoSubProjection(byValue(projection), byValue(orthoScale), orthoDistance,
-//        eyeViewAdjustX);
-//  }
+  public static OvrMatrix4f getPerspectiveProjection(@Nonnull FovPort fov, float znear, float zfar, boolean rightHanded) {
+    Preconditions.checkArgument(znear < zfar, "znear must be less than zfar");
+    return OvrLibrary.INSTANCE.ovrMatrix4f_Projection(byValue(fov), znear, zfar, (byte) (rightHanded ? 1 : 0));
+  }
+
+  public static OvrMatrix4f getOrthographicProjection(@Nonnull OvrMatrix4f projection, @Nonnull OvrVector2f orthoScale,
+      float orthoDistance, float eyeViewAdjustX) {
+    return OvrLibrary.INSTANCE.ovrMatrix4f_OrthoSubProjection(byValue(projection), byValue(orthoScale), orthoDistance,
+        eyeViewAdjustX);
+  }
 
   public static double getTimeInSeconds() {
     return OvrLibrary.INSTANCE.ovr_GetTimeInSeconds();
   }
 
   public static void waitTillTime(double absTime) {
-//    OvrLibrary.INSTANCE.ovr_WaitTillTime(absTime);
+    OvrLibrary.INSTANCE.ovr_WaitTillTime(absTime);
   }
 
   public HSWDisplayState getHSWDisplayState() {

@@ -31,6 +31,7 @@ public class OvrVector2f extends Structure {
 		
 	};
 	public static class ByValue extends OvrVector2f implements Structure.ByValue {
+	    public ByValue() { }
 	  public ByValue(OvrVector2f o) {
 	    super(o.x, o.y);
 	  }
