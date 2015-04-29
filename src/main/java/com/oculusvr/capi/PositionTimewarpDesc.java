@@ -1,7 +1,6 @@
 package com.oculusvr.capi;
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
-import com.sun.jna.ptr.IntByReference;
 import java.util.Arrays;
 import java.util.List;
 /**
@@ -9,31 +8,31 @@ import java.util.List;
  * a tool written by <a href="http://ochafik.com/">Olivier Chafik</a> that <a href="http://code.google.com/p/jnaerator/wiki/CreditsAndLicense">uses a few opensource projects.</a>.<br>
  * For help, please visit <a href="http://nativelibs4java.googlecode.com/">NativeLibs4Java</a> , <a href="http://rococoa.dev.java.net/">Rococoa</a>, or <a href="http://jna.dev.java.net/">JNA</a>.
  */
-public class Texture extends Structure {
-	/** < Platform-independent data about the texture. */
-	public TextureHeader Header;
-	/** < Specialized in ovrGLTextureData, ovrD3D11TextureData etc. */
-	public IntByReference[] PlatformData = new IntByReference[8];
-	public Texture() {
+public class PositionTimewarpDesc extends Structure {
+	public OvrVector3f[] HmdToEyeViewOffset = new OvrVector3f[2];
+	public float NearClip;
+	public float FarClip;
+	public PositionTimewarpDesc() {
 		super();
 	}
 	protected List<? > getFieldOrder() {
-		return Arrays.asList("Header", "PlatformData");
+		return Arrays.asList("HmdToEyeViewOffset", "NearClip", "FarClip");
 	}
-	public Texture(TextureHeader Header, IntByReference PlatformData[]) {
+	public PositionTimewarpDesc(OvrVector3f HmdToEyeViewOffset[], float NearClip, float FarClip) {
 		super();
-		this.Header = Header;
-		if ((PlatformData.length != this.PlatformData.length)) 
+		if ((HmdToEyeViewOffset.length != this.HmdToEyeViewOffset.length)) 
 			throw new IllegalArgumentException("Wrong array size !");
-		this.PlatformData = PlatformData;
+		this.HmdToEyeViewOffset = HmdToEyeViewOffset;
+		this.NearClip = NearClip;
+		this.FarClip = FarClip;
 	}
-	public Texture(Pointer peer) {
+	public PositionTimewarpDesc(Pointer peer) {
 		super(peer);
 	}
-	public static class ByReference extends Texture implements Structure.ByReference {
+	public static class ByReference extends PositionTimewarpDesc implements Structure.ByReference {
 		
 	};
-	public static class ByValue extends Texture implements Structure.ByValue {
+	public static class ByValue extends PositionTimewarpDesc implements Structure.ByValue {
 		
 	};
 }

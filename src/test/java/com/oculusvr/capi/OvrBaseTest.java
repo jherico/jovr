@@ -3,13 +3,13 @@ package com.oculusvr.capi;
 import org.junit.After;
 import org.junit.Before;
 
-import com.oculusvr.capi.OvrLibrary;
+import com.sun.jna.Pointer;
 
 public abstract class OvrBaseTest {
 
   @Before
   public void setup() {
-    OvrLibrary.INSTANCE.ovr_Initialize();
+    OvrLibrary.INSTANCE.ovr_Initialize(new InitParams(Pointer.NULL));
   }
 
 

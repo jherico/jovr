@@ -10,32 +10,33 @@ import com.sun.jna.Structure;
  * For help, please visit <a href="http://nativelibs4java.googlecode.com/">NativeLibs4Java</a> , <a href="http://rococoa.dev.java.net/">Rococoa</a>, or <a href="http://jna.dev.java.net/">JNA</a>.
  */
 public class HSWDisplayState extends Structure {
-  public byte Displayed;
-  /** Absolute time when the warning was first displayed. See ovr_GetTimeInSeconds(). */
-  public double StartTime;
-  /** Earliest absolute time when the warning can be dismissed. May be a time in the past. */
-  public double DismissibleTime;
-  public HSWDisplayState() {
-    super();
-  }
-  
-  @Override
+	/** < True if the Health&Safety Warning is currently displayed. */
+	public byte Displayed;
+	/** Conversion Error : sizeof(char) */
+	/** < Absolute time when the warning was first displayed. See ovr_GetTimeInSeconds(). */
+	public double StartTime;
+	/** < Earliest absolute time when the warning can be dismissed. May be a time in the past. */
+	public double DismissibleTime;
+	public HSWDisplayState() {
+		super();
+	}
+	@Override
   protected List<? > getFieldOrder() {
-    return Arrays.asList("Displayed", "StartTime", "DismissibleTime");
-  }
-  public HSWDisplayState(byte Displayed, double StartTime, double DismissibleTime) {
-    super();
-    this.Displayed = Displayed;
-    this.StartTime = StartTime;
-    this.DismissibleTime = DismissibleTime;
-  }
-  public HSWDisplayState(Pointer peer) {
-    super(peer);
-  }
-  public static class ByReference extends HSWDisplayState implements Structure.ByReference {
-    
-  };
-  public static class ByValue extends HSWDisplayState implements Structure.ByValue {
-    
-  };
+		return Arrays.asList("Displayed", "StartTime", "DismissibleTime");
+	}
+	public HSWDisplayState(byte Displayed, double StartTime, double DismissibleTime) {
+		super();
+		this.Displayed = Displayed;
+		this.StartTime = StartTime;
+		this.DismissibleTime = DismissibleTime;
+	}
+	public HSWDisplayState(Pointer peer) {
+		super(peer);
+	}
+	public static class ByReference extends HSWDisplayState implements Structure.ByReference {
+		
+	};
+	public static class ByValue extends HSWDisplayState implements Structure.ByValue {
+		
+	};
 }

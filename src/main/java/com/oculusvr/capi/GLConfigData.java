@@ -8,29 +8,32 @@ import java.util.List;
  * a tool written by <a href="http://ochafik.com/">Olivier Chafik</a> that <a href="http://code.google.com/p/jnaerator/wiki/CreditsAndLicense">uses a few opensource projects.</a>.<br>
  * For help, please visit <a href="http://nativelibs4java.googlecode.com/">NativeLibs4Java</a> , <a href="http://rococoa.dev.java.net/">Rococoa</a>, or <a href="http://jna.dev.java.net/">JNA</a>.
  */
-public class GLTextureData extends Structure {
+public class GLConfigData extends Structure {
 	/** < General device settings. */
-	public TextureHeader Header;
-	/** < The OpenGL name for this texture. */
-	public int TexId;
-	public GLTextureData() {
+	public RenderAPIConfigHeader Header;
+	/** < The optional window handle. If unset, rendering will use the current window. */
+	public Pointer Window;
+	/** < The optional device context. If unset, rendering will use a new context. */
+	public Pointer DC;
+	public GLConfigData() {
 		super();
 	}
 	protected List<? > getFieldOrder() {
-		return Arrays.asList("Header", "TexId");
+		return Arrays.asList("Header", "Window", "DC");
 	}
-	public GLTextureData(TextureHeader Header, int TexId) {
+	public GLConfigData(RenderAPIConfigHeader Header, Pointer Window, Pointer DC) {
 		super();
 		this.Header = Header;
-		this.TexId = TexId;
+		this.Window = Window;
+		this.DC = DC;
 	}
-	public GLTextureData(Pointer peer) {
+	public GLConfigData(Pointer peer) {
 		super(peer);
 	}
-	public static class ByReference extends GLTextureData implements Structure.ByReference {
+	public static class ByReference extends GLConfigData implements Structure.ByReference {
 		
 	};
-	public static class ByValue extends GLTextureData implements Structure.ByValue {
+	public static class ByValue extends GLConfigData implements Structure.ByValue {
 		
 	};
 }

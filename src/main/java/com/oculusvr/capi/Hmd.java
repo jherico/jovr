@@ -8,7 +8,6 @@ import javax.annotation.Nonnull;
 
 import com.google.common.base.Preconditions;
 import com.oculusvr.capi.OvrLibrary.ovrHmdStruct;
-import com.oculusvr.capi.OvrLibrary.ovrHmdType;
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 /**
@@ -18,7 +17,6 @@ import com.sun.jna.Structure;
  */
 public class Hmd extends Structure {
   public ovrHmdStruct Handle;
-  /** @see ovrHmdType */
   public int Type;
   public Pointer ProductName;
   public Pointer Manufacturer;
@@ -27,33 +25,35 @@ public class Hmd extends Structure {
   public byte[] SerialNumber = new byte[24];
   public short FirmwareMajor;
   public short FirmwareMinor;
+  /** < Horizontal field-of-view */
   public float CameraFrustumHFovInRadians;
+  /** < Vertical field-of-view */
   public float CameraFrustumVFovInRadians;
+  /** < Near clip distance */
   public float CameraFrustumNearZInMeters;
+  /** < Far clip distance */
   public float CameraFrustumFarZInMeters;
   public int HmdCaps;
   public int TrackingCaps;
-  public int DistortionCaps; 
-  public FovPort[] DefaultEyeFov = new FovPort[2];
-  public FovPort[] MaxEyeFov = new FovPort[2];
-  public int[] EyeRenderOrder = new int[2];
+  public int DistortionCaps;
+  public FovPort[] DefaultEyeFov = new FovPort[com.oculusvr.capi.OvrLibrary.ovrEyeType.ovrEye_Count];
+  public FovPort[] MaxEyeFov = new FovPort[com.oculusvr.capi.OvrLibrary.ovrEyeType.ovrEye_Count];
+  public int[] EyeRenderOrder = new int[com.oculusvr.capi.OvrLibrary.ovrEyeType.ovrEye_Count];
   public OvrSizei Resolution;
   public OvrVector2i WindowsPos;
   public Pointer DisplayDeviceName;
   public int DisplayId;
-  
   public Hmd() {
-    super();
+         super();
   }
-  
   @Override
   protected List<? > getFieldOrder() {
-    return Arrays.asList("Handle", "Type", "ProductName", "Manufacturer", "VendorId", "ProductId", "SerialNumber", "FirmwareMajor", "FirmwareMinor", "CameraFrustumHFovInRadians", "CameraFrustumVFovInRadians", "CameraFrustumNearZInMeters", "CameraFrustumFarZInMeters", "HmdCaps", "TrackingCaps", "DistortionCaps", "DefaultEyeFov", "MaxEyeFov", "EyeRenderOrder", "Resolution", "WindowsPos", "DisplayDeviceName", "DisplayId");
+         return Arrays.asList("Handle", "Type", "ProductName", "Manufacturer", "VendorId", "ProductId", "SerialNumber", "FirmwareMajor", "FirmwareMinor", "CameraFrustumHFovInRadians", "CameraFrustumVFovInRadians", "CameraFrustumNearZInMeters", "CameraFrustumFarZInMeters", "HmdCaps", "TrackingCaps", "DistortionCaps", "DefaultEyeFov", "MaxEyeFov", "EyeRenderOrder", "Resolution", "WindowsPos", "DisplayDeviceName", "DisplayId");
   }
   public Hmd(Pointer peer) {
-    super(peer);
+         super(peer);
   }
-
+  
   @Nonnull 
   static private FovPort.ByValue byValue(@Nonnull FovPort fov) {
     if (fov instanceof FovPort.ByValue) {
@@ -103,7 +103,7 @@ public class Hmd extends Structure {
   }
   
   public static void initialize() {
-    if (0 == OvrLibrary.INSTANCE.ovr_Initialize()) {
+    if (0 == OvrLibrary.INSTANCE.ovr_Initialize(new InitParams(Pointer.NULL))) {
       throw new IllegalStateException("Unable to initialize Oculus SDK");
     }
   }
@@ -288,23 +288,23 @@ public class Hmd extends Structure {
     return OvrLibrary.INSTANCE.ovrHmd_GetString(this, propertyName, defaultVal);
   }
 
-  public static OvrMatrix4f getPerspectiveProjection(@Nonnull FovPort fov, float znear, float zfar, boolean rightHanded) {
-    Preconditions.checkArgument(znear < zfar, "znear must be less than zfar");
-    return OvrLibrary.INSTANCE.ovrMatrix4f_Projection(byValue(fov), znear, zfar, (byte) (rightHanded ? 1 : 0));
-  }
-
-  public static OvrMatrix4f getOrthographicProjection(@Nonnull OvrMatrix4f projection, @Nonnull OvrVector2f orthoScale,
-      float orthoDistance, float eyeViewAdjustX) {
-    return OvrLibrary.INSTANCE.ovrMatrix4f_OrthoSubProjection(byValue(projection), byValue(orthoScale), orthoDistance,
-        eyeViewAdjustX);
-  }
+//  public static OvrMatrix4f getPerspectiveProjection(@Nonnull FovPort fov, float znear, float zfar, boolean rightHanded) {
+//    Preconditions.checkArgument(znear < zfar, "znear must be less than zfar");
+//    return OvrLibrary.INSTANCE.ovrMatrix4f_Projection(byValue(fov), znear, zfar, (byte) (rightHanded ? 1 : 0));
+//  }
+//
+//  public static OvrMatrix4f getOrthographicProjection(@Nonnull OvrMatrix4f projection, @Nonnull OvrVector2f orthoScale,
+//      float orthoDistance, float eyeViewAdjustX) {
+//    return OvrLibrary.INSTANCE.ovrMatrix4f_OrthoSubProjection(byValue(projection), byValue(orthoScale), orthoDistance,
+//        eyeViewAdjustX);
+//  }
 
   public static double getTimeInSeconds() {
     return OvrLibrary.INSTANCE.ovr_GetTimeInSeconds();
   }
 
   public static void waitTillTime(double absTime) {
-    OvrLibrary.INSTANCE.ovr_WaitTillTime(absTime);
+//    OvrLibrary.INSTANCE.ovr_WaitTillTime(absTime);
   }
 
   public HSWDisplayState getHSWDisplayState() {
@@ -317,8 +317,8 @@ public class Hmd extends Structure {
     return 0 != OvrLibrary.INSTANCE.ovrHmd_DismissHSWDisplay(this);
   }
   
-  public void enableHswDisplay(boolean enable) {
-    OvrLibrary.INSTANCE.ovrhmd_EnableHSWDisplaySDKRender(this, (byte)(enable ? 1 : 0));
-  }
+//  public void enableHswDisplay(boolean enable) {
+//    OvrLibrary.INSTANCE.ovrhmd_EnableHSWDisplaySDKRender(this, (byte)(enable ? 1 : 0));
+//  }
 
 }
