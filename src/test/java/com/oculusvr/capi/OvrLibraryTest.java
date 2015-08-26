@@ -1,18 +1,31 @@
 package com.oculusvr.capi;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 
-import com.oculusvr.capi.OvrLibrary.ovrHmdType;
-
-public class OvrLibraryTest extends OvrBaseTest {
+public class OvrLibraryTest {
 
   @Test
-  public void testInitHmd() {
-    Hmd hmd = OvrLibrary.INSTANCE.ovrHmd_CreateDebug(ovrHmdType.ovrHmd_DK1);
-    assertNotNull("Creating a debug HMD results in a non-null object", hmd);
+  public void testInitHmd() throws InterruptedException {
+    Hmd.initialize();
+    Hmd hmd = Hmd.create();
+    HmdDesc hmdDesc = hmd.getDesc();
+    System.out.println(hmdDesc.Type);
+    System.out.println(hmdDesc.Resolution.w + " " + hmdDesc.Resolution.h);
+    System.out.println(hmdDesc.DisplayRefreshRate);
+    
+    hmd.configureTracking();
+    for (int i = 0; i < 10; ++i) {
+      TrackingState trackingState = hmd.getTrackingState(0);
+      OvrVector3f position = trackingState.HeadPose.Pose.Position;
+      position.x *= 100.0f;
+      position.y *= 100.0f;
+      position.z *= 100.0f;
+      System.out.println((int)position.x + ", " + (int)position.y + " " + (int)position.z);
+      Thread.sleep(1000);
+    }
     hmd.destroy();
+    hmd = null;
+    Hmd.shutdown();
   }
 
 }
