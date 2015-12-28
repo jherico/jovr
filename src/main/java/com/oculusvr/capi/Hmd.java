@@ -22,6 +22,16 @@ public class Hmd extends HmdDesc {
     return new Hmd(hmdParam.getValue());
   }
 
+  public static Hmd createDebug(int type) {
+    PointerByReference hmdParam = new PointerByReference();
+    int result = OvrLibrary.INSTANCE.ovrHmd_CreateDebug(type, hmdParam);
+    
+    if (0 > result) {
+      throw new IllegalStateException("Unable to create HMD");
+    }
+    return new Hmd(hmdParam.getValue());
+  }
+  
   public Hmd() {
   }
 

@@ -188,6 +188,8 @@ public interface OvrLibrary extends Library {
   void ovr_Shutdown();
 
   int ovrHmd_Create(int index, PointerByReference hmd);
+  
+  int ovrHmd_CreateDebug(int type, PointerByReference hmd);
 
   void ovrHmd_Destroy(Hmd hmd);
 

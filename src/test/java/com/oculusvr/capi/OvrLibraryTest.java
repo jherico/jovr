@@ -7,7 +7,13 @@ public class OvrLibraryTest {
   @Test
   public void testInitHmd() throws InterruptedException {
     Hmd.initialize();
-    Hmd hmd = Hmd.create();
+    Hmd hmd;
+    try {
+        hmd = Hmd.create();
+    } catch (IllegalStateException e){
+        hmd = Hmd.createDebug(OvrLibrary.ovrHmdType.ovrHmd_DK2);
+
+    }
     HmdDesc hmdDesc = hmd.getDesc();
     System.out.println(hmdDesc.Type);
     System.out.println(hmdDesc.Resolution.w + " " + hmdDesc.Resolution.h);
