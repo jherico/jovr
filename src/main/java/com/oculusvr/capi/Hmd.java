@@ -8,14 +8,14 @@ import javax.annotation.Nonnull;
 
 import com.google.common.base.Preconditions;
 import com.sun.jna.Pointer;
-import com.sun.jna.PointerType;
 import com.sun.jna.ptr.PointerByReference;
 
-public class Hmd extends PointerType {
+public class Hmd extends HmdDesc {
+  
   public static Hmd create() {
     PointerByReference hmdParam = new PointerByReference();
-    PointerByReference luidParam = new PointerByReference();
-    int result = OvrLibrary.INSTANCE.ovr_Create(hmdParam, luidParam);
+    int result = OvrLibrary.INSTANCE.ovrHmd_Create(0, hmdParam);
+    
     if (0 > result) {
       throw new IllegalStateException("Unable to create HMD");
     }
@@ -40,24 +40,24 @@ public class Hmd extends PointerType {
   }
 
   public void destroy() {
-    OvrLibrary.INSTANCE.ovr_Destroy(this);
+    OvrLibrary.INSTANCE.ovrHmd_Destroy(this);
   }
 
   public HmdDesc getDesc() {
-    return OvrLibrary.INSTANCE.ovr_GetHmdDesc(this);
+    return this;
   }
 
   public float getFloat(@Nonnull String propertyName, float defaultVal) {
-    return OvrLibrary.INSTANCE.ovr_GetFloat(this, propertyName, defaultVal);
+    return OvrLibrary.INSTANCE.ovrHmd_GetFloat(this, propertyName, defaultVal);
   }
 
   public byte setFloat(@Nonnull String propertyName, float value) {
-    return OvrLibrary.INSTANCE.ovr_SetFloat(this, propertyName, value);
+    return OvrLibrary.INSTANCE.ovrHmd_SetFloat(this, propertyName, value);
   }
 
   public float[] getFloatArray(@Nonnull String propertyName, int arraySize) {
     FloatBuffer buffer = FloatBuffer.allocate(arraySize);
-    int result = OvrLibrary.INSTANCE.ovr_GetFloatArray(this, propertyName, buffer, arraySize);
+    int result = OvrLibrary.INSTANCE.ovrHmd_GetFloatArray(this, propertyName, buffer, arraySize);
     if (0 == result) {
       return null;
     }
@@ -69,15 +69,15 @@ public class Hmd extends PointerType {
   }
 
   public int getFloatArray(@Nonnull String propertyName, @Nonnull FloatBuffer values, int arraySize) {
-    return OvrLibrary.INSTANCE.ovr_GetFloatArray(this, propertyName, values, arraySize);
+    return OvrLibrary.INSTANCE.ovrHmd_GetFloatArray(this, propertyName, values, arraySize);
   }
 
   public byte setFloatArray(@Nonnull String propertyName, @Nonnull FloatBuffer values, int arraySize) {
-    return OvrLibrary.INSTANCE.ovr_SetFloatArray(this, propertyName, values, arraySize);
+    return OvrLibrary.INSTANCE.ovrHmd_SetFloatArray(this, propertyName, values, arraySize);
   }
 
   public String getString(@Nonnull String propertyName, String defaultVal) {
-    return OvrLibrary.INSTANCE.ovr_GetString(this, propertyName, defaultVal);
+    return OvrLibrary.INSTANCE.ovrHmd_GetString(this, propertyName, defaultVal);
   }
 
   private static class ScaleAndOffset2D {
@@ -174,11 +174,11 @@ public class Hmd extends PointerType {
   // }
   //
   public int getEnabledCaps() {
-    return OvrLibrary.INSTANCE.ovr_GetEnabledCaps(this);
+    return OvrLibrary.INSTANCE.ovrHmd_GetEnabledCaps(this);
   }
 
   public void configureTracking(int supportedSensorCaps, int requiredSensorCaps) {
-    if (0 > OvrLibrary.INSTANCE.ovr_ConfigureTracking(this, supportedSensorCaps, requiredSensorCaps)) {
+    if (0 > OvrLibrary.INSTANCE.ovrHmd_ConfigureTracking(this, supportedSensorCaps, requiredSensorCaps)) {
       throw new IllegalStateException("Unable to configure tracking");
     }
   }
@@ -193,26 +193,26 @@ public class Hmd extends PointerType {
   }
 
   public void recenterPose() {
-    OvrLibrary.INSTANCE.ovr_RecenterPose(this);
+    OvrLibrary.INSTANCE.ovrHmd_RecenterPose(this);
   }
 
   public TrackingState getTrackingState(double absTime) {
-    return OvrLibrary.INSTANCE.ovr_GetTrackingState(this, absTime);
+    return OvrLibrary.INSTANCE.ovrHmd_GetTrackingState(this, absTime);
   }
 
   public OvrSizei getFovTextureSize(int eye, FovPort fov, float pixelsPerDisplayPixel) {
-    return OvrLibrary.INSTANCE.ovr_GetFovTextureSize(this, eye, fov, pixelsPerDisplayPixel);
+    return OvrLibrary.INSTANCE.ovrHmd_GetFovTextureSize(this, eye, fov, pixelsPerDisplayPixel);
   }
 
   @Nonnull
   public EyeRenderDesc getRenderDesc(int eyeType, @Nonnull FovPort fov) {
     Preconditions.checkNotNull(fov);
-    return OvrLibrary.INSTANCE.ovr_GetRenderDesc(this, eyeType, fov);
+    return OvrLibrary.INSTANCE.ovrHmd_GetRenderDesc(this, eyeType, fov);
   }
 
   @Nonnull
   public FrameTiming getFrameTiming(int frameIndex) {
-    return OvrLibrary.INSTANCE.ovr_GetFrameTiming(this, frameIndex);
+    return OvrLibrary.INSTANCE.ovrHmd_GetFrameTiming(this, frameIndex);
   }
 
   Posef[] CalcEyePoses(Posef headPose, OvrVector3f[] hmdToEyeViewOffset) {
@@ -230,7 +230,7 @@ public class Hmd extends PointerType {
 
   public SwapTextureSet createSwapTexture(OvrSizei size, int format) {
     PointerByReference texturePointer = new PointerByReference();
-    int callResult = OvrLibrary.INSTANCE.ovr_CreateSwapTextureSetGL(this, format, size.w, size.h, texturePointer);
+    int callResult = OvrLibrary.INSTANCE.ovrHmd_CreateSwapTextureSetGL(this, format, size.w, size.h, texturePointer);
     if (0 > callResult) {
       throw new IllegalStateException("Could not create swap texture set");
     }
@@ -240,12 +240,12 @@ public class Hmd extends PointerType {
   }
 
   public void destroySwapTexture(SwapTextureSet set) {
-    OvrLibrary.INSTANCE.ovr_DestroySwapTextureSet(this, set.getPointer());
+    OvrLibrary.INSTANCE.ovrHmd_DestroySwapTextureSet(this, set.getPointer());
   }
 
   public GLTexture createMirrorTexture(OvrSizei size, int format) {
     PointerByReference texturePointer = new PointerByReference();
-    int callResult = OvrLibrary.INSTANCE.ovr_CreateMirrorTextureGL(this, format, size.w, size.h, texturePointer);
+    int callResult = OvrLibrary.INSTANCE.ovrHmd_CreateMirrorTextureGL(this, format, size.w, size.h, texturePointer);
     if (0 > callResult) {
       throw new IllegalStateException("Could not create swap texture set");
     }
@@ -255,13 +255,13 @@ public class Hmd extends PointerType {
   }
 
   public void destroyMirrorTexture(GLTexture texture) {
-    OvrLibrary.INSTANCE.ovr_DestroyMirrorTexture(this, texture.getPointer());
+    OvrLibrary.INSTANCE.ovrHmd_DestroyMirrorTexture(this, texture.getPointer());
   }
 
   public int submitFrame(int frameIndex, LayerEyeFov layer) {
     layer.write();
     PointerByReference p = new PointerByReference();
     p.setValue(layer.getPointer());
-    return OvrLibrary.INSTANCE.ovr_SubmitFrame(this, frameIndex, Pointer.NULL, p, 1);
+    return OvrLibrary.INSTANCE.ovrHmd_SubmitFrame(this, frameIndex, Pointer.NULL, p, 1);
   }
 }

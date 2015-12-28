@@ -11,7 +11,6 @@ public class OvrLibraryTest {
     HmdDesc hmdDesc = hmd.getDesc();
     System.out.println(hmdDesc.Type);
     System.out.println(hmdDesc.Resolution.w + " " + hmdDesc.Resolution.h);
-    System.out.println(hmdDesc.DisplayRefreshRate);
     
     hmd.configureTracking();
     for (int i = 0; i < 10; ++i) {
