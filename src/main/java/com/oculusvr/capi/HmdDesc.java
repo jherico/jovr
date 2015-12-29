@@ -5,7 +5,7 @@ import com.sun.jna.Structure;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class HmdDesc extends Structure {
+public class HmdDesc extends Structure {
 
   public Pointer Handle;
   /**
@@ -31,20 +31,20 @@ public abstract class HmdDesc extends Structure {
   public int[] EyeRenderOrder = new int[2];
   public OvrSizei Resolution;
 
-  @Override
-  protected List<?> getFieldOrder() {
-    return Arrays.asList("Handle", "Type", "padding1", "ProductName", "Manufacturer", "VendorId", "ProductId", "SerialNumber",
-                "FirmwareMajor", "FirmwareMinor", "CameraFrustumHFovInRadians", "CameraFrustumVFovInRadians",
-                "CameraFrustumNearZInMeters", "CameraFrustumFarZInMeters", "HmdCaps", "TrackingCaps", "DefaultEyeFov",
-                "MaxEyeFov", "EyeRenderOrder", "Resolution");
-  }
-
   public HmdDesc() {
   }
 
   public HmdDesc(Pointer peer) {
     super(peer);
     read();
+  }
+
+  @Override
+  protected List<?> getFieldOrder() {
+    return Arrays.asList("Handle", "Type", "padding1", "ProductName", "Manufacturer", "VendorId", "ProductId", "SerialNumber",
+        "FirmwareMajor", "FirmwareMinor", "CameraFrustumHFovInRadians", "CameraFrustumVFovInRadians",
+        "CameraFrustumNearZInMeters", "CameraFrustumFarZInMeters", "HmdCaps", "TrackingCaps", "DefaultEyeFov",
+        "MaxEyeFov", "EyeRenderOrder", "Resolution");
   }
 
 }
