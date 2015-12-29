@@ -40,7 +40,7 @@ public interface OvrLibrary extends Library {
   public static final String OVR_DEBUG_HUD_STEREO_GUIDE_COLOR = "DebugHudStereoGuideColor4f";
 
   public static final int PRODUCT_VERSION = 0;
-  public static final int MAJOR_VERSION = 7;
+  public static final int MAJOR_VERSION = 6;
   public static final String BIT_DEPTH = System.getProperty("sun.arch.data.model");
   public static final String LIBRARY_NAME = String.format("LibOVRRT%s_%d_%d.dll", BIT_DEPTH, PRODUCT_VERSION,
       MAJOR_VERSION);
@@ -187,63 +187,65 @@ public interface OvrLibrary extends Library {
 
   void ovr_Shutdown();
 
-  HmdDesc ovr_GetHmdDesc(Hmd hmd);
+  int ovrHmd_Create(int index, PointerByReference hmd);
+  
+  int ovrHmd_CreateDebug(int type, PointerByReference hmd);
 
-  int ovr_Create(PointerByReference hmd, PointerByReference luid);
-
-  void ovr_Destroy(Hmd hmd);
+  void ovrHmd_Destroy(Hmd hmd);
 
   Pointer ovr_GetVersionString();
 
-  int ovr_GetEnabledCaps(Hmd hmd);
+  int ovrHmd_GetEnabledCaps(Hmd hmd);
 
-  void ovr_SetEnabledCaps(Hmd hmd, int hmdCaps);
+  void ovrHmd_SetEnabledCaps(Hmd hmd, int hmdCaps);
 
-  int ovr_ConfigureTracking(Hmd hmd, int supportedTrackingCaps, int requiredTrackingCaps);
+  int ovrHmd_ConfigureTracking(Hmd hmd, int supportedTrackingCaps, int requiredTrackingCaps);
 
-  void ovr_RecenterPose(Hmd hmd);
+  void ovrHmd_RecenterPose(Hmd hmd);
 
   // String ovr_GetLastError(Hmd hmd);
 
-  TrackingState ovr_GetTrackingState(Hmd hmd, double absTime);
+  TrackingState ovrHmd_GetTrackingState(Hmd hmd, double absTime);
 
-  OvrSizei ovr_GetFovTextureSize(Hmd hmd, int eye, FovPort fov, float pixelsPerDisplayPixel);
+  OvrSizei ovrHmd_GetFovTextureSize(Hmd hmd, int eye, FovPort fov, float pixelsPerDisplayPixel);
 
-  EyeRenderDesc ovr_GetRenderDesc(Hmd hmd, int eyeType, FovPort fov);
+  EyeRenderDesc ovrHmd_GetRenderDesc(Hmd hmd, int eyeType, FovPort fov);
 
-  FrameTiming ovr_GetFrameTiming(Hmd hmd, int frameIndex);
+  FrameTiming ovrHmd_GetFrameTiming(Hmd hmd, int frameIndex);
 
   double ovr_GetTimeInSeconds();
 
-  byte ovr_GetBool(Hmd hmd, String propertyName, byte defaultVal);
+  byte ovrHmd_GetBool(Hmd hmd, String propertyName, byte defaultVal);
 
-  byte ovr_SetBool(Hmd hmd, String propertyName, byte value);
+  byte ovrHmd_SetBool(Hmd hmd, String propertyName, byte value);
 
-  int ovr_GetInt(Hmd hmd, String propertyName, int defaultVal);
+  int ovrHmd_GetInt(Hmd hmd, String propertyName, int defaultVal);
 
-  byte ovr_SetInt(Hmd hmd, String propertyName, int value);
+  byte ovrHmd_SetInt(Hmd hmd, String propertyName, int value);
 
-  float ovr_GetFloat(Hmd hmd, String propertyName, float defaultVal);
+  float ovrHmd_GetFloat(Hmd hmd, String propertyName, float defaultVal);
 
-  byte ovr_SetFloat(Hmd hmd, String propertyName, float value);
+  byte ovrHmd_SetFloat(Hmd hmd, String propertyName, float value);
 
-  int ovr_GetFloatArray(Hmd hmd, String propertyName, FloatBuffer values, int arraySize);
+  int ovrHmd_GetFloatArray(Hmd hmd, String propertyName, FloatBuffer values, int arraySize);
 
-  byte ovr_SetFloatArray(Hmd hmd, String propertyName, FloatBuffer values, int arraySize);
+  byte ovrHmd_SetFloatArray(Hmd hmd, String propertyName, FloatBuffer values, int arraySize);
 
-  String ovr_GetString(Hmd hmd, String propertyName, String defaultVal);
+  String ovrHmd_GetString(Hmd hmd, String propertyName, String defaultVal);
 
-  byte ovr_SetString(Hmd hmddesc, String propertyName, String value);
+  byte ovrHmd_SetString(Hmd hmddesc, String propertyName, String value);
 
   OvrMatrix4f ovrMatrix4f_Projection(FovPort fov, float znear, float zfar, byte rightHanded);
 
-  int ovr_CreateSwapTextureSetGL(Hmd hmd, int format, int width, int height, PointerByReference pointer);
+  int ovrHmd_CreateSwapTextureSetGL(Hmd hmd, int format, int width, int height, PointerByReference pointer);
 
-  void ovr_DestroySwapTextureSet(Hmd hmd, Pointer textureSet);
+  void ovrHmd_DestroySwapTextureSet(Hmd hmd, Pointer textureSet);
 
-  int ovr_CreateMirrorTextureGL(Hmd hmd, int format, int width, int height, PointerByReference pointer);
+  int ovrHmd_CreateMirrorTextureGL(Hmd hmd, int format, int width, int height, PointerByReference pointer);
 
-  void ovr_DestroyMirrorTexture(Hmd hmd, Pointer mirrorTexture);
+  void ovrHmd_DestroyMirrorTexture(Hmd hmd, Pointer mirrorTexture);
 
-  int ovr_SubmitFrame(Hmd hmd, int frameIndex, Pointer viewScaleDesc, PointerByReference layers, int layerCount);
+  int ovrHmd_SubmitFrame(Hmd hmd, int frameIndex, Pointer viewScaleDesc, PointerByReference layers, int layerCount);
+  
+ 
 }

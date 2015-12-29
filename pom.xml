@@ -6,7 +6,7 @@
     <version>1.0.0</version>
   </parent>
   <artifactId>jovr</artifactId>
-  <version>0.7.0.1-SNAPSHOT</version>
+  <version>0.6.0.0</version>
   <packaging>jar</packaging>
 
   <name>Oculus Rift head tracker library</name>
@@ -21,9 +21,9 @@
   </licenses>
 
   <scm>
-    <connection>scm:git:https://github.com/jherico/jocular.git</connection>
-    <developerConnection>scm:git:git@github.com:jherico/jocular.git</developerConnection>
-    <url>https://github.com/jherico/jocular</url>
+    <connection>scm:git:https://github.com/crramirez/jovr.git</connection>
+    <developerConnection>scm:git:git@github.com:crramirez/jovr.git</developerConnection>
+    <url>https://github.com/crramirez/jovr.git</url>
   </scm>
 
   <build>
@@ -31,6 +31,9 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-gpg-plugin</artifactId>
+        <configuration>
+            <skip>true</skip>
+        </configuration>        
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -61,6 +64,7 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>test</scope>
+      <version>4.12</version>
     </dependency>
   </dependencies>
 </project>
