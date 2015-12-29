@@ -1,9 +1,10 @@
 package com.oculusvr.capi;
 
-import com.sun.jna.Pointer;
-import com.sun.jna.Structure;
 import java.util.Arrays;
 import java.util.List;
+
+import com.sun.jna.Pointer;
+import com.sun.jna.Structure;
 
 public class HmdDesc extends Structure {
 
@@ -46,5 +47,4 @@ public class HmdDesc extends Structure {
         "CameraFrustumNearZInMeters", "CameraFrustumFarZInMeters", "HmdCaps", "TrackingCaps", "DefaultEyeFov",
         "MaxEyeFov", "EyeRenderOrder", "Resolution");
   }
-
 }
