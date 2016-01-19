@@ -33,15 +33,21 @@ public interface OvrLibrary extends Library {
   public static final float OVR_DEFAULT_EYE_HEIGHT = 1.675f;
   public static final int OVR_DEFAULT_EYE_RELIEF_DIAL = 3;
   public static final String OVR_PERF_HUD_MODE = "PerfHudMode";
+  
+  public static final String OVR_LAYER_HUD_MODE = "LayerHudMode"; // allowed values are defined in enum ovrLayerHudMode
+  public static final String OVR_LAYER_HUD_CURRENT_LAYER = "LayerHudCurrentLayer"; // The layer to show 
+  public static final String OVR_LAYER_HUD_SHOW_ALL_LAYERS = "LayerHudShowAll"; // Hide other layers when the hud is enabled
+  
   public static final String OVR_DEBUG_HUD_STEREO_MODE = "DebugHudStereoMode";
+  public static final String OVR_DEBUG_HUD_STEREO_GUIDE_INFO_ENABLE = "DebugHudStereoGuideInfoEnable";
   public static final String OVR_DEBUG_HUD_STEREO_GUIDE_SIZE = "DebugHudStereoGuideSize2f";
   public static final String OVR_DEBUG_HUD_STEREO_GUIDE_POSITION = "DebugHudStereoGuidePosition3f";
   public static final String OVR_DEBUG_HUD_STEREO_GUIDE_YAWPITCHROLL = "DebugHudStereoGuideYawPitchRoll3f";
   public static final String OVR_DEBUG_HUD_STEREO_GUIDE_COLOR = "DebugHudStereoGuideColor4f";
 
   public static final int PRODUCT_VERSION = 0;
-  public static final int MAJOR_VERSION = 7;
-  public static final String BIT_DEPTH = System.getProperty("sun.arch.data.model");
+  public static final int MAJOR_VERSION = 8;
+  public static final String BIT_DEPTH = "64";
   public static final String LIBRARY_NAME = String.format("LibOVRRT%s_%d_%d.dll", BIT_DEPTH, PRODUCT_VERSION,
       MAJOR_VERSION);
   public static final NativeLibrary JNA_NATIVE_LIB = NativeLibrary.getInstance(LIBRARY_NAME);
@@ -111,6 +117,7 @@ public interface OvrLibrary extends Library {
     public static final int ovrHmd_Other = 9;
     public static final int ovrHmd_E3_2015 = 10;
     public static final int ovrHmd_ES06 = 11;
+    public static final int ovrHmd_ES09 = 12;
   };
 
   public static interface ovrHmdCaps {
@@ -123,7 +130,6 @@ public interface OvrLibrary extends Library {
     public static final int ovrTrackingCap_Orientation = 0x0010;
     public static final int ovrTrackingCap_MagYawCorrection = 0x0020;
     public static final int ovrTrackingCap_Position = 0x0040;
-    public static final int ovrTrackingCap_Idle = 0x0100;
   };
 
   public static interface ovrDistortionCaps {
@@ -165,14 +171,23 @@ public interface OvrLibrary extends Library {
     public static final int ovrLayerType_Disabled = 0;
     public static final int ovrLayerType_EyeFov = 1;
     public static final int ovrLayerType_EyeFovDepth = 2;
-    public static final int ovrLayerType_QuadInWorld = 3;
-    public static final int ovrLayerType_QuadHeadLocked = 4;
+    public static final int ovrLayerType_Quad = 3;
+    public static final int ovrLayerType_EyeMatrix = 5;
     public static final int ovrLayerType_Direct = 6;
   };
 
   public static interface ovrLayerFlags {
     public static final int ovrLayerFlag_HighQuality = 0x01;
     public static final int ovrLayerFlag_TextureOriginAtBottomLeft = 0x02;
+
+    /// Mark this surface as "headlocked", which means it is specified
+    /// relative to the HMD and moves with it, rather than being specified
+    /// relative to sensor/torso space and remaining still while the head moves.
+    /// ovrLayerType_QuadHeadLocked is now ovrLayerType_Quad plus this flag.
+    /// However the flag can be applied to any layer type except ovrLayerType_Direct
+    /// to achieve a similar effect.
+    public static final int ovrLayerFlag_HeadLocked                = 0x04;
+    
   };
 
   public static interface ovrProjectionModifier {
@@ -183,6 +198,39 @@ public interface OvrLibrary extends Library {
     public static final int ovrProjection_ClipRangeOpenGL = 0x08;
   };
 
+/// Describes button input types.
+/// Button inputs are combined; that is they will be reported as pressed if they are 
+/// pressed on either one of the two devices.
+/// The ovrButton_Up/Down/Left/Right map to both XBox D-Pad and directional buttons.
+/// The ovrButton_Enter and ovrButton_Return map to Start and Back controller buttons, respectively.
+  public static interface ovrButton {
+    public static final int ovrButton_A         = 0x00000001;
+    public static final int ovrButton_B         = 0x00000002;
+    public static final int ovrButton_RThumb    = 0x00000004;
+    public static final int ovrButton_RShoulder = 0x00000008;
+    public static final int ovrButton_X         = 0x00000100;
+    public static final int ovrButton_Y         = 0x00000200;
+    public static final int ovrButton_LThumb    = 0x00000400;  
+    public static final int ovrButton_LShoulder = 0x00000800;
+
+    // Navigation through DPad.
+    public static final int ovrButton_Up        = 0x00010000;
+    public static final int ovrButton_Down      = 0x00020000;
+    public static final int ovrButton_Left      = 0x00040000;
+    public static final int ovrButton_Right     = 0x00080000;
+    public static final int ovrButton_Enter     = 0x00100000; // Start on XBox controller.
+    public static final int ovrButton_Back      = 0x00200000; // Back on Xbox controller.     
+
+    public static final int ovrButton_Private   = 0x00400000 | 0x00800000 | 0x01000000;
+  };
+  
+
+///  Specifies the maximum number of layers supported by ovr_SubmitFrame.
+///
+///  /see ovr_SubmitFrame
+///
+  public static final int ovrMaxLayerCount = 32;
+  
   int ovr_Initialize(Pointer p);
 
   void ovr_Shutdown();
@@ -193,26 +241,30 @@ public interface OvrLibrary extends Library {
 
   void ovr_Destroy(Hmd hmd);
 
+  int ovr_GetSessionStatus(Hmd session, PointerByReference sessionStatus);
+  
   Pointer ovr_GetVersionString();
 
   int ovr_GetEnabledCaps(Hmd hmd);
 
   void ovr_SetEnabledCaps(Hmd hmd, int hmdCaps);
 
+  int ovr_GetTrackingCaps(Hmd session);
+  
   int ovr_ConfigureTracking(Hmd hmd, int supportedTrackingCaps, int requiredTrackingCaps);
 
   void ovr_RecenterPose(Hmd hmd);
 
   // String ovr_GetLastError(Hmd hmd);
 
-  TrackingState ovr_GetTrackingState(Hmd hmd, double absTime);
+  TrackingState ovr_GetTrackingState(Hmd hmd, double absTime, byte latencyMarker);
 
   OvrSizei ovr_GetFovTextureSize(Hmd hmd, int eye, FovPort fov, float pixelsPerDisplayPixel);
 
   EyeRenderDesc ovr_GetRenderDesc(Hmd hmd, int eyeType, FovPort fov);
 
-  FrameTiming ovr_GetFrameTiming(Hmd hmd, int frameIndex);
-
+  double ovr_GetPredictedDisplayTime(Hmd hmd, int frameIndex);
+  
   double ovr_GetTimeInSeconds();
 
   byte ovr_GetBool(Hmd hmd, String propertyName, byte defaultVal);

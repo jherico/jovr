@@ -15,7 +15,7 @@ public class OvrLibraryTest {
     
     hmd.configureTracking();
     for (int i = 0; i < 10; ++i) {
-      TrackingState trackingState = hmd.getTrackingState(0);
+      TrackingState trackingState = hmd.getTrackingState(0, false);
       OvrVector3f position = trackingState.HeadPose.Pose.Position;
       position.x *= 100.0f;
       position.y *= 100.0f;
