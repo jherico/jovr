@@ -196,10 +196,10 @@ public class Hmd extends PointerType {
     OvrLibrary.INSTANCE.ovr_RecenterPose(this);
   }
 
-  public TrackingState getTrackingState(double absTime) {
-    return OvrLibrary.INSTANCE.ovr_GetTrackingState(this, absTime);
+  public TrackingState getTrackingState(double absTime, boolean latencyMarker) {
+    return OvrLibrary.INSTANCE.ovr_GetTrackingState(this, absTime, latencyMarker ? (byte)1: (byte)0);
   }
-
+  
   public OvrSizei getFovTextureSize(int eye, FovPort fov, float pixelsPerDisplayPixel) {
     return OvrLibrary.INSTANCE.ovr_GetFovTextureSize(this, eye, fov, pixelsPerDisplayPixel);
   }
@@ -211,8 +211,8 @@ public class Hmd extends PointerType {
   }
 
   @Nonnull
-  public FrameTiming getFrameTiming(int frameIndex) {
-    return OvrLibrary.INSTANCE.ovr_GetFrameTiming(this, frameIndex);
+  public double getPredictedDisplayTime(int frameIndex) {
+    return OvrLibrary.INSTANCE.ovr_GetPredictedDisplayTime(this, frameIndex);
   }
 
   Posef[] CalcEyePoses(Posef headPose, OvrVector3f[] hmdToEyeViewOffset) {
@@ -223,8 +223,7 @@ public class Hmd extends PointerType {
   }
 
   public Posef[] getEyePoses(int frameIndex, OvrVector3f hmdToEyeViewOffsets[]) {
-    FrameTiming timing = getFrameTiming(frameIndex);
-    TrackingState trackingState = getTrackingState(timing.DisplayMidpointSeconds);
+    TrackingState trackingState = getTrackingState(getPredictedDisplayTime(frameIndex), false);
     return CalcEyePoses(trackingState.HeadPose.Pose, hmdToEyeViewOffsets);
   }
 

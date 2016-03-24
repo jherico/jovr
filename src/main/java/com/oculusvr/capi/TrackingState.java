@@ -13,6 +13,11 @@ public class TrackingState extends Structure implements Structure.ByValue {
   public PoseStatef[] HandPoses = new PoseStatef[2];
   public SensorData RawSensorData;
   public int StatusFlags;
+  
+  /// Hand status flags described by ovrStatusBits.
+  /// Only ovrStatus_OrientationTracked and ovrStatus_PositionTracked are reported.
+  public int[] HandStatusFlags= new int[2];
+
   public int LastCameraFrameCounter;
   public byte[] padding = new byte[4];
 
@@ -27,7 +32,7 @@ public class TrackingState extends Structure implements Structure.ByValue {
   @Override
   protected List<?> getFieldOrder() {
     return Arrays.asList("HeadPose", "CameraPose", "LeveledCameraPose", "HandPoses", "RawSensorData", "StatusFlags",
-        "LastCameraFrameCounter", "padding");
+        "HandStatusFlags", "LastCameraFrameCounter", "padding");
   }
 
 }
