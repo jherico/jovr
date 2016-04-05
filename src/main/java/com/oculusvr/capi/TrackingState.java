@@ -8,18 +8,12 @@ import com.sun.jna.Structure;
 
 public class TrackingState extends Structure implements Structure.ByValue {
   public PoseStatef HeadPose;
-  public Posef CameraPose;
-  public Posef LeveledCameraPose;
-  public PoseStatef[] HandPoses = new PoseStatef[2];
-  public SensorData RawSensorData;
   public int StatusFlags;
-  
+  public PoseStatef[] HandPoses = new PoseStatef[2];
   /// Hand status flags described by ovrStatusBits.
   /// Only ovrStatus_OrientationTracked and ovrStatus_PositionTracked are reported.
   public int[] HandStatusFlags= new int[2];
-
-  public int LastCameraFrameCounter;
-  public byte[] padding = new byte[4];
+  public Posef CalibratedOrigin;
 
   public TrackingState() {
     super();
@@ -31,8 +25,8 @@ public class TrackingState extends Structure implements Structure.ByValue {
 
   @Override
   protected List<?> getFieldOrder() {
-    return Arrays.asList("HeadPose", "CameraPose", "LeveledCameraPose", "HandPoses", "RawSensorData", "StatusFlags",
-        "HandStatusFlags", "LastCameraFrameCounter", "padding");
+    return Arrays.asList("HeadPose", "StatusFlags", 
+            "HandPoses", "HandStatusFlags", "CalibratedOrigin");
   }
 
 }

@@ -1,16 +1,16 @@
 /************************************************************************************
 
 PublicHeader:   OVR_CAPI_Util.c
-Copyright   :   Copyright 2014 Oculus VR, LLC All Rights reserved.
+Copyright   :   Copyright 2014-2016 Oculus VR, LLC All Rights reserved.
 
-Licensed under the Oculus VR Rift SDK License Version 3.2 (the "License"); 
+Licensed under the Oculus VR Rift SDK License Version 3.3 (the "License"); 
 you may not use the Oculus VR Rift SDK except in compliance with the License, 
 which is provided at the time of installation or download, or which 
 otherwise accompanies this software in either electronic or hard copy form.
 
 You may obtain a copy of the License at
 
-http://www.oculusvr.com/licenses/LICENSE-3.2 
+http://www.oculusvr.com/licenses/LICENSE-3.3 
 
 Unless required by applicable law or agreed to in writing, the Oculus VR SDK 
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,29 +21,36 @@ limitations under the License.
 *************************************************************************************/
 
 
-#include <OVR_CAPI_Util.h>
-#include "OVR_StereoProjection.h"
+#include <Extras/OVR_CAPI_Util.h>
+#include <Extras/OVR_StereoProjection.h>
+
 
 #if defined(_MSC_VER)
     #include <emmintrin.h>
     #pragma intrinsic(_mm_pause)
 #endif
 
+#if defined(_WIN32)
+    #include <windows.h>
+#endif
+
 
 
 // Used to generate projection from ovrEyeDesc::Fov
-ovrMatrix4f ovrMatrix4f_Projection(ovrFovPort fov, float znear, float zfar, unsigned int projectionModFlags)
+OVR_PUBLIC_FUNCTION(ovrMatrix4f) ovrMatrix4f_Projection(
+    ovrFovPort fov, float znear, float zfar, unsigned int projectionModFlags)
 {
-    bool rightHanded    = (projectionModFlags & ovrProjection_RightHanded) > 0;
+    bool leftHanded     = (projectionModFlags & ovrProjection_LeftHanded) > 0;
     bool flipZ          = (projectionModFlags & ovrProjection_FarLessThanNear) > 0;
     bool farAtInfinity  = (projectionModFlags & ovrProjection_FarClipAtInfinity) > 0;
     bool isOpenGL       = (projectionModFlags & ovrProjection_ClipRangeOpenGL) > 0;
 
     // TODO: Pass in correct eye to CreateProjection if we want to support canted displays from CAPI
-    return OVR::CreateProjection(rightHanded , isOpenGL, F, OVR::StereoEye_Center, znear, zfar, flipZ, farAtInfinity);
+    return OVR::CreateProjection(leftHanded , isOpenGL, fov, OVR::StereoEye_Center, znear, zfar, flipZ, farAtInfinity);
 }
 
-ovrTimewarpProjectionDesc ovrTimewarpProjectionDesc_FromProjection(ovrMatrix4f Projection, unsigned int projectionModFlags)
+OVR_PUBLIC_FUNCTION(ovrTimewarpProjectionDesc) ovrTimewarpProjectionDesc_FromProjection(
+    ovrMatrix4f Projection, unsigned int projectionModFlags)
 {
     ovrTimewarpProjectionDesc res;
     res.Projection22 = Projection.M[2][2];
@@ -79,13 +86,14 @@ ovrTimewarpProjectionDesc ovrTimewarpProjectionDesc_FromProjection(ovrMatrix4f P
     return res;
 }
 
-ovrMatrix4f ovrMatrix4f_OrthoSubProjection(ovrMatrix4f projection, ovrVector2f orthoScale,
-                                           float orthoDistance, float hmdToEyeViewOffsetX)
+OVR_PUBLIC_FUNCTION(ovrMatrix4f) ovrMatrix4f_OrthoSubProjection(
+    ovrMatrix4f projection, ovrVector2f orthoScale,
+    float orthoDistance, float hmdToEyeOffsetX)
 {
     ovrMatrix4f ortho;
     // Negative sign is correct!
     // If the eye is offset to the left, then the ortho view needs to be offset to the right relative to the camera.
-    float orthoHorizontalOffset = -hmdToEyeViewOffsetX / orthoDistance;
+    float orthoHorizontalOffset = -hmdToEyeOffsetX / orthoDistance;
 
     /*
     // Current projection maps real-world vector (x,y,1) to the RT.
@@ -133,66 +141,82 @@ ovrMatrix4f ovrMatrix4f_OrthoSubProjection(ovrMatrix4f projection, ovrVector2f o
 }
 
 
-void ovr_CalcEyePoses(ovrPosef headPose,
-                      const ovrVector3f hmdToEyeViewOffset[2],
-                      ovrPosef outEyePoses[2])
+OVR_PUBLIC_FUNCTION(void) ovr_CalcEyePoses(ovrPosef headPose,
+    const ovrVector3f hmdToEyeOffset[2],
+    ovrPosef outEyePoses[2])
 {
-    if (!hmdToEyeViewOffset || !outEyePoses)
-    {        
+    if (!hmdToEyeOffset || !outEyePoses)
+    {
         return;
     }
 
     using OVR::Posef;
     using OVR::Vector3f;
 
-    // Currently HmdToEyeViewOffset is only a 3D vector
-    outEyePoses[0] = Posef(headPose.Orientation, ((Posef)headPose).Apply((Vector3f)hmdToEyeViewOffset[0]));
-    outEyePoses[1] = Posef(headPose.Orientation, ((Posef)headPose).Apply((Vector3f)hmdToEyeViewOffset[1]));
+    // Currently hmdToEyeOffset is only a 3D vector
+    outEyePoses[0] = Posef(headPose.Orientation, ((Posef)headPose).Apply((Vector3f)hmdToEyeOffset[0]));
+    outEyePoses[1] = Posef(headPose.Orientation, ((Posef)headPose).Apply((Vector3f)hmdToEyeOffset[1]));
 }
 
 
-void ovrHmd_GetEyePoses(ovrHmd hmd, unsigned int frameIndex,
-                        const ovrVector3f hmdToEyeViewOffset[2],
-                        ovrPosef outEyePoses[2],
-                        ovrTrackingState* outHmdTrackingState)
+OVR_PUBLIC_FUNCTION(void) ovr_GetEyePoses(ovrSession session, long long frameIndex, ovrBool latencyMarker,
+    const ovrVector3f hmdToEyeOffset[2],    
+    ovrPosef outEyePoses[2],
+    double* outSensorSampleTime)
 {
-    ovrFrameTiming   ftiming = ovrHmd_GetFrameTiming(hmd, frameIndex);
-    ovrTrackingState hmdState = ovrHmd_GetTrackingState(hmd, ftiming.DisplayMidpointSeconds);
-    ovr_CalcEyePoses(hmdState.HeadPose.ThePose, hmdToEyeViewOffset, outEyePoses);
-    if ( outHmdTrackingState != nullptr )
+    double frameTime = ovr_GetPredictedDisplayTime(session, frameIndex);
+    ovrTrackingState trackingState = ovr_GetTrackingState(session, frameTime, latencyMarker);
+    ovr_CalcEyePoses(trackingState.HeadPose.ThePose, hmdToEyeOffset, outEyePoses);
+
+    if (outSensorSampleTime != nullptr)
     {
-        *outHmdTrackingState = hmdState;
+        *outSensorSampleTime = ovr_GetTimeInSeconds();
     }
 }
 
-
-
-
-double ovr_WaitTillTime(double absTime)
+OVR_PUBLIC_FUNCTION(ovrDetectResult) ovr_Detect(int timeoutMilliseconds)
 {
-    double       initialTime = ovr_GetTimeInSeconds();
-    double       newTime     = initialTime;
-    
-    while(newTime < absTime)
+    // Initially we assume everything is not running.
+    ovrDetectResult result;
+    result.IsOculusHMDConnected = ovrFalse;
+    result.IsOculusServiceRunning = ovrFalse;
+
+#if defined(_WIN32)
+    // Attempt to open the named event.
+    HANDLE hServiceEvent = ::OpenEventW(SYNCHRONIZE, FALSE, OVR_HMD_CONNECTED_EVENT_NAME);
+
+    // If event exists,
+    if (hServiceEvent != nullptr)
     {
-        for (int j = 0; j < 5; j++)
+        // This indicates that the Oculus Runtime is installed and running.
+        result.IsOculusServiceRunning = ovrTrue;
+
+        // Poll for event state.
+        DWORD objectResult = ::WaitForSingleObject(hServiceEvent, timeoutMilliseconds);
+
+        // If the event is signaled,
+        if (objectResult == WAIT_OBJECT_0)
         {
-            #if defined(__x86_64__) || defined(_M_AMD64) || defined(__i386__) ||  defined(_M_IX86) // Intel architecture...
-                #if defined(__GNUC__) || defined(__clang__)
-                    asm volatile("pause" ::: "memory");
-                #elif defined(_MSC_VER)
-                    _mm_pause();
-                #endif
-            #endif
+            // This indicates that the Oculus HMD is connected.
+            result.IsOculusHMDConnected = ovrTrue;
         }
 
-        newTime = ovr_GetTimeInSeconds();
+        ::CloseHandle(hServiceEvent);
     }
+#endif // _WIN32
 
-    return (newTime - initialTime);
+
+    return result;
 }
 
+OVR_PUBLIC_FUNCTION(void) ovrPosef_FlipHandedness(const ovrPosef* inPose, ovrPosef* outPose)
+{
+    outPose->Orientation.x = -inPose->Orientation.x;
+    outPose->Orientation.y = inPose->Orientation.y;
+    outPose->Orientation.z = inPose->Orientation.z;
+    outPose->Orientation.w = -inPose->Orientation.w;
 
-
-
-
+    outPose->Position.x = -inPose->Position.x;
+    outPose->Position.y = inPose->Position.y;
+    outPose->Position.z = inPose->Position.z;
+}

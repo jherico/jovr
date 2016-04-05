@@ -174,10 +174,8 @@ public interface OvrLibrary extends Library {
   public static interface ovrLayerType {
     public static final int ovrLayerType_Disabled = 0;
     public static final int ovrLayerType_EyeFov = 1;
-    public static final int ovrLayerType_EyeFovDepth = 2;
     public static final int ovrLayerType_Quad = 3;
     public static final int ovrLayerType_EyeMatrix = 5;
-    public static final int ovrLayerType_Direct = 6;
   };
 
   public static interface ovrLayerFlags {

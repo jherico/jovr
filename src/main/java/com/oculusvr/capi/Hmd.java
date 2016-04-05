@@ -9,7 +9,6 @@ import javax.annotation.Nonnull;
 import com.google.common.base.Preconditions;
 import com.sun.jna.Pointer;
 import com.sun.jna.PointerType;
-import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.PointerByReference;
 
 public class Hmd extends PointerType {
@@ -211,56 +210,23 @@ public class Hmd extends PointerType {
     return CalcEyePoses(trackingState.HeadPose.Pose, hmdToEyeViewOffsets);
   }
 
-  public Pointer createSwapTextureChain(TextureSwapChainDesc desc) {
+  public TextureSwapChain createSwapTextureChain(TextureSwapChainDesc desc) {
     PointerByReference texturePointer = new PointerByReference();
     int callResult = OvrLibrary.INSTANCE.ovr_CreateTextureSwapChainGL(this, desc, texturePointer);
     if (0 > callResult) {
       throw new IllegalStateException("Could not create swap texture set: " + callResult);
     }
-    return texturePointer.getValue();
+    return new TextureSwapChain(this, texturePointer.getValue());
   }
 
-  public int getSwapTextureChainCurrentIndex(Pointer chain) {
-      IntByReference intByReference = new IntByReference();
-      OvrLibrary.INSTANCE.ovr_GetTextureSwapChainCurrentIndex(this, chain, intByReference);
-      
-      return intByReference.getValue();
-  }
-  
-  public int getSwapTextureChainBuffer(Pointer chain, int index) {
-      IntByReference intByReference = new IntByReference();
-      OvrLibrary.INSTANCE.ovr_GetTextureSwapChainBufferGL(this, chain, index, intByReference);
-      
-      return intByReference.getValue();
-  }
-
-  public int commitTextureSwapChain(Pointer chain) {
-      return OvrLibrary.INSTANCE.ovr_CommitTextureSwapChain(this, chain);
-  }
-          
-  public void destroySwapTexture(Pointer chain) {
-    OvrLibrary.INSTANCE.ovr_DestroyTextureSwapChain(this, chain);
-  }
-
-  public Pointer createMirrorTexture(MirrorTextureDesc desc) {
+  public MirrorTexture createMirrorTexture(MirrorTextureDesc desc) {
     PointerByReference texturePointer = new PointerByReference();
     
     int callResult = OvrLibrary.INSTANCE.ovr_CreateMirrorTextureGL(this, desc, texturePointer);
     if (0 > callResult) {
       throw new IllegalStateException("Could not create swap texture set: " + callResult);
     }
-    return texturePointer.getValue();
-  }
-
-  public int getMirrorTextureBuffer(Pointer mirrorTexture) {
-      IntByReference intByReference = new IntByReference();
-      OvrLibrary.INSTANCE.ovr_GetMirrorTextureBufferGL(this, mirrorTexture, intByReference);
-      
-      return intByReference.getValue();
-  }
-  
-  public void destroyMirrorTexture(GLTexture texture) {
-    OvrLibrary.INSTANCE.ovr_DestroyMirrorTexture(this, texture.getPointer());
+    return new MirrorTexture(this, texturePointer.getValue());
   }
 
   public int submitFrame(int frameIndex, LayerEyeFov layer) {

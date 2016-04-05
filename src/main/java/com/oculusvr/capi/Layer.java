@@ -10,9 +10,8 @@ public class Layer extends Union {
   public static final int SIZE = 176;
   public LayerHeader Header;
   public LayerEyeFov EyeFov;
-  // public LayerEyeFovDepth EyeFovDepth;
+  // public LayerEyeMatrix EyeFovDepth;
   // public LayerQuad Quad;
-  // public LayerDirect Direct;
 
   public Layer() {
     super();

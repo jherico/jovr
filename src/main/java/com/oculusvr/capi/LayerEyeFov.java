@@ -10,7 +10,7 @@ import com.sun.jna.Structure.ByValue;
 public class LayerEyeFov extends Structure implements ByValue {
   public static final int SIZE = 8;
   public LayerHeader Header;
-  public Pointer[] ColorTexure = new Pointer[2];
+  public TextureSwapChain[] ColorTexure = new TextureSwapChain[2];
   public OvrRecti[] Viewport = OvrRecti.buildPair(); 
   public FovPort[] Fov = FovPort.buildPair();
   public Posef[] RenderPose = Posef.buildPair();

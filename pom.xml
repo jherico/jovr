@@ -21,9 +21,9 @@
   </licenses>
 
   <scm>
-    <connection>scm:git:https://github.com/crramirez/jovr.git</connection>
-    <developerConnection>scm:git:git@github.com:crramirez/jovr.git</developerConnection>
-    <url>https://github.com/crramirez/jovr</url>
+    <connection>scm:git:https://github.com/jherico/jovr.git</connection>
+    <developerConnection>scm:git:git@github.com:jherico/jovr.git</developerConnection>
+    <url>https://github.com/jherico/jovr</url>
   </scm>
 
   <build>
@@ -31,9 +31,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-gpg-plugin</artifactId>
-        <configuration>
-            <skip>true</skip>
-        </configuration>          
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
