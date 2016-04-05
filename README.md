@@ -2,6 +2,14 @@ Java bindings for using the Oculus Rift head tracker
 
 Changes
 
+1.3.0.0
+
+* Initial support for Oculus SDK 1.3.0.0
+
+0.7.0.0
+
+* Initial support for Oculus SDK 0.7.0.0
+
 0.4.3.0
 
 * Initial support for Oculus SDK 0.4.3
