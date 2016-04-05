@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 import com.google.common.base.Preconditions;
 import com.sun.jna.Pointer;
 import com.sun.jna.PointerType;
+import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.PointerByReference;
 
 public class Hmd extends PointerType {
@@ -98,7 +99,7 @@ public class Hmd extends PointerType {
 
   public static OvrMatrix4f getPerspectiveProjection(@Nonnull FovPort tanHalfFov, float zNear, float zFar,
       int projectionModFlags) {
-    boolean rightHanded = (projectionModFlags & ovrProjection_RightHanded) > 0;
+    boolean rightHanded = (projectionModFlags & ovrProjection_LeftHanded) == 0;
     boolean flipZ = (projectionModFlags & ovrProjection_FarLessThanNear) > 0;
     boolean farAtInfinity = (projectionModFlags & ovrProjection_FarClipAtInfinity) > 0;
     boolean isOpenGL = (projectionModFlags & ovrProjection_ClipRangeOpenGL) > 0;
@@ -173,27 +174,10 @@ public class Hmd extends PointerType {
   // return OvrLibrary.INSTANCE.ovr_GetLastError(this);
   // }
   //
-  public int getEnabledCaps() {
-    return OvrLibrary.INSTANCE.ovr_GetEnabledCaps(this);
-  }
 
-  public void configureTracking(int supportedSensorCaps, int requiredSensorCaps) {
-    if (0 > OvrLibrary.INSTANCE.ovr_ConfigureTracking(this, supportedSensorCaps, requiredSensorCaps)) {
-      throw new IllegalStateException("Unable to configure tracking");
-    }
-  }
-
-  public void configureTracking(int supportedSensorCaps) {
-    configureTracking(supportedSensorCaps, 0);
-  }
-
-  public void configureTracking() {
-    configureTracking(OvrLibrary.ovrTrackingCaps.ovrTrackingCap_Orientation
-        | OvrLibrary.ovrTrackingCaps.ovrTrackingCap_Position);
-  }
-
-  public void recenterPose() {
-    OvrLibrary.INSTANCE.ovr_RecenterPose(this);
+  public int recenterPose() {
+    return OvrLibrary.INSTANCE.ovr_RecenterTrackingOrigin(this);
+    
   }
 
   public TrackingState getTrackingState(double absTime, boolean latencyMarker) {
@@ -227,32 +211,54 @@ public class Hmd extends PointerType {
     return CalcEyePoses(trackingState.HeadPose.Pose, hmdToEyeViewOffsets);
   }
 
-  public SwapTextureSet createSwapTexture(OvrSizei size, int format) {
+  public Pointer createSwapTextureChain(TextureSwapChainDesc desc) {
     PointerByReference texturePointer = new PointerByReference();
-    int callResult = OvrLibrary.INSTANCE.ovr_CreateSwapTextureSetGL(this, format, size.w, size.h, texturePointer);
+    int callResult = OvrLibrary.INSTANCE.ovr_CreateTextureSwapChainGL(this, desc, texturePointer);
     if (0 > callResult) {
-      throw new IllegalStateException("Could not create swap texture set");
+      throw new IllegalStateException("Could not create swap texture set: " + callResult);
     }
-    SwapTextureSet result = new SwapTextureSet(texturePointer.getValue());
-    result.read();
-    return result;
+    return texturePointer.getValue();
   }
 
-  public void destroySwapTexture(SwapTextureSet set) {
-    OvrLibrary.INSTANCE.ovr_DestroySwapTextureSet(this, set.getPointer());
+  public int getSwapTextureChainCurrentIndex(Pointer chain) {
+      IntByReference intByReference = new IntByReference();
+      OvrLibrary.INSTANCE.ovr_GetTextureSwapChainCurrentIndex(this, chain, intByReference);
+      
+      return intByReference.getValue();
+  }
+  
+  public int getSwapTextureChainBuffer(Pointer chain, int index) {
+      IntByReference intByReference = new IntByReference();
+      OvrLibrary.INSTANCE.ovr_GetTextureSwapChainBufferGL(this, chain, index, intByReference);
+      
+      return intByReference.getValue();
   }
 
-  public GLTexture createMirrorTexture(OvrSizei size, int format) {
+  public int commitTextureSwapChain(Pointer chain) {
+      return OvrLibrary.INSTANCE.ovr_CommitTextureSwapChain(this, chain);
+  }
+          
+  public void destroySwapTexture(Pointer chain) {
+    OvrLibrary.INSTANCE.ovr_DestroyTextureSwapChain(this, chain);
+  }
+
+  public Pointer createMirrorTexture(MirrorTextureDesc desc) {
     PointerByReference texturePointer = new PointerByReference();
-    int callResult = OvrLibrary.INSTANCE.ovr_CreateMirrorTextureGL(this, format, size.w, size.h, texturePointer);
+    
+    int callResult = OvrLibrary.INSTANCE.ovr_CreateMirrorTextureGL(this, desc, texturePointer);
     if (0 > callResult) {
-      throw new IllegalStateException("Could not create swap texture set");
+      throw new IllegalStateException("Could not create swap texture set: " + callResult);
     }
-    GLTexture result = new GLTexture(texturePointer.getValue());
-    result.read();
-    return result;
+    return texturePointer.getValue();
   }
 
+  public int getMirrorTextureBuffer(Pointer mirrorTexture) {
+      IntByReference intByReference = new IntByReference();
+      OvrLibrary.INSTANCE.ovr_GetMirrorTextureBufferGL(this, mirrorTexture, intByReference);
+      
+      return intByReference.getValue();
+  }
+  
   public void destroyMirrorTexture(GLTexture texture) {
     OvrLibrary.INSTANCE.ovr_DestroyMirrorTexture(this, texture.getPointer());
   }

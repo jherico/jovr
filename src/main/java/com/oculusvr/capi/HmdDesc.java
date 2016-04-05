@@ -16,10 +16,6 @@ public class HmdDesc extends Structure implements Structure.ByValue {
   public byte[] SerialNumber = new byte[24];
   public short FirmwareMajor;
   public short FirmwareMinor;
-  public float CameraFrustumHFovInRadians;
-  public float CameraFrustumVFovInRadians;
-  public float CameraFrustumNearZInMeters;
-  public float CameraFrustumFarZInMeters;
   public int AvailableHmdCaps;
   public int DefaultHmdCaps;
   public int AvailableTrackingCaps;
@@ -41,8 +37,7 @@ public class HmdDesc extends Structure implements Structure.ByValue {
   @Override
   protected List<?> getFieldOrder() {
     return Arrays.asList("Type", "padding1", "ProductName", "Manufacturer", "VendorId", "ProductId", "SerialNumber",
-        "FirmwareMajor", "FirmwareMinor", "CameraFrustumHFovInRadians", "CameraFrustumVFovInRadians",
-        "CameraFrustumNearZInMeters", "CameraFrustumFarZInMeters", "AvailableHmdCaps", "DefaultHmdCaps",
+        "FirmwareMajor", "FirmwareMinor", "AvailableHmdCaps", "DefaultHmdCaps",
         "AvailableTrackingCaps", "DefaultTrackingCaps", "DefaultEyeFov", "MaxEyeFov", "Resolution",
         "DisplayRefreshRate", "padding2");
   }
