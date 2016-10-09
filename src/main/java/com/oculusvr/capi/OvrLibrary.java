@@ -58,6 +58,31 @@ public interface OvrLibrary extends Library {
   public static final NativeLibrary JNA_NATIVE_LIB = NativeLibrary.getInstance(LIBRARY_NAME);
   public static final OvrLibrary INSTANCE = (OvrLibrary) Native.loadLibrary(LIBRARY_NAME, OvrLibrary.class);
 
+  public static interface ovrInitFlags {
+    
+    /// When a debug library is requested, a slower debugging version of the library will
+    /// run which can be used to help solve problems in the library and debug application code.
+    public static final int ovrInit_Debug          = 0x00000001;
+
+    /// When a version is requested, the LibOVR runtime respects the RequestedMinorVersion
+    /// field and verifies that the RequestedMinorVersion is supported. Normally when you 
+    /// specify this flag you simply use OVR_MINOR_VERSION for ovrInitParams::RequestedMinorVersion,
+    /// though you could use a lower version than OVR_MINOR_VERSION to specify previous 
+    /// version behavior.
+    public static final int ovrInit_RequestVersion = 0x00000004;
+
+    // These bits are writable by user code.
+    public static final int ovrinit_WritableBits   = 0x00ffffff;
+  }
+
+  public static interface ovrLogLevel {
+    
+    public static final int ovrLogLevel_Debug    = 0; ///< Debug-level log event.
+    public static final int ovrLogLevel_Info     = 1; ///< Info-level log event.
+    public static final int ovrLogLevel_Error    = 2; ///< Error-level log event.
+      
+  }
+
   public static interface ovrSuccessType {
     public static final int ovrSuccess = 0;
     public static final int ovrSuccess_NotVisible = 1000;
@@ -124,6 +149,9 @@ public interface OvrLibrary extends Library {
     public static final int ovrHmd_E3_2015 = 10;
     public static final int ovrHmd_ES06 = 11;
     public static final int ovrHmd_ES09 = 12;
+    public static final int ovrHmd_ES11 = 13;
+    public static final int ovrHmd_CV1 = 14;
+    
   };
 
   public static interface ovrHmdCaps {
@@ -280,7 +308,59 @@ public interface OvrLibrary extends Library {
 ///
   public static final int ovrMaxLayerCount = 16;
   
-  int ovr_Initialize(Pointer p);
+// -----------------------------------------------------------------------------------
+// ***** API Interfaces
+
+/// Initializes LibOVR
+///
+/// Initialize LibOVR for application usage. This includes finding and loading the LibOVRRT
+/// shared library. No LibOVR API functions, other than ovr_GetLastErrorInfo and ovr_Detect, can
+/// be called unless ovr_Initialize succeeds. A successful call to ovr_Initialize must be eventually
+/// followed by a call to ovr_Shutdown. ovr_Initialize calls are idempotent.
+/// Calling ovr_Initialize twice does not require two matching calls to ovr_Shutdown.
+/// If already initialized, the return value is ovr_Success.
+///
+/// LibOVRRT shared library search order:
+///      -# Current working directory (often the same as the application directory).
+///      -# Module directory (usually the same as the application directory,
+///         but not if the module is a separate shared library).
+///      -# Application directory
+///      -# Development directory (only if OVR_ENABLE_DEVELOPER_SEARCH is enabled,
+///         which is off by default).
+///      -# Standard OS shared library search location(s) (OS-specific).
+///
+/// \param params Specifies custom initialization options. May be NULL to indicate default options when
+///        using the CAPI shim. If you are directly calling the LibOVRRT version of ovr_Initialize
+//         in the LibOVRRT DLL then this must be valid and include ovrInit_RequestVersion.
+/// \return Returns an ovrResult indicating success or failure. In the case of failure, use
+///         ovr_GetLastErrorInfo to get more information. Example failed results include:
+///     - ovrError_Initialize: Generic initialization error.
+///     - ovrError_LibLoad: Couldn't load LibOVRRT.
+///     - ovrError_LibVersion: LibOVRRT version incompatibility.
+///     - ovrError_ServiceConnection: Couldn't connect to the OVR Service.
+///     - ovrError_ServiceVersion: OVR Service version incompatibility.
+///     - ovrError_IncompatibleOS: The operating system version is incompatible.
+///     - ovrError_DisplayInit: Unable to initialize the HMD display.
+///     - ovrError_ServerStart:  Unable to start the server. Is it already running?
+///     - ovrError_Reinitialization: Attempted to re-initialize with a different version.
+///
+/// <b>Example code</b>
+///     \code{.cpp}
+///         ovrInitParams initParams = { ovrInit_RequestVersion, OVR_MINOR_VERSION, NULL, 0, 0 };
+///         ovrResult result = ovr_Initialize(&initParams);
+///         if(OVR_FAILURE(result)) {
+///             ovrErrorInfo errorInfo;
+///             ovr_GetLastErrorInfo(&errorInfo);
+///             DebugLog("ovr_Initialize failed: %s", errorInfo.ErrorString);
+///             return false;
+///         }
+///         [...]
+///     \endcode
+///
+/// \see ovr_Shutdown
+///  
+  int ovr_Initialize(InitParams params);
+
 
   void ovr_Shutdown();
 
