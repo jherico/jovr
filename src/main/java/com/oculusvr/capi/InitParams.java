@@ -5,10 +5,11 @@
  */
 package com.oculusvr.capi;
 
-import com.sun.jna.Pointer;
-import com.sun.jna.Structure;
 import java.util.Arrays;
 import java.util.List;
+
+import com.sun.jna.Pointer;
+import com.sun.jna.Structure;
 
 /**
  *
@@ -43,7 +44,7 @@ public class InitParams extends Structure {
     public byte[] padding1 = new byte[4]; ///< \internal  
     
   @Override
-  protected List getFieldOrder() {
+  protected List<?> getFieldOrder() {
     return Arrays.asList("Flags", "RequestedMinorVersion", "LogCallback", "UserData", "ConnectionTimeoutMS", "padding1");  
   }
   
